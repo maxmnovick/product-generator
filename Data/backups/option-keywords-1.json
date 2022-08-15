@@ -1,0 +1,72 @@
+{
+	"Size":
+	{
+		"King":["kb\\b","kub\\b","kps\\b","kpb\\b","ksl\\b","^king","\\sk$"],
+		"Split Queen":["\\ssq$"],
+		"Queen":["qb\\b","qub\\b","qps\\b","qpb\\b","qsl\\b","^queen","\\sq$"],
+		"Full XL":["\\sfxl$"],
+		"Full":["fb\\b","fub\\b","fps\\b","fpb\\b","fsl\\b","^full","\\sf$"],
+		"Twin XL":["\\stxl$"],
+		"Twin":["tb\\b","tub\\b","tps\\b","tpb\\b","tsl\\b","^twin","\\st$"]
+	},
+	"Color":
+	{
+		"Beige":["beige","champagne","champane"],
+		"Black Velvet":["black velvet"],
+		"Black":["bla?c?k"],
+		"Navy Blue":["na?vy\\s*blu"],
+		"Royal Blue":["royal blu"],
+		"Blue":["blue"],
+		"Walnut Brown":["walnut"],
+		"Wenge Brown":["wenge"],
+		"Canyon Turqoise":["canyon\\s*turqoise"],
+		"Canyon Granite":["canyon\\s*granite"],
+		"Canyon Graphite":["canyon\\s*graphite"],
+		"Canyon Brown":["canyon"],
+		"Dark Chestnut Brown":["dark\\s*chestnut"],
+		"Dark Truffle Brown":["dark\\s*truffle"],
+		"Sandstone Brown":["sandstone"],
+		"Chocolate Brown":["choco"],
+		"Espresso Brown":["espresso"],
+		"Mahogany Brown":["mahogany"],
+		"Oak Brown":["oak"],
+		"Dark Brown":["da?r?k\\s*br"],
+		"Brown":["brown"],
+		"Gold":["gold"],
+		"Thyme Green":["thyme"],
+		"Green":["green"],
+		"Charcoal Gray":["charcoal"],
+		"Dove Gray":["dove grey","dove gray","dove gry","dove gre;","dove gra;","dove gr;y"],
+		"Dark Gray":["da?r?k grey","da?r?k gray","da?r?k gry","da?r?k gre;","da?r?k gra;","da?r?k\\s*gr;y"],
+		"Gray":["grey","gray","gry","gre;","gra;","gr;y"],
+		"Orange":["orange"],
+		"Pink":["pink"],
+		"Mauve Purple":["mauve"],
+		"Purple":["purple"],
+		"Red Brown":["cognac"],
+		"Cherry Red":["cherry"],
+		"Dark Red":["dark red","merlot"],
+		"Red":["red"],
+		"Silver":["silver"],
+		"Turqoise":["turq"],
+		"Cream White":["cream"],
+		"Porcelain White":["porcelain\\s*white","porcelain\\s*whtie"],
+		"Pearl White":["pearl white","pearl whtie"],
+		"White":["white","whtie"],
+		"Yellow":["yellow"],
+		"Clear":["clear"]
+	},
+	"Bed Side":
+	{
+		"Left":["left"],
+		"Right":["right"]
+	},
+	"Style":
+	{
+		"Upholstered":["upholster","kub\\b","qub\\b","fub\\b","tub\\b"],
+		"Poster":["poster","kps\\b","qps\\b","fps\\b","tps\\b"],
+		"Panel":["panel","kpb\\b","qpb\\b","fpb\\b","tpb\\b"],
+		"Sleigh":["sleigh","ksl\\b","qsl\\b","fsl\\b","tsl\\b"],
+		"Bookcase":["bo+kcase"]
+	}
+}

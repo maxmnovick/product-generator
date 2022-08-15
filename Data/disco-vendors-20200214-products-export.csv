@@ -1,0 +1,579 @@
+﻿"ID","Handle","Command","Title","Body HTML","Vendor","Type","Tags","Tags Command","Created At","Updated At","Published","Published At","Published Scope","Template Suffix","URL","Row #","Top Row","Variant Inventory Item ID","Variant ID","Variant Command","Option1 Name","Option1 Value","Option2 Name","Option2 Value","Option3 Name","Option3 Value","Variant Position","Variant SKU","Variant Barcode","Variant Image","Variant Weight","Variant Weight Unit","Variant Price","Variant Compare At Price","Variant Cost","Variant Taxable","Variant Tax Code","Variant Inventory Tracker","Variant Inventory Policy","Variant Fulfillment Service","Variant Requires Shipping","Variant Inventory Qty","Variant Inventory Adjust"
+"4462544355418","jj-loveseat","UPDATE","JJ Loveseat","<p><span>Elegant and eye-catching, the stunning JJ Living Room from Meridian Furniture is the perfect addition to any space. Rich Velvet covers the plush, comfortable seat, padded with high-density foam and modern tufted design on the back and sides. Strength and beauty is guaranteed with a solid wood frame and chrome legs. Featuring a Unique slightly curved design and nail heads.</span></p>
+<ul>
+<li>Top Quality Navy Velvet</li>
+<li>Unique Curved Design</li>
+<li>Pillows Included</li>
+<li>Silver Nailheads</li>
+<li>Seat Height 18.5""</li>
+<li>Seat Depth 23""</li>
+</ul>
+<ul></ul>
+<ul></ul>
+<p><strong>DIMENSIONS</strong></p>
+<div class=""table_row options"">
+<div class=""table_cell""><label for=""addt0""></label></div>
+</div>
+<div class=""table_row options""></div>
+<div class=""table_row options"">
+<div class=""table_cell"">Loveseat : <span>64"" W x 34.5"" D x 30"" H</span><br>
+</div>
+</div>","Meridian","loveseats","color-navy, New_2019, style-traditional, under-1500, under-2000","REPLACE","2019-12-12T22:28:20-05:00","2020-01-18T04:04:07-05:00","true","2019-12-12T22:28:20-05:00","global","","https://www.jenniferfurniture.com/products/jj-loveseat","1","true","33190198214746","31594007363674","MERGE","Title","Default Title","","","","","1","648-LS","638037699135","","1.0","g","1299.99","1499.99","","true","","","deny","manual","true","",""
+"4462545535066","jj-chair","UPDATE","JJ Chair","<p><span>Elegant and eye-catching, the stunning JJ Living Room from Meridian Furniture is the perfect addition to any space. Rich Velvet covers the plush, comfortable seat, padded with high-density foam and modern tufted design on the back and sides. Strength and beauty is guaranteed with a solid wood frame and chrome legs. Featuring a Unique slightly curved design and nail heads.</span></p>
+<ul>
+<li>Top Quality Navy Velvet</li>
+<li>Unique Curved Design</li>
+<li>Pillows Included</li>
+<li>Silver Nailheads</li>
+<li>Seat Height 18.5""</li>
+<li>Seat Depth 23""</li>
+</ul>
+<ul></ul>
+<ul></ul>
+<p><strong>DIMENSIONS</strong></p>
+<div class=""table_row options"">
+<div class=""table_cell""><label for=""addt0""></label></div>
+</div>
+<div class=""table_row options""></div>
+<div class=""table_row options"">
+<div class=""table_cell"">Chair : <span>42"" W X 34.5"" D X 30"" H</span><br>
+</div>
+</div>","Meridian","Chairs","color-navy, New_2019, style-traditional, under-1500, under-2000","REPLACE","2019-12-12T22:29:14-05:00","2020-01-18T04:04:08-05:00","true","2019-12-12T22:29:14-05:00","global","","https://www.jenniferfurniture.com/products/jj-chair","2","true","33190204932186","31594013294682","MERGE","Title","Default Title","","","","","1","648-C","638037699135","","1.0","g","699.99","899.99","","true","","","deny","manual","true","",""
+"12046535635","jj-living-set","UPDATE","JJ Living Room Set","<p><span>Elegant and eye-catching, the stunning JJ Living Room from Meridian Furniture is the perfect addition to any space. Rich Velvet covers the plush, comfortable seat, padded with high-density foam and modern tufted design on the back and sides. Strength and beauty is guaranteed with a solid wood frame and chrome legs. Featuring a Unique slightly curved design and nail heads.</span></p>
+<ul>
+<li>Top Quality Navy Velvet</li>
+<li>Unique Curved Design</li>
+<li>Pillows Included</li>
+<li>Silver Nailheads</li>
+<li>Seat Height 18.5""</li>
+<li>Seat Depth 23""</li>
+</ul>
+<ul></ul>
+<ul></ul>
+<p><strong>DIMENSIONS</strong></p>
+<div class=""table_row options"">
+<div class=""table_cell"">
+<label for=""addt0"">Chair : </label><label for=""addt0"">42"" W x 34.5"" D x 30"" H</label>
+</div>
+</div>
+<div class=""table_row options"">
+<div class=""table_cell"">
+<label for=""addt1"">Loveseat : </label>64"" W x 34.5"" D x 30"" H<br>
+</div>
+</div>
+<div class=""table_row options"">
+<div class=""table_cell"">
+<label for=""addt2"">Sofa : </label>86.5"" W x 34.5"" D x 30"" H<br>
+</div>
+</div>","Meridian","living room sets","color-navy, New_2019, style-traditional, under-1500, under-2000","REPLACE","2017-08-13T13:01:43-04:00","2020-01-18T03:58:44-05:00","true","2016-04-28T16:12:00-04:00","global","","https://www.jenniferfurniture.com/products/jj-living-set","3","true","16722070241370","16461154549850","MERGE","Title","Default Title","","","","","1","648-C - 648-LS-648-S","638037699135","","1.0","g","3399.99","3999.99","","true","","","deny","manual","true","",""
+"4504201166938","jolie-bed","UPDATE","Jolie Bed","<p>Transform your bedroom into a dream haven with the breathtaking Jolie velvet bed. Featuring a stunning polished gold metal frame that supports velvet upholstery on the headboard and footboard with channel tufting for texture, this sleek bed not only commands your attention, it demands it.</p>
+<p><strong>Dimensions: </strong></p>
+<table width=""100%"">
+<tbody>
+<tr>
+<td style=""width: 32.0151%;"">King (inch^3):</td>
+<td style=""width: 65.3484%;"">81.0"" W x 87.5"" D x 61.5"" H.</td>
+</tr>
+<tr>
+<td style=""width: 32.0151%;"">Queen (inch^3):</td>
+<td style=""width: 65.3484%;"">65.0"" W x 87.5"" D x 61.5"" H.</td>
+</tr>
+</tbody>
+</table>
+<br>
+<p><strong>Details: </strong></p>
+<table width=""100%"">
+<tbody>
+<tr>
+<td style=""width: 21.4689%;"">Color:</td>
+<td style=""width: 75.8945%;"">Pink.</td>
+</tr>
+<tr>
+<td style=""width: 21.4689%;"">Style:</td>
+<td style=""width: 75.8945%;"">Contemporary, Modern.</td>
+</tr>
+</tbody>
+</table>","Meridian","beds","color-pink, style-contemporary, style-modern, under-1500","REPLACE","2020-01-08T16:16:44-05:00","2020-02-13T16:13:57-05:00","true","2020-01-08T15:49:09-05:00","global","","https://www.jenniferfurniture.com/products/jolie-bed","4","true","33368981569626","31731755974746","MERGE","Bed Size","King","","","","","1","JOLIEK+JOLIEK-FB+JOLIEK-RA","","","0.0","lb","1499.99","","","true","","","deny","manual","true","",""
+"4504201166938","jolie-bed","UPDATE","Jolie Bed","","Meridian","beds","color-pink, style-contemporary, style-modern, under-1500","REPLACE","2020-01-08T16:16:44-05:00","2020-02-13T16:13:57-05:00","true","2020-01-08T15:49:09-05:00","global","","https://www.jenniferfurniture.com/products/jolie-bed","5","","33368981602394","31731756007514","MERGE","Bed Size","Queen","","","","","2","JOLIEQ+JOLIE-FB+JOLIE-RA","","","0.0","lb","1399.99","","","true","","","deny","manual","true","",""
+"4462562279514","carlton-occasional-table","UPDATE","Carlton Occasional Table","<p>Pull your living room together with the stunning Carlton chrome table collection by Meridian Furniture. The gorgeous contemporary Carlton collection features a solid stone that offsets its rich chrome stainless steel legs, providing the perfect contrast for a modern look. A shiny chrome finish ensures this collection will be the highlight of your living room.</p>
+<ul>
+<li>Rich Chrome Stainless Steel</li>
+<li>Genuine Stone With Marble Veneer</li>
+<li>Top Thickness .75""</li>
+</ul>
+<ul></ul>
+<ul></ul>
+<ul></ul>
+<p><strong>DIMENSIONS</strong></p>
+<div class=""table_row options"">
+<div class=""table_cell"">
+<div class=""table_row options"">
+<div class=""table_cell"">
+<label for=""addt1"">Coffee Table </label><label for=""addt1"">48"" W x 24"" D x 16"" H</label>
+</div>
+</div>
+<div class=""table_row options"">
+<div class=""table_cell"">
+<label for=""addt2"">End Table </label><label for=""addt2"">20"" W x 20"" D x 22"" H</label>
+</div>
+</div>
+<div class=""table_row options"">
+<div class=""table_cell"">
+<label for=""addt3"">Console Table </label><label for=""addt3"">48"" W x 17.5"" D x 30"" H</label>
+</div>
+</div>
+</div>
+</div>","Meridian","coffee table sets","color-navy, New_2019, style-traditional, under-1500, under-2000","REPLACE","2019-12-12T22:38:42-05:00","2020-01-18T04:04:08-05:00","true","2019-12-12T22:38:42-05:00","global","","https://www.jenniferfurniture.com/products/carlton-occasional-table","6","true","33190307364954","31594103996506","MERGE","Configuration","Cocktail Table","","","","","1","235c","638037699135","https://cdn.shopify.com/s/files/1/1101/6302/products/1604.jpg?v=1576208480","1.0","g","599.99","799.99","","true","","","deny","manual","true","",""
+"4462562279514","carlton-occasional-table","UPDATE","Carlton Occasional Table","","Meridian","coffee table sets","color-navy, New_2019, style-traditional, under-1500, under-2000","REPLACE","2019-12-12T22:38:42-05:00","2020-01-18T04:04:08-05:00","true","2019-12-12T22:38:42-05:00","global","","https://www.jenniferfurniture.com/products/carlton-occasional-table","7","","33190307397722","31594104029274","MERGE","Configuration","End Table","","","","","2","235 end table","","https://cdn.shopify.com/s/files/1/1101/6302/products/1605.jpg?v=1576208480","1.0","g","399.99","599.99","","true","","","deny","manual","true","",""
+"4462562279514","carlton-occasional-table","UPDATE","Carlton Occasional Table","","Meridian","coffee table sets","color-navy, New_2019, style-traditional, under-1500, under-2000","REPLACE","2019-12-12T22:38:42-05:00","2020-01-18T04:04:08-05:00","true","2019-12-12T22:38:42-05:00","global","","https://www.jenniferfurniture.com/products/carlton-occasional-table","8","","33190307430490","31594104062042","MERGE","Configuration","Sofa Table","","","","","3","235 sofa table","","https://cdn.shopify.com/s/files/1/1101/6302/products/1606.jpg?v=1576208480","1.0","g","599.99","799.99","","true","","","deny","manual","true","",""
+"4462548549722","cameron-dining-set","UPDATE","Cameron Dining Set","<p>The Cameron Dining Set ( Table + 6 Chairs ) by Meridian Furniture. Featuring a beautiful contemporary design with gold plated stainless steel and solid stone. This dining table is guaranteed to be the highlight of any home.</p>
+<ul>
+<li>Rich Gold Stainless Steel</li>
+<li>Genuine Stone With Marble Veneer</li>
+<li>Plush Velvet Chairs</li>
+<li>Deep Tufting on Chairs</li>
+</ul>
+<ul></ul>
+<ul></ul>
+<ul></ul>
+<p><strong>DIMENSIONS</strong></p>
+<div class=""table_row options"">
+<div class=""table_cell""><label for=""addt0""></label></div>
+</div>
+<div class=""table_row options""></div>
+<div class=""table_row options"">
+<div class=""table_cell"">
+<div id=""zoomedWrapper"" class=""fltlt prod_info"">
+<div class=""table"">
+<div class=""table_row options"">
+<div class=""table_cell"">
+<label for=""addt1"">Dining Table:</label>78"" W x 39"" D x 30"" H<br>
+</div>
+</div>
+<div class=""table_row options"">
+<div class=""table_cell"">
+<label for=""addt2"">Dining Chair </label>19"" W x 25.5"" D x 38"" H</div>
+</div>
+</div>
+</div>
+</div>
+</div>","Meridian","dining sets","color-navy, New_2019, style-traditional, under-1500, under-2000","REPLACE","2019-12-12T22:31:04-05:00","2020-01-18T04:04:08-05:00","true","2019-12-12T22:31:04-05:00","global","","https://www.jenniferfurniture.com/products/cameron-dining-set","9","true","33190218956890","31594025091162","MERGE","Title","Default Title","","","","","1","712-D + 712 Navy DC","638037699135","","1.0","g","2999.99","3499.99","","true","","","deny","manual","true","",""
+"4462543372378","jj-sofa","UPDATE","JJ Sofa","<p><span>Elegant and eye-catching, the stunning JJ Living Room from Meridian Furniture is the perfect addition to any space. Rich Velvet covers the plush, comfortable seat, padded with high-density foam and modern tufted design on the back and sides. Strength and beauty is guaranteed with a solid wood frame and chrome legs. Featuring a Unique slightly curved design and nail heads.</span></p>
+<ul>
+<li>Top Quality Navy Velvet</li>
+<li>Unique Curved Design</li>
+<li>Pillows Included</li>
+<li>Silver Nailheads</li>
+<li>Seat Height 18.5""</li>
+<li>Seat Depth 23""</li>
+</ul>
+<ul></ul>
+<ul></ul>
+<p><strong>DIMENSIONS</strong></p>
+<div class=""table_row options"">
+<div class=""table_cell""><label for=""addt0""></label></div>
+</div>
+<div class=""table_row options""></div>
+<div class=""table_row options"">
+<div class=""table_cell"">
+<label for=""addt2"">Sofa : </label>86.5"" W x 34.5"" D x 30"" H<br>
+</div>
+</div>","Meridian","sofas","color-navy, New_2019, style-traditional, under-1500, under-2000","REPLACE","2019-12-12T22:27:38-05:00","2020-01-18T04:04:07-05:00","true","2019-12-12T22:27:38-05:00","global","","https://www.jenniferfurniture.com/products/jj-sofa","10","true","33190192545882","31594003005530","MERGE","Title","Default Title","","","","","1","648-S","638037699135","","1.0","g","1399.99","1599.99","","true","","","deny","manual","true","",""
+"1608003879002","julieta-dining-set","UPDATE","Julieta Dining Set","<p>Julieta Dining Set with 4 chairs .Enhance your dining room with the wonderful look of this <span>Julieta </span>Dining Room Collection.</p>
+<p><strong>DIMENSIONS</strong></p>
+<p><span>Table : 39” W x 67” D x 30” H</span></p>
+<p>Chair: 23” W x 17” D x 38” H</p>","Minhas","dining sets","clearance, color-brown, Jan_14_2019, Jan_14_2019_2, seating-four-seating, style-casual, under-1000, under-1500, under-2000","REPLACE","2018-12-17T21:41:20-05:00","2020-01-20T14:58:51-05:00","true","2020-01-19T01:00:14-05:00","web","","https://www.jenniferfurniture.com/products/julieta-dining-set","11","true","16015135015002","15870979506266","MERGE","Color","White","Configuration","Table + 4 Chairs","","","1","JULIETA-DB JULIETA-DT JULIETA-DC*4","","","4.0","g","799.99","1399.99","","true","","","deny","manual","true","",""
+"1312333234290","benson-chair","UPDATE","Benson Chair","<p>"" Contemporary styled sofa made with ultra-comfy cushioning<br>The light grey poly-blend fabric upholstery is both soft and durable<br>The extra-thick CFS foam cushions are located along the seat and back, and inside the armrests<br>Internal plywood frame and exterior base, supported by steel legs finished in black""</p>
+<p><strong>DIMENSIONS</strong></p>
+<p><span>39"" W x 34"" D x 30"" H</span></p>","Nuevo","Chairs","changeimage, color-light-grey, Exclusive_Neha_10, material-microfiber, special, style-contemporary, under-1500, width-35-45","REPLACE","2018-07-21T01:47:36-04:00","2020-02-13T22:11:28-05:00","true","2016-03-29T19:19:00-04:00","global","","https://www.jenniferfurniture.com/products/benson-chair","12","true","16722153963610","16461226967130","MERGE","Title","Default Title","","","","","1","benson-Chair","","","1.0","g","1099.99","1499.99","","true","","","deny","manual","true","",""
+"1312332939378","cyrus-sofa","UPDATE","Cyrus Sofa","<p>""Contemporary large sofa finished in a stylish """"dusty"""" blue complexion<br>Polyester fabric upholstery which is ultra-soft and easy-to-maintain <br>Dense foam seat and back cushions, and removable side cushions<br>Brushed stainless steel base. Comfortably sits three people.""</p>
+<p><strong>DIMENSIONS</strong></p>
+<p><span>81"" W x 37"" D x 33"" H</span></p>","Nuevo","Sofas","changeimage, color-blue, Exclusive_Neha_10, material-microfiber, special, style-contemporary, under-2000, width-35-45","REPLACE","2018-07-21T01:41:20-04:00","2020-02-13T22:11:28-05:00","true","2016-03-29T19:19:00-04:00","global","","https://www.jenniferfurniture.com/products/cyrus-sofa","13","true","16722153865306","16461226868826","MERGE","Title","Default Title","","","","","1","Cyrus-S","","","1.0","g","1599.99","1999.99","","true","","","deny","manual","true","",""
+"1312333070450","benson-sofa","UPDATE","Benson Sofa","<p>"" Contemporary styled sofa made with ultra-comfy cushioning<br>The light grey poly-blend fabric upholstery is both soft and durable<br>The extra-thick CFS foam cushions are located along the seat and back, and inside the armrests<br>Internal plywood frame and exterior base, supported by steel legs finished in black""</p>
+<p><strong>DIMENSIONS</strong></p>
+<p><span>34"" W x 90"" D x 30"" H</span></p>","Nuevo","Sofas","changeimage, color-light-grey, Exclusive_Neha_10, material-microfiber, special, style-contemporary, under-2000, width-35-45","REPLACE","2018-07-21T01:45:53-04:00","2020-02-13T22:11:28-05:00","true","2016-03-29T19:19:00-04:00","global","","https://www.jenniferfurniture.com/products/benson-sofa","14","true","16722153898074","16461226901594","MERGE","Title","Default Title","","","","","1","benson-S","","","1.0","g","1699.99","1999.99","","true","","","deny","manual","true","",""
+"1312333365362","matthew-2-piece-sectional","UPDATE","Matthew 2 Piece Sectional","<p>""Contemporary sectional manufactured with wide and sturdy plywood frame <br> Grey polyester fabric covers the cushions, back, sides, and just about all areas<br> Button tufted detailing along the seat and chaise cushions. Dense CFS foam cushions.<br> Brushed stainless steel base under the sofa and chaise units; strong and balanced designed<br>""</p>
+<p>Includes - LAF Loveseat and RAF Chaise.</p>
+<p><strong>DIMENSIONS</strong></p>
+<p><span>64"" W x 93"" D x 28"" H</span></p>
+<strong>Configuration or Direction of a Sectional: </strong> ""Left Arm"" &amp; ""Right Arm"" Facing describes the position of the item when you face the furniture (not when you are sitting on it)","Nuevo","sectionals","color-grey, Exclusive_Neha_10, material-microfiber, sectionals, special, style-contemporary, under-2500, width-35-45","REPLACE","2018-07-21T01:49:58-04:00","2020-02-13T22:11:28-05:00","true","2016-03-29T19:19:00-04:00","global","","https://www.jenniferfurniture.com/products/matthew-2-piece-sectional","15","true","16722153996378","16461226999898","MERGE","Title","Default Title","","","","","1","MATTHEWL-L MATTHEWR-C","","","2.0","g","2499.99","2999.99","","true","","","deny","manual","true","",""
+"1903015690330","bend-classic-transitional-rug","UPDATE","Bend Classic Transitional Rug","<p>This exquisite polypropylene rug will give your space a stylish point of view. It uses the timelessness of a classic motif, and mixes in a vintage vibe and powerhouse hues like fuchsia and blue. This power-loomed piece will work in traditional, modern, or eclectic settings. It’s constructed with a durable, soft-touch pile. Let this rug inspire you to be bold and create a home that is all you.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, Exclusive_Neha_10","REPLACE","2019-07-22T01:38:53-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:38:53-04:00","global","","https://www.jenniferfurniture.com/products/bend-classic-transitional-rug","16","true","18040194498650","17587677790298","MERGE","Size","5' x 7'","","","","","1","27755","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903015690330","bend-classic-transitional-rug","UPDATE","Bend Classic Transitional Rug","","American Rugs","Rugs","color-blue, Exclusive_Neha_10","REPLACE","2019-07-22T01:38:53-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:38:53-04:00","global","","https://www.jenniferfurniture.com/products/bend-classic-transitional-rug","17","","18040194531418","17587677823066","MERGE","Size","8' x 10'","","","","","2","27756","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1903009300570","bend-vintage-contemporary-rug","UPDATE","Bend Vintage Contemporary Rug","<p>This multi-use rug can create a graceful mood in your backyard or bring a touch of formality to a living room or den. It features a traditional motif in modern, yet neutral tones like rust and champagne, giving this accessory classic cred with a fresh feel. Crafted from polypropylene and power-loomed, this indoor/outdoor piece has a flat pile for less-fuss cleaning.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-cream, Exclusive_Neha_10","REPLACE","2019-07-22T01:31:48-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:31:47-04:00","global","","https://www.jenniferfurniture.com/products/bend-vintage-contemporary-rug","18","true","18040131059802","17587618414682","MERGE","Size","5' x 7'","","","","","1","27749","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903009300570","bend-vintage-contemporary-rug","UPDATE","Bend Vintage Contemporary Rug","","American Rugs","Rugs","color-cream, Exclusive_Neha_10","REPLACE","2019-07-22T01:31:48-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:31:47-04:00","global","","https://www.jenniferfurniture.com/products/bend-vintage-contemporary-rug","19","","18040138793050","17587625885786","MERGE","Size","8' x 10'","","","","","2","27750","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903014051930","bend-ivory-transitional-rug","UPDATE","Bend Ivory Transitional Rug","<p>This enchanting rug will bring a sense of romance to your space. Boasting a vintage vibe, this polypropylene piece can add charm to just about any style setting. It’s power-loomed and constructed with a short, durable, soft-touch pile. It also features a distressed quality, giving the motif more depth and story. Fall in love with your space again with the help of this wondrous home décor piece.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-ivory, Exclusive_Neha_10","REPLACE","2019-07-22T01:36:54-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:36:54-04:00","global","","https://www.jenniferfurniture.com/products/bend-ivory-transitional-rug","20","true","18040180047962","17587663863898","MERGE","Size","5' x 7'","","","","","1","27752","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903014051930","bend-ivory-transitional-rug","UPDATE","Bend Ivory Transitional Rug","","American Rugs","Rugs","color-blue, color-ivory, Exclusive_Neha_10","REPLACE","2019-07-22T01:36:54-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:36:54-04:00","global","","https://www.jenniferfurniture.com/products/bend-ivory-transitional-rug","21","","18040180080730","17587663896666","MERGE","Size","8' x 10'","","","","","2","27755","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903000027226","bend-vintage-transitional-rug","UPDATE","Bend Vintage Transitional Rug","<p>Let your adventurous spirit influence your décor with the help of this color-forward, polypropylene rug. Utilizing a beige background, this piece indulges itself in bold hues like gold, blue, and fuchsia. Designed for use indoors or outdoors, it’s constructed with a flat pile for easy cleaning. Boasting vintage vibes and a grand motif, this power-loomed accessory is a true statement-making piece.</p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>","American Rugs","rugs","color-beige, Exclusive_Neha_10","REPLACE","2019-07-22T01:19:46-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:19:45-04:00","global","","https://www.jenniferfurniture.com/products/bend-vintage-transitional-rug","22","true","18040048877658","17587545243738","MERGE","Size","5' x 7'","","","","","1","27746","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1903000027226","bend-vintage-transitional-rug","UPDATE","Bend Vintage Transitional Rug","","American Rugs","rugs","color-beige, Exclusive_Neha_10","REPLACE","2019-07-22T01:19:46-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:19:45-04:00","global","","https://www.jenniferfurniture.com/products/bend-vintage-transitional-rug","23","","18040070733914","17587564839002","MERGE","Size","8' x 10'","","","","","2","27747","","","0.0","g","399.99","699.99","","false","","","deny","manual","true","",""
+"1903021293658","jadon-rug","UPDATE","Jadon Rug","<p>The autumnal-inspired motif on this area rug showcases earthy hues that make you happy to be home. A touch of vintage style adds unforgettable appeal to the already enchanting floral design. Power-loomed and constructed with a short, durable, soft-touch pile, this engaging polypropylene décor piece is perfect for creating a space that’s warm and welcoming. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-beige, color-red, Exclusive_Neha_10","REPLACE","2019-07-22T01:44:10-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:44:10-04:00","global","","https://www.jenniferfurniture.com/products/jadon-rug","24","true","18040240210010","17587720224858","MERGE","Size","5' x 7'","","","","","1","27433","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903021293658","jadon-rug","UPDATE","Jadon Rug","","American Rugs","Rugs","color-beige, color-red, Exclusive_Neha_10","REPLACE","2019-07-22T01:44:10-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:44:10-04:00","global","","https://www.jenniferfurniture.com/products/jadon-rug","25","","18040240242778","17587720257626","MERGE","Size","8' x 10'","","","","","2","27434","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903019163738","bend-transitional-rust-beige-rug","UPDATE","Bend Transitional Rust & Beige Rug","<p>The autumnal-inspired motif on this area rug showcases earthy hues that make you happy to be home. A touch of vintage style adds unforgettable appeal to the already enchanting floral design. Power-loomed and constructed with a short, durable, soft-touch pile, this engaging polypropylene décor piece is perfect for creating a space that’s warm and welcoming. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-ivory, color-rustic, Exclusive_Neha_10","REPLACE","2019-07-22T01:42:13-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:42:13-04:00","global","","https://www.jenniferfurniture.com/products/bend-transitional-rust-beige-rug","26","true","18040221565018","17587702857818","MERGE","Size","5' x 7'","","","","","1","27758","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903019163738","bend-transitional-rust-beige-rug","UPDATE","Bend Transitional Rust & Beige Rug","","American Rugs","Rugs","color-ivory, color-rustic, Exclusive_Neha_10","REPLACE","2019-07-22T01:42:13-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:42:13-04:00","global","","https://www.jenniferfurniture.com/products/bend-transitional-rust-beige-rug","27","","18040221597786","17587702890586","MERGE","Size","8' x 10'","","","","","2","27759","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1903025487962","uli-rug","UPDATE","Uli Rug","<p>The autumnal-inspired motif on this area rug showcases earthy hues that make you happy to be home. A touch of vintage style adds unforgettable appeal to the already enchanting floral design. Power-loomed and constructed with a short, durable, soft-touch pile, this engaging polypropylene décor piece is perfect for creating a space that’s warm and welcoming. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-beige, color-red, Exclusive_Neha_10","REPLACE","2019-07-22T01:47:54-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:47:54-04:00","global","","https://www.jenniferfurniture.com/products/uli-rug","28","true","18040267243610","17587743817818","MERGE","Size","5' x 7'","","","","","1","27437","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903025487962","uli-rug","UPDATE","Uli Rug","","American Rugs","Rugs","color-beige, color-red, Exclusive_Neha_10","REPLACE","2019-07-22T01:47:54-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:47:54-04:00","global","","https://www.jenniferfurniture.com/products/uli-rug","29","","18040267341914","17587743850586","MERGE","Size","8' x 10'","","","","","2","27438","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903023751258","jairo-rug","UPDATE","Jairo Rug","<p>The autumnal-inspired motif on this area rug showcases earthy hues that make you happy to be home. A touch of vintage style adds unforgettable appeal to the already enchanting floral design. Power-loomed and constructed with a short, durable, soft-touch pile, this engaging polypropylene décor piece is perfect for creating a space that’s warm and welcoming. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-beige, color-red, Exclusive_Neha_10","REPLACE","2019-07-22T01:46:15-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:46:15-04:00","global","","https://www.jenniferfurniture.com/products/jairo-rug","30","true","18040257249370","17587735560282","MERGE","Size","5' x 7'","","","","","1","27435","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903023751258","jairo-rug","UPDATE","Jairo Rug","","American Rugs","Rugs","color-beige, color-red, Exclusive_Neha_10","REPLACE","2019-07-22T01:46:15-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:46:15-04:00","global","","https://www.jenniferfurniture.com/products/jairo-rug","31","","18040257347674","17587735593050","MERGE","Size","8' x 10'","","","","","2","27436","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903026634842","xenia-rug","UPDATE","Xenia Rug","<p>Each time you stare at the Xenia area rug, you’ll see a little something different. Soft colors like gray-blue and champagne make up the winsome pattern. Delicate wisps over wider panels create an interesting sense of movement in the motif. And with a frieze, dense, almost half-inch pile, the rug’s texture is just as appealing as its design. Create a space that engages the eye and then takes your breath away. Create a space with the Xenia.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-beige, color-blue, Exclusive_Neha_10","REPLACE","2019-07-22T01:48:59-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:48:59-04:00","global","","https://www.jenniferfurniture.com/products/xenia-rug","32","true","18040274813018","17587751616602","MERGE","Size","5' x 7'","","","","","1","27439","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903026634842","xenia-rug","UPDATE","Xenia Rug","","American Rugs","Rugs","color-beige, color-blue, Exclusive_Neha_10","REPLACE","2019-07-22T01:48:59-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:48:59-04:00","global","","https://www.jenniferfurniture.com/products/xenia-rug","33","","18040274845786","17587751649370","MERGE","Size","8' x 10'","","","","","2","27440","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903029715034","wande-rug","UPDATE","Wande Rug","<p>The Wande area rug might be made from durable polypropylene, but the refined motif is all about upscale elegance. A lovely soft blue background makes the perfect setting for the delicate contours of stems and blossoms. Framed by fine lines, the traditional style on the Wande makes this one home accessory that will never go out of style. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-22T01:52:59-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:52:59-04:00","global","","https://www.jenniferfurniture.com/products/wande-rug","34","true","18040302010458","17587775340634","MERGE","Size","5' x 7'","","","","","1","27441","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903029715034","wande-rug","UPDATE","Wande Rug","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-22T01:52:59-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:52:59-04:00","global","","https://www.jenniferfurniture.com/products/wande-rug","35","","18040302043226","17587775406170","MERGE","Size","8' x 10'","","","","","2","27442","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903032434778","nalani-rug","UPDATE","Nalani Rug","<p>The Nalani area rug is the perfect argument in favor of traditional décor. Its beautiful motif of intricate blossoms on a rich brick-colored background makes a statement without overwhelming the rest of the room’s décor. Made from polypropylene and power loomed, it has the sturdy construction required of every busy household. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-beige, color-red, Exclusive_Neha_10","REPLACE","2019-07-22T01:56:14-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:56:14-04:00","global","","https://www.jenniferfurniture.com/products/nalani-rug","36","true","18040321507418","17587792674906","MERGE","Size","5' x 7'","","","","","1","27443","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903032434778","nalani-rug","UPDATE","Nalani Rug","","American Rugs","Rugs","color-beige, color-red, Exclusive_Neha_10","REPLACE","2019-07-22T01:56:14-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:56:14-04:00","global","","https://www.jenniferfurniture.com/products/nalani-rug","37","","18040321540186","17587792773210","MERGE","Size","8' x 10'","","","","","2","27444","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903036268634","gared-rug","UPDATE","Gared Rug","<p>Elevate your home’s style with a little help from the Gared area rug. This contemporary accessory unites a spirited design with a sleek color scheme. With cool hues like graphite, sky blue, and coffee, along with a geometrically-themed pattern, the Gared will lift your space’s appearance. Polypropylene fibers make up its durable construction, providing you with a rug that is as reliable as it is eye-catching. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-iv, color-ivory, Exclusive_Neha_10","REPLACE","2019-07-22T02:00:37-04:00","2020-02-13T16:13:50-05:00","true","2019-07-22T02:00:37-04:00","global","","https://www.jenniferfurniture.com/products/gared-rug","38","true","18040341659738","17587810173018","MERGE","Size","5' x 7'","","","","","1","27449","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903036268634","gared-rug","UPDATE","Gared Rug","","American Rugs","Rugs","color-grey, color-iv, color-ivory, Exclusive_Neha_10","REPLACE","2019-07-22T02:00:37-04:00","2020-02-13T16:13:50-05:00","true","2019-07-22T02:00:37-04:00","global","","https://www.jenniferfurniture.com/products/gared-rug","39","","18040341692506","17587810205786","MERGE","Size","8' x 10'","","","","","2","27450","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903033614426","basia-rug","UPDATE","Basia Rug","<p>The Basia area rug’s frieze, dense pile provides a texture you’ll love stepping on to. Add the gorgeous floral pattern and you’ve got a traditional-styled rug with smart construction. It’s made from polypropylene and power loomed, so it’s wonderfully reliable. Why not give your space a masterpiece that will never go out of fashion? </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-iv, color-ivory, Exclusive_Neha_10","REPLACE","2019-07-22T01:57:34-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:57:34-04:00","global","","https://www.jenniferfurniture.com/products/basia-rug","40","true","18040329076826","17587799392346","MERGE","Size","5' x 7'","","","","","1","27445","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903033614426","basia-rug","UPDATE","Basia Rug","","American Rugs","Rugs","color-grey, color-iv, color-ivory, Exclusive_Neha_10","REPLACE","2019-07-22T01:57:34-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:57:34-04:00","global","","https://www.jenniferfurniture.com/products/basia-rug","41","","18040329109594","17587799425114","MERGE","Size","8' x 10'","","","","","2","27446","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903034925146","caca-rug","UPDATE","Caca Rug","<p>The Caca has a dreamy quality that makes it easy to love. Fanciful cerulean flowers sweep along the polypropylene fabric as if you’re walking in a cool graphite-colored garden. Power loomed, this accessory features a frieze, dense pile that is almost a half-inch thick, bringing pleasure to every step. Place this in whatever room could use a little dreamy magic. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-iv, color-ivory, Exclusive_Neha_10","REPLACE","2019-07-22T01:59:11-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:59:11-04:00","global","","https://www.jenniferfurniture.com/products/caca-rug","42","true","18040335204442","17587804635226","MERGE","Size","5' x 7'","","","","","1","27447","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903034925146","caca-rug","UPDATE","Caca Rug","","American Rugs","Rugs","color-grey, color-iv, color-ivory, Exclusive_Neha_10","REPLACE","2019-07-22T01:59:11-04:00","2020-02-13T16:15:18-05:00","true","2019-07-22T01:59:11-04:00","global","","https://www.jenniferfurniture.com/products/caca-rug","43","","18040335237210","17587804667994","MERGE","Size","8' x 10'","","","","","2","27448","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903036989530","cali-rug","UPDATE","Cali Rug","<p>Varied colors and diverse shapes come together to create a beautifully coordinated motif on the Cali area rug. This dynamic piece boasts strong construction from its polypropylene fibers, as well as a cozy texture from its nearly half-inch, dense pile. Get it all with this show-stopping contemporary home accessory. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-red, Exclusive_Neha_10","REPLACE","2019-07-22T02:01:43-04:00","2020-02-13T16:13:51-05:00","true","2019-07-22T02:01:43-04:00","global","","https://www.jenniferfurniture.com/products/cali-rug","44","true","18040344182874","17587812237402","MERGE","Size","5' x 7'","","","","","1","27451","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903036989530","cali-rug","UPDATE","Cali Rug","","American Rugs","Rugs","color-grey, color-red, Exclusive_Neha_10","REPLACE","2019-07-22T02:01:43-04:00","2020-02-13T16:13:51-05:00","true","2019-07-22T02:01:43-04:00","global","","https://www.jenniferfurniture.com/products/cali-rug","45","","18040344215642","17587812270170","MERGE","Size","8' x 10'","","","","","2","27452","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903038300250","eban-rug","UPDATE","Eban Rug","<p>The delicate beauty of the Eban area rug will not go unnoticed in your home. This polypropylene stunner would look graceful as the centerpiece in a living room or under the table in your formal dining room. Its alluring texture comes from the almost half-inch, dense pile. Remake your space with some help from the Eban. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-beige, Exclusive_Neha_10","REPLACE","2019-07-22T02:03:22-04:00","2020-02-13T16:13:51-05:00","true","2019-07-22T02:03:22-04:00","global","","https://www.jenniferfurniture.com/products/eban-rug","46","true","18040349720666","17587816464474","MERGE","Size","5' x 7'","","","","","1","27453","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903038300250","eban-rug","UPDATE","Eban Rug","","American Rugs","Rugs","color-beige, Exclusive_Neha_10","REPLACE","2019-07-22T02:03:22-04:00","2020-02-13T16:13:51-05:00","true","2019-07-22T02:03:22-04:00","global","","https://www.jenniferfurniture.com/products/eban-rug","47","","18040349753434","17587816497242","MERGE","Size","8' x 10'","","","","","2","27454","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1903041249370","abisha-rug","UPDATE","Abisha Rug","<p>The cool, dark gray background on the Abisha area rug gorgeously counters its classic floral motif and sophisticated border. It brings this timeless pattern up to date, making it easy to coordinate with pieces of various styles for an eclectic room. Its smart construction includes strong polypropylene fibers and a dense pile. Why not have it all with the Abisha rug.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T02:06:25-04:00","2020-02-13T21:57:46-05:00","true","2019-07-22T02:06:25-04:00","global","","https://www.jenniferfurniture.com/products/abisha-rug","48","true","18040362893402","17587827802202","MERGE","Size","5' x 7'","","","","","1","27457","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903041249370","abisha-rug","UPDATE","Abisha Rug","","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T02:06:25-04:00","2020-02-13T21:57:46-05:00","true","2019-07-22T02:06:25-04:00","global","","https://www.jenniferfurniture.com/products/abisha-rug","49","","18040362926170","17587827834970","MERGE","Size","8' x 10'","","","","","2","27458","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904124362842","griffon-rug","UPDATE","Griffon Rug","<p>Infuse your space with the warm subtle hues and delightful damask artistry of this ivory and stone rug from the Griffon collection. Like a work of art for your floor, the distinctive urn and vine design features a fade and crackle effect. The result is a rug that makes a statement without being overpowering. Made of soft touch polypropylene, the Griffon adds a welcoming softness to bedroom or living room flooring.</p>
+<p>Dimension</p>
+<p>5' x 8'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:31:47-04:00","2020-02-13T21:57:46-05:00","true","2019-07-22T23:31:47-04:00","global","","https://www.jenniferfurniture.com/products/griffon-rug","50","true","18047852576858","17594326319194","MERGE","Size","5' x 8'","","","","","1","27131","","","0.0","g","699.99","799.99","","false","","","deny","manual","true","",""
+"1904124362842","griffon-rug","UPDATE","Griffon Rug","","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:31:47-04:00","2020-02-13T21:57:46-05:00","true","2019-07-22T23:31:47-04:00","global","","https://www.jenniferfurniture.com/products/griffon-rug","51","","18047852609626","17594326351962","MERGE","Size","8' x 10'","","","","","2","27132","","","0.0","g","1199.99","1399.99","","false","","","deny","manual","true","",""
+"1903039807578","nanon-rug","UPDATE","Nanon Rug","<p>Imagine the Nanon area rug in your formal dining room—the elegant tone it will set for those holiday parties, the family gatherings, and the dinner parties thrown just because.  The light cerulean background creates a warm, welcoming vibe while the genteel, floral pattern shows off a sophisticated design. Made from durable polypropylene and boasting a frieze, dense pile, the Nanon has a texture that’s just as alluring as its motif. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-beige, color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T02:04:56-04:00","2020-02-13T16:13:51-05:00","true","2019-07-22T02:04:56-04:00","global","","https://www.jenniferfurniture.com/products/nanon-rug","52","true","18040356896858","17587822657626","MERGE","Size","5' x 7'","","","","","1","27455","","","0.0","g","199.99","299.99","","false","","","deny","manual","true","",""
+"1903039807578","nanon-rug","UPDATE","Nanon Rug","","American Rugs","Rugs","color-beige, color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T02:04:56-04:00","2020-02-13T16:13:51-05:00","true","2019-07-22T02:04:56-04:00","global","","https://www.jenniferfurniture.com/products/nanon-rug","53","","18040356929626","17587822690394","MERGE","Size","8' x 10'","","","","","2","27456","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904132096090","horsham-rug","UPDATE","Horsham Rug","<p>The wonderful thing about a transitional area rug is that it’s designed to work with a number of different décor styles. The wonderful thing about the Horsham area rug is not just that it’s a transitional piece, but also that it’s gorgeous and exceedingly plush. The detailed, lacey motif in blue-green features an off-white background and a faded overlay. It was power loomed and crafted from soft touch polypropylene, making it both sturdy and supple. So whether or not you were looking for a transitional area rug, the Horsham will no doubt tug at your style strings.  </p>
+<p>Dimension</p>
+<p>5' x 8'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:36:58-04:00","2020-02-13T21:57:46-05:00","true","2019-07-22T23:36:58-04:00","global","","https://www.jenniferfurniture.com/products/horsham-rug","54","true","18048009207898","17594478428250","MERGE","Size","5' x 8'","","","","","1","27139","","","0.0","g","699.99","799.99","","false","","","deny","manual","true","",""
+"1904132096090","horsham-rug","UPDATE","Horsham Rug","","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:36:58-04:00","2020-02-13T21:57:46-05:00","true","2019-07-22T23:36:58-04:00","global","","https://www.jenniferfurniture.com/products/horsham-rug","55","","18048009240666","17594478461018","MERGE","Size","8' x 10'","","","","","2","27140","","","0.0","g","1199.99","1399.99","","false","","","deny","manual","true","",""
+"1904129769562","haywards-rug","UPDATE","Haywards Rug","<p>Infuse your space with the warm subtle hues and delightful damask artistry of this ivory and stone rug from the Griffon collection. Like a work of art for your floor, the distinctive urn and vine design features a fade and crackle effect. The result is a rug that makes a statement without being overpowering. Made of soft touch polypropylene, the Griffon adds a welcoming softness to bedroom or living room flooring.</p>
+<p>Dimension</p>
+<p>5' x 8'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:34:19-04:00","2020-02-13T21:57:46-05:00","true","2019-07-22T23:34:19-04:00","global","","https://www.jenniferfurniture.com/products/haywards-rug","56","true","18047985778778","17594457456730","MERGE","Size","5' x 8'","","","","","1","27135","","","0.0","g","699.99","799.99","","false","","","deny","manual","true","",""
+"1904129769562","haywards-rug","UPDATE","Haywards Rug","","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:34:19-04:00","2020-02-13T21:57:46-05:00","true","2019-07-22T23:34:19-04:00","global","","https://www.jenniferfurniture.com/products/haywards-rug","57","","18047985811546","17594457489498","MERGE","Size","8' x 10'","","","","","2","27136","","","0.0","g","1199.99","1399.99","","false","","","deny","manual","true","",""
+"1904133603418","arvada-pebble-gray-rug","UPDATE","Arvada Pebble-Gray Rug","<p>Surround yourself in luxury with the Oriental-inspired Arvada Pebble-Gray area rug. Designed in a transitional style, this power loomed piece is noteworthy not only for its stunning motif and contemporary colors, but also for it’s ultra plush feeling on your feet. This thick rug has been crafted with soft touch polypropylene so get ready to revel in the Arvada’s beauty and texture. </p>
+<p>Dimension</p>
+<p>5' x 8'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:39:22-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:39:22-04:00","global","","https://www.jenniferfurniture.com/products/arvada-pebble-gray-rug","58","true","18048027066458","17594494484570","MERGE","Size","5' x 8'","","","","","1","27147","","","0.0","g","699.99","799.99","","false","","","deny","manual","true","",""
+"1904133603418","arvada-pebble-gray-rug","UPDATE","Arvada Pebble-Gray Rug","","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:39:22-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:39:22-04:00","global","","https://www.jenniferfurniture.com/products/arvada-pebble-gray-rug","59","","18048027099226","17594494550106","MERGE","Size","8' x 10'","","","","","2","27148","","","0.0","g","1199.99","1399.99","","false","","","deny","manual","true","",""
+"1904132784218","commerce-rug","UPDATE","Commerce Rug","<p>You can’t help but savor the ultra plush, thick pile on the Commerce area rug. With its indulgent pile height and soft touch polypropylene construction, this accessory is made to luxuriate in. Of course, those with style savvy can’t ignore the stunning, Oriental-style pattern on this transitional area rug, but it’s okay if your favorite feature is how nice it feels on your feet. </p>
+<p>Dimension</p>
+<p>5' x 8'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:37:56-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:37:56-04:00","global","","https://www.jenniferfurniture.com/products/commerce-rug","60","true","18048016384090","17594485342298","MERGE","Size","5' x 8'","","","","","1","27143","","","0.0","g","699.99","799.99","","false","","","deny","manual","true","",""
+"1904132784218","commerce-rug","UPDATE","Commerce Rug","","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:37:56-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:37:56-04:00","global","","https://www.jenniferfurniture.com/products/commerce-rug","61","","18048016416858","17594485375066","MERGE","Size","8' x 10'","","","","","2","27144","","","0.0","g","1199.99","1399.99","","false","","","deny","manual","true","",""
+"1904135077978","shoreham-cerulean-rug","UPDATE","Shoreham Cerulean Rug","<p>The ornate Oriental pattern on the Shoreham Cerulean ensures that this area rug will make its mark in your home. The complementary shades of cerulean and baby blue add a softness to the grandeur of the design. Power loomed and crafted from soft touch polypropylene, the Shoreham can make any room special.</p>
+<p>Dimension</p>
+<p>5' x 8'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:41:21-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:41:21-04:00","global","","https://www.jenniferfurniture.com/products/shoreham-cerulean-rug","62","true","18048041812058","17594508247130","MERGE","Size","5' x 8'","","","","","1","27155","","","0.0","g","699.99","799.99","","false","","","deny","manual","true","",""
+"1904135077978","shoreham-cerulean-rug","UPDATE","Shoreham Cerulean Rug","","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:41:21-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:41:21-04:00","global","","https://www.jenniferfurniture.com/products/shoreham-cerulean-rug","63","","18048041844826","17594508279898","MERGE","Size","8' x 10'","","","","","2","27156","","","0.0","g","1199.99","1399.99","","false","","","deny","manual","true","",""
+"1904134193242","tenison-fleur-rug","UPDATE","Tenison Fleur Rug","<p>The Tenison Fleur features a graceful Oriental design that harmonizes with other patterns in the room. Showcasing a blend of rich and muted indigo on an off-white backdrop and beautifully crafted from ultra-plush polypropylene, this transitional rug lends a soft, sophisticated touch to both contemporary and traditional settings.<br>• Primarily indigo, off-white</p>
+<p>Dimension</p>
+<p>5' x 8'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:40:24-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:40:24-04:00","global","","https://www.jenniferfurniture.com/products/tenison-fleur-rug","64","true","18048034111578","17594500579418","MERGE","Size","5' x 8'","","","","","1","27151","","","0.0","g","699.99","799.99","","false","","","deny","manual","true","",""
+"1904134193242","tenison-fleur-rug","UPDATE","Tenison Fleur Rug","","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:40:24-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:40:24-04:00","global","","https://www.jenniferfurniture.com/products/tenison-fleur-rug","65","","18048034144346","17594500612186","MERGE","Size","8' x 10'","","","","","2","27152","","","0.0","g","1199.99","1399.99","","false","","","deny","manual","true","",""
+"1904136847450","commons-sky-rug","UPDATE","Commons Sky Rug","<p>The Commons Sky is a décor force with beauty and strength. Delicate fronds and soothing sky-blue and off-white hues take center stage on this plush accessory. Its soft touch polypropylene make-up creates a lasting construction that also feels exceptionally soft underfoot. Take command of your home’s style with the Commons Sky.</p>
+<p>Dimension</p>
+<p>5' x 8'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:43:12-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:43:12-04:00","global","","https://www.jenniferfurniture.com/products/commons-sky-rug","66","true","18048062292058","17594527481946","MERGE","Size","5' x 8'","","","","","1","27163","","","0.0","g","699.99","799.99","","false","","","deny","manual","true","",""
+"1904136847450","commons-sky-rug","UPDATE","Commons Sky Rug","","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:43:12-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:43:12-04:00","global","","https://www.jenniferfurniture.com/products/commons-sky-rug","67","","18048062324826","17594527514714","MERGE","Size","8' x 10'","","","","","2","27164","","","0.0","g","1199.99","1399.99","","false","","","deny","manual","true","",""
+"1904136323162","kingston-rug","UPDATE","Kingston Rug","<p>For all the formality in the motif of this transitional area rug, the Kingston’s soft touch polypropylene fibers and ultra plush pile, make this power loomed piece a supple softie. After all, just because you like a sense of majesty in your décor doesn’t mean it has to be stiff and uncomfortable. The Kingston is truly a gift for the eyes and the feet!</p>
+<p>Dimension</p>
+<p>5' x 8'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:42:14-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:42:14-04:00","global","","https://www.jenniferfurniture.com/products/kingston-rug","68","true","18048057770074","17594523222106","MERGE","Size","5' x 8'","","","","","1","27159","","","0.0","g","699.99","799.99","","false","","","deny","manual","true","",""
+"1904136323162","kingston-rug","UPDATE","Kingston Rug","","American Rugs","Rugs","color-grey, color-light-blue, Exclusive_Neha_10","REPLACE","2019-07-22T23:42:14-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:42:14-04:00","global","","https://www.jenniferfurniture.com/products/kingston-rug","69","","18048057802842","17594523254874","MERGE","Size","8' x 10'","","","","","2","27160","","","0.0","g","1199.99","1399.99","","false","","","deny","manual","true","",""
+"1904138747994","castle-rug","UPDATE","Castle Rug","<p>Look to the Castle area rug to invite laid back elegance and global charm to your favorite spaces. Classic feminine florals in a mix of polypropylene and chenille give the high-low pile a soft balance underfoot. The light and dark blue palette complements a wide range of wall colors and creates a serene foundation in a contemporary bedroom or traditional style sitting room. <br>• Color: sky blue, dark indigo</p>
+<p>Dimension</p>
+<p>5' x 8'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-red, color-white, Exclusive_Neha_10","REPLACE","2019-07-22T23:45:57-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:45:57-04:00","global","","https://www.jenniferfurniture.com/products/castle-rug","70","true","18048081756250","17594543439962","MERGE","Size","5' x 8'","","","","","1","26374","","","0.0","g","699.99","799.99","","false","","","deny","manual","true","",""
+"1904138747994","castle-rug","UPDATE","Castle Rug","","American Rugs","Rugs","color-red, color-white, Exclusive_Neha_10","REPLACE","2019-07-22T23:45:57-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:45:57-04:00","global","","https://www.jenniferfurniture.com/products/castle-rug","71","","18048081789018","17594543472730","MERGE","Size","8' x 10'","","","","","2","26375","","","0.0","g","1199.99","1399.99","","false","","","deny","manual","true","",""
+"1904137797722","cobble-hill-rug","UPDATE","Cobble Hill Rug","<p><br>Whether your home’s décor is well entrenched in contemporary pieces or you like to mix and match your style, the Cobble Hill area rug is a colorful force for any room. A pearl-white brocade of geometric shapes cascades up the russet-red background, creating a modern motif that is both bright and exuberant. Power loomed, this piece is crafted from polypropylene and features a soft cut pile, so it’s nice on your feet.</p>
+<p>Dimension</p>
+<p>5' x 8'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-red, color-white, Exclusive_Neha_10","REPLACE","2019-07-22T23:44:32-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:44:32-04:00","global","","https://www.jenniferfurniture.com/products/cobble-hill-rug","72","true","18048070484058","17594534494298","MERGE","Size","5' x 8'","","","","","1","25784","","","0.0","g","699.99","799.99","","false","","","deny","manual","true","",""
+"1904137797722","cobble-hill-rug","UPDATE","Cobble Hill Rug","","American Rugs","Rugs","color-red, color-white, Exclusive_Neha_10","REPLACE","2019-07-22T23:44:32-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:44:32-04:00","global","","https://www.jenniferfurniture.com/products/cobble-hill-rug","73","","18048070549594","17594534527066","MERGE","Size","8' x 10'","","","","","2","25785","","","0.0","g","1199.99","1399.99","","false","","","deny","manual","true","",""
+"1904139829338","pressman-rug","UPDATE","Pressman Rug","<p>The Pressman area rug offers the perfect marriage of style and substance. Designed with a faded traditional motif, it boasts a sleek vintage feel. Shades of purple, blue, green, and yellow sit pertly on the light gray background, giving this piece the perfect amount of color. Add the resilient polypropylene construction and its soft-touch pile, and this must-have piece provides everything you could want in a rug. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-pink, Exclusive_Neha_10","REPLACE","2019-07-22T23:47:24-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:47:24-04:00","global","","https://www.jenniferfurniture.com/products/pressman-rug","74","true","18048093487194","17594553040986","MERGE","Size","5' x 7'","","","","","1","27291","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1904139829338","pressman-rug","UPDATE","Pressman Rug","","American Rugs","Rugs","color-grey, color-pink, Exclusive_Neha_10","REPLACE","2019-07-22T23:47:24-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:47:24-04:00","global","","https://www.jenniferfurniture.com/products/pressman-rug","75","","18048093519962","17594553073754","MERGE","Size","8' x 10'","","","","","2","27292","","","0.0","g","799.99","1099.99","","false","","","deny","manual","true","",""
+"1904140910682","astounded-rug","UPDATE","Astounded Rug","<p>Color can revitalize a tired room, and the Astounded area rug’s multi-hued motif provides a slick distressed design that’s as cool as it is colorful. You’re also sure to love its reliable polypropylene construction and its lovely soft-touch pile. So, which will it be—living room? Family room? Bedroom? The Astounded area rug is sure to be a stand out piece in whichever room you choose. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-pink, Exclusive_Neha_10","REPLACE","2019-07-22T23:49:23-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:49:23-04:00","global","","https://www.jenniferfurniture.com/products/astounded-rug","76","true","18048107675738","17594567655514","MERGE","Size","5' x 7'","","","","","1","27293","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1904140910682","astounded-rug","UPDATE","Astounded Rug","","American Rugs","Rugs","color-grey, color-pink, Exclusive_Neha_10","REPLACE","2019-07-22T23:49:23-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:49:23-04:00","global","","https://www.jenniferfurniture.com/products/astounded-rug","77","","18048107741274","17594567688282","MERGE","Size","8' x 10'","","","","","2","27294","","","0.0","g","799.99","1099.99","","false","","","deny","manual","true","",""
+"1904145268826","bev-rug","UPDATE","Bev Rug","<p>The Bev area rug has the on-trend allure of vintage style, and yet, with its traditional motif, it also promises to have the long-lasting appeal of classic décor pieces. Made from reliable polypropylene and power loomed, it boasts a soft-touch pile for a satisfying texture. Give your living or dining room a note of upscale charm with the Bev rug.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-pink, Exclusive_Neha_10","REPLACE","2019-07-22T23:54:24-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:54:24-04:00","global","","https://www.jenniferfurniture.com/products/bev-rug","78","true","18048168656986","17594624999514","MERGE","Size","5' x 7'","","","","","1","27297","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1904145268826","bev-rug","UPDATE","Bev Rug","","American Rugs","Rugs","color-grey, color-pink, Exclusive_Neha_10","REPLACE","2019-07-22T23:54:24-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:54:24-04:00","global","","https://www.jenniferfurniture.com/products/bev-rug","79","","18048168689754","17594625032282","MERGE","Size","8' x 10'","","","","","2","27298","","","0.0","g","799.99","1099.99","","false","","","deny","manual","true","",""
+"1904143990874","essante-rug","UPDATE","Essante Rug","<p>The Essante area rug is a stately piece with moments of colorful whimsy. Constructed from reliable polypropylene and power loomed, this accessory can refresh any room with its blend of a traditional motif with a vintage style. It also boasts a soft-touch pile, which makes its texture just as appealing as its good looks.  Treat your home to a design refresher with the Essante.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-grey, color-pink, Exclusive_Neha_10","REPLACE","2019-07-22T23:53:09-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:53:09-04:00","global","","https://www.jenniferfurniture.com/products/essante-rug","80","true","18048154828890","17594611302490","MERGE","Size","5' x 7'","","","","","1","27295","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1904143990874","essante-rug","UPDATE","Essante Rug","","American Rugs","Rugs","color-grey, color-pink, Exclusive_Neha_10","REPLACE","2019-07-22T23:53:09-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:53:09-04:00","global","","https://www.jenniferfurniture.com/products/essante-rug","81","","18048154861658","17594611368026","MERGE","Size","8' x 10'","","","","","2","27296","","","0.0","g","799.99","1099.99","","false","","","deny","manual","true","",""
+"1904146219098","maxime-rug","UPDATE","Maxime Rug","<p>Strong polypropylene fibers matched with a soft-touch pile, give the Maxime area rug an inviting reliability that is essential in busy homes. The fact that it boasts a standout design and a cool vintage feel only adds to its must-have qualities. Use it to bring contemporary style to your bedroom, as a chic focal point in your living room, or as a sturdy yet upscale accessory in your dining room. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-22T23:55:58-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:55:58-04:00","global","","https://www.jenniferfurniture.com/products/maxime-rug","82","true","18048181567578","17594636894298","MERGE","Size","5' x 7'","","","","","1","27299","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1904146219098","maxime-rug","UPDATE","Maxime Rug","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-22T23:55:58-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:55:58-04:00","global","","https://www.jenniferfurniture.com/products/maxime-rug","83","","18048181600346","17594636927066","MERGE","Size","8' x 10'","","","","","2","27300","","","0.0","g","799.99","1099.99","","false","","","deny","manual","true","",""
+"1904147267674","mingle-rug","UPDATE","Mingle Rug","<p>The Mingle area rug brings together not only an array of beautiful hues, but also a mix-up of a cool geometric motif done in a distressed, vintage style. Both homey and contemporary, this polypropylene piece can wake up a boring room. Rest assured that with the Mingle area rug your style will never go stale. <br>u.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-22T23:57:21-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:57:21-04:00","global","","https://www.jenniferfurniture.com/products/mingle-rug","84","true","18048188514394","17594642366554","MERGE","Size","5' x 7'","","","","","1","27303","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1904147267674","mingle-rug","UPDATE","Mingle Rug","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-22T23:57:21-04:00","2020-02-13T21:57:47-05:00","true","2019-07-22T23:57:21-04:00","global","","https://www.jenniferfurniture.com/products/mingle-rug","85","","18048188547162","17594642399322","MERGE","Size","8' x 10'","","","","","2","27304","","","0.0","g","799.99","1099.99","","false","","","deny","manual","true","",""
+"1904150020186","laurel-transitional-vintage-rug","UPDATE","Laurel Transitional Vintage Rug","<p>In the Laurel Transitional Vintage Rug, a traditional frame motif borders a solid, gold-tone center. Layering this piece’s look, is a subtle distressed quality, making it more contemporary and current. Constructed from a polypropylene-polyester blend, this power-loomed rug has a thick, soft pile and a shiny finish. Its graceful good looks and style make it a home décor champion. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:01:59-04:00","2020-02-13T21:57:47-05:00","true","2019-07-23T00:01:59-04:00","global","","https://www.jenniferfurniture.com/products/laurel-transitional-vintage-rug","86","true","18048218202202","17594667597914","MERGE","Size","5' x 7'","","","","","1","27706","","","0.0","g","599.99","799.99","","false","","","deny","manual","true","",""
+"1904150020186","laurel-transitional-vintage-rug","UPDATE","Laurel Transitional Vintage Rug","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:01:59-04:00","2020-02-13T21:57:47-05:00","true","2019-07-23T00:01:59-04:00","global","","https://www.jenniferfurniture.com/products/laurel-transitional-vintage-rug","87","","18048218497114","17594667630682","MERGE","Size","8' x 10'","","","","","2","27707","","","0.0","g","999.99","1199.99","","false","","","deny","manual","true","",""
+"1904152313946","zyra-vintage-transitional-rug-pink","UPDATE","Zyra Vintage Transitional Rug Pink","<p>This charismatic rug is sure to win your space over. Whether it’s the charming pink and blue hues or its vintage vibes, you can’t help but give in to the alluring style of this polypropylene accessory. Crafted with a short pile, this power-loomed piece is perfect for those high traffic areas where durability is a must-have. Bring good-looks back to your family’s favorite room. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:04:29-04:00","2020-02-13T21:57:47-05:00","true","2019-07-23T00:04:29-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-pink","88","true","18048234389594","17594683326554","MERGE","Size","5' x 7'","","","","","1","27766","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904152313946","zyra-vintage-transitional-rug-pink","UPDATE","Zyra Vintage Transitional Rug Pink","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:04:29-04:00","2020-02-13T21:57:47-05:00","true","2019-07-23T00:04:29-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-pink","89","","18048234422362","17594683359322","MERGE","Size","8' x 10'","","","","","2","27767","","","0.0","g","599.99","799.99","","false","","","deny","manual","true","",""
+"1904154673242","zyra-vintage-transitional-rug-ivory","UPDATE","Zyra Vintage Transitional Rug Ivory","<p>If your style preferences vacillate between traditional and vintage, then this rug is a must. Add its short, durable pile, and this home décor item becomes a no-brainer. Set on an ivory backdrop, bright blue and pink tones are beautifully used throughout the piece’s enchanting motif. Made from polypropylene and power-loomed, this rug makes being sturdy look very good. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:06:39-04:00","2020-02-13T21:57:47-05:00","true","2019-07-23T00:06:39-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-ivory","90","true","18048260702298","17594707902554","MERGE","Size","5' x 7'","","","","","1","27768","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904154673242","zyra-vintage-transitional-rug-ivory","UPDATE","Zyra Vintage Transitional Rug Ivory","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:06:39-04:00","2020-02-13T21:57:47-05:00","true","2019-07-23T00:06:39-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-ivory","91","","18048260735066","17594707935322","MERGE","Size","8' x 10'","","","","","2","27769","","","0.0","g","599.99","799.99","","false","","","deny","manual","true","",""
+"1904156639322","zyra-vintage-transitional-rug-blue","UPDATE","Zyra Vintage Transitional Rug Blue","<p>If you’ve given up on beautiful decor because of a busy home, then this power-loomed rug is ready to welcome you back to great style. Designed with a short pile, it has been crafted to stand up to high traffic spaces. It features a classic motif with a vintage feel and is constructed using polypropylene. Great functionality never looked so good.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:08:45-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:08:45-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-blue","92","true","18048278003802","17594723729498","MERGE","Size","5' x 7'","","","","","1","27970","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904156639322","zyra-vintage-transitional-rug-blue","UPDATE","Zyra Vintage Transitional Rug Blue","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:08:45-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:08:45-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-blue","93","","18048278036570","17594723762266","MERGE","Size","8' x 10'","","","","","2","27971","","","0.0","g","599.99","799.99","","false","","","deny","manual","true","",""
+"1904158376026","zyra-vintage-transitional-rug-white","UPDATE","Zyra Vintage Transitional Rug White","<p>A classic border and a traditionally styled motif give this polypropylene rug everlasting appeal. Wisps of poppy colors like blue and pink bring bright accents to the white backdrop, while vintage notes give it a little edge. Power-loomed and designed for higher traffic rooms, its been constructed with a short, durable pile. Freshen up your family or dining room’s décor with this exceptional rug.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:10:28-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:10:28-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-white","94","true","18048292421722","17594737000538","MERGE","Size","5' x 7'","","","","","1","27972","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904158376026","zyra-vintage-transitional-rug-white","UPDATE","Zyra Vintage Transitional Rug White","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:10:28-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:10:28-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-white","95","","18048292454490","17594737033306","MERGE","Size","8' x 10'","","","","","2","27973","","","0.0","g","599.99","799.99","","false","","","deny","manual","true","",""
+"1904163258458","zyra-vintage-transitional-rug-blush","UPDATE","Zyra Vintage Transitional Rug Blush","<p>Floors aren’t just for walking on, they’re also for showcasing great style—and this rug is all about style. A distressed, vintage quality is a chic element in the design, giving the more traditional motif an on-trend counterpoint. Pink and blue intermingle for some added exuberance. Mix in its short, sturdy pile, and this polypropylene, power-loomed rug can be shown off in even the busiest rooms. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:14:08-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:14:08-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-blush","96","true","18048355598426","17594797162586","MERGE","Size","5' x 7'","","","","","1","27976","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904163258458","zyra-vintage-transitional-rug-blush","UPDATE","Zyra Vintage Transitional Rug Blush","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:14:08-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:14:08-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-blush","97","","18048355631194","17594797195354","MERGE","Size","8' x 10'","","","","","2","27977","","","0.0","g","599.99","799.99","","false","","","deny","manual","true","",""
+"1904161194074","zyra-vintage-transitional-rug-sky","UPDATE","Zyra Vintage Transitional Rug Sky","<p>A classic border and a traditionally styled motif give this polypropylene rug everlasting appeal. Wisps of poppy colors like blue and pink bring bright accents to the white backdrop, while vintage notes give it a little edge. Power-loomed and designed for higher traffic rooms, its been constructed with a short, durable pile. Freshen up your family or dining room’s décor with this exceptional rug.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:12:20-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:12:20-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-sky","98","true","18048317292634","17594760101978","MERGE","Size","5' x 7'","","","","","1","27972","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904161194074","zyra-vintage-transitional-rug-sky","UPDATE","Zyra Vintage Transitional Rug Sky","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:12:20-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:12:20-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-sky","99","","18048317325402","17594760134746","MERGE","Size","8' x 10'","","","","","2","27973","","","0.0","g","599.99","799.99","","false","","","deny","manual","true","",""
+"1904164667482","zyra-vintage-transitional-rug-cerulean","UPDATE","Zyra Vintage Transitional Rug Cerulean","<p>You can’t help but admire the intricacy and detail in this polypropylene rug’s stunning motif. Power-loomed and constructed with a short pile, it features a subtle distressed quality, bringing added depth to its design. Cultivate a refined space with the help of this exceptional piece—and since it’s constructed to stand up to high traffic areas, you can show it off in your family’s favorite room.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:15:29-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:15:29-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-cerulean","100","true","18048367689818","17594808041562","MERGE","Size","5' x 7'","","","","","1","27978","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904164667482","zyra-vintage-transitional-rug-cerulean","UPDATE","Zyra Vintage Transitional Rug Cerulean","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:15:29-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:15:29-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-cerulean","101","","18048367722586","17594808074330","MERGE","Size","8' x 10'","","","","","2","27979","","","0.0","g","599.99","799.99","","false","","","deny","manual","true","",""
+"1904166174810","zyra-vintage-transitional-rug-rosee","UPDATE","Zyra Vintage Transitional Rug Rosee","<p>Just because you have a busy home doesn’t mean you can’t have a gorgeous, sophisticated space. With pieces like this striking, yet durable rug, you can bring beauty to even the most active rooms. Constructed from polypropylene and power-loomed, it’s crafted with a short, sturdy pile so it can stand up to high traffic. Give in to your desire for great design with the help of this lovely accessory.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:16:34-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:16:34-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-rosee","102","true","18048373882970","17594813415514","MERGE","Size","5' x 7'","","","","","1","27980","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904166174810","zyra-vintage-transitional-rug-rosee","UPDATE","Zyra Vintage Transitional Rug Rosee","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:16:34-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:16:34-04:00","global","","https://www.jenniferfurniture.com/products/zyra-vintage-transitional-rug-rosee","103","","18048373915738","17594813448282","MERGE","Size","8' x 10'","","","","","2","27981","","","0.0","g","599.99","799.99","","false","","","deny","manual","true","",""
+"1904167977050","ivory-blue-floral-transitional-rug","UPDATE","Ivory Blue Floral Transitional Rug","<p>A magnificent counterpoint to a neutral setting, this machine-made, polypropylene rug’s motif sits on an ivory backdrop with bursting blooms in shades like blue, burnt-orange, and black.  The pile height is less than a half-inch and features a shiny, soft finish for added appeal. Bring the spirit of a luscious garden into your home with this magnificent home décor piece. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:17:38-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:17:38-04:00","global","","https://www.jenniferfurniture.com/products/ivory-blue-floral-transitional-rug","104","true","18048379060314","17594817609818","MERGE","Size","5' x 7'","","","","","1","28465","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904167977050","ivory-blue-floral-transitional-rug","UPDATE","Ivory Blue Floral Transitional Rug","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:17:38-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:17:38-04:00","global","","https://www.jenniferfurniture.com/products/ivory-blue-floral-transitional-rug","105","","18048379125850","17594817642586","MERGE","Size","8' x 10'","","","","","2","28466","","","0.0","g","599.99","799.99","","false","","","deny","manual","true","",""
+"1904169615450","black-green-floral-contemporary-rug","UPDATE","Black Green Floral Contemporary Rug","<p>An everlasting bouquet awaits when you outfit your space with this machine-made, polypropylene rug. Striking in its bold motif and exuberant color scheme, this home décor masterpiece brings positive vibes to any room. Happy greens, sweet pinks, and neutral grays, sit on an enticingly dramatic black backdrop. Constructed to feature a shiny, soft, medium-length pile, it’s sure to wake up any space. </p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:18:54-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:18:54-04:00","global","","https://www.jenniferfurniture.com/products/black-green-floral-contemporary-rug","106","true","18048391282778","17594829406298","MERGE","Size","5' x 7'","","","","","1","28468","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904169615450","black-green-floral-contemporary-rug","UPDATE","Black Green Floral Contemporary Rug","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:18:54-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:18:54-04:00","global","","https://www.jenniferfurniture.com/products/black-green-floral-contemporary-rug","107","","18048391315546","17594829439066","MERGE","Size","8' x 10'","","","","","2","28469","","","0.0","g","599.99","799.99","","false","","","deny","manual","true","",""
+"1904171253850","white-green-floral-contemporary-rug","UPDATE","White Green Floral Contemporary Rug","<p>You’ll love the medium-length, shiny, and most importantly, soft pile on this lovely polypropylene rug. However, what will really create a lastly impression is its lively motif. Huge blooms flourish on an ivory backdrop in this spring-inspired design. Swaths of pinks, greens, greys, and black create a cohesive rendering of vivacious flowers. Reinvigorate any space with this machine-made rug.</p>
+<p>Dimension</p>
+<p>5' x 7'</p>
+<p>8' x 10'</p>","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:19:52-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:19:52-04:00","global","","https://www.jenniferfurniture.com/products/white-green-floral-contemporary-rug","108","true","18048403898458","17594840514650","MERGE","Size","5' x 7'","","","","","1","28471","","","0.0","g","399.99","599.99","","false","","","deny","manual","true","",""
+"1904171253850","white-green-floral-contemporary-rug","UPDATE","White Green Floral Contemporary Rug","","American Rugs","Rugs","color-blue, color-grey, Exclusive_Neha_10","REPLACE","2019-07-23T00:19:52-04:00","2020-02-13T21:57:48-05:00","true","2019-07-23T00:19:52-04:00","global","","https://www.jenniferfurniture.com/products/white-green-floral-contemporary-rug","109","","18048403931226","17594840547418","MERGE","Size","8' x 10'","","","","","2","28472","","","0.0","g","599.99","799.99","","false","","","deny","manual","true","",""
+"1913071698010","grey-pink-bouquet-transitional-rug","UPDATE","Grey Pink Bouquet Transitional Rug","<p>This soft color scheme consists of green and ivory accents on a pink backdrop</p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:49:47-04:00","2020-02-13T21:57:48-05:00","true","2019-07-29T23:49:47-04:00","global","","https://www.jenniferfurniture.com/products/grey-pink-bouquet-transitional-rug","110","true","18108457713754","17648270311514","MERGE","Size","5' x 7'","","","","","1","28525","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913071698010","grey-pink-bouquet-transitional-rug","UPDATE","Grey Pink Bouquet Transitional Rug","","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:49:47-04:00","2020-02-13T21:57:48-05:00","true","2019-07-29T23:49:47-04:00","global","","https://www.jenniferfurniture.com/products/grey-pink-bouquet-transitional-rug","111","","18108457746522","17648270344282","MERGE","Size","8' x 10'","","","","","2","28526","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913073631322","ivory-rose-bouquet-transitional-rug","UPDATE","Ivory Rose Bouquet Transitional Rug","<p>A beautiful bouquet of floral favorites takes the center stage on this crisp-ivory backdrop </p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:52:22-04:00","2020-02-13T21:57:48-05:00","true","2019-07-29T23:52:22-04:00","global","","https://www.jenniferfurniture.com/products/ivory-rose-bouquet-transitional-rug","112","true","18108482846810","17648297377882","MERGE","Size","5' x 7'","","","","","1","28516","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913073631322","ivory-rose-bouquet-transitional-rug","UPDATE","Ivory Rose Bouquet Transitional Rug","","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:52:22-04:00","2020-02-13T21:57:48-05:00","true","2019-07-29T23:52:22-04:00","global","","https://www.jenniferfurniture.com/products/ivory-rose-bouquet-transitional-rug","113","","18108482879578","17648297410650","MERGE","Size","8' x 10'","","","","","2","28517","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913070714970","rose-multi-bouquet-transitional-rug","UPDATE","Rose Multi Bouquet Transitional Rug","<p>This soft color scheme consists of green and ivory accents on a pink backdrop</p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:47:44-04:00","2020-02-13T21:57:48-05:00","true","2019-07-29T23:47:44-04:00","global","","https://www.jenniferfurniture.com/products/rose-multi-bouquet-transitional-rug","114","true","18108446507098","17648260284506","MERGE","Size","5' x 7'","","","","","1","28525","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913070714970","rose-multi-bouquet-transitional-rug","UPDATE","Rose Multi Bouquet Transitional Rug","","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:47:44-04:00","2020-02-13T21:57:48-05:00","true","2019-07-29T23:47:44-04:00","global","","https://www.jenniferfurniture.com/products/rose-multi-bouquet-transitional-rug","115","","18108446539866","17648260317274","MERGE","Size","8' x 10'","","","","","2","28526","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913072353370","ivory-blue-bouquet-transitional-rug","UPDATE","Ivory Blue Bouquet Transitional Rug","<p>A neutral background combines with pops of gold and blue in this fashionable area rug</p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:50:44-04:00","2020-02-13T21:57:48-05:00","true","2019-07-29T23:50:44-04:00","global","","https://www.jenniferfurniture.com/products/ivory-blue-bouquet-transitional-rug","116","true","18108472983642","17648285089882","MERGE","Size","5' x 7'","","","","","1","28519","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913072353370","ivory-blue-bouquet-transitional-rug","UPDATE","Ivory Blue Bouquet Transitional Rug","","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:50:44-04:00","2020-02-13T21:57:48-05:00","true","2019-07-29T23:50:44-04:00","global","","https://www.jenniferfurniture.com/products/ivory-blue-bouquet-transitional-rug","117","","18108473016410","17648285122650","MERGE","Size","8' x 10'","","","","","2","28520","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913074614362","ivory-multi-blooms-transitional-rug","UPDATE","Ivory & Multi Blooms Transitional Rug","<p>Summer vibes are felt with the accents of sky blue and sunshine yellow</p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:53:37-04:00","2020-02-13T21:57:48-05:00","true","2019-07-29T23:53:37-04:00","global","","https://www.jenniferfurniture.com/products/ivory-multi-blooms-transitional-rug","118","true","18108491038810","17648304455770","MERGE","Size","5' x 7'","","","","","1","28513","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913074614362","ivory-multi-blooms-transitional-rug","UPDATE","Ivory & Multi Blooms Transitional Rug","","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:53:37-04:00","2020-02-13T21:57:48-05:00","true","2019-07-29T23:53:37-04:00","global","","https://www.jenniferfurniture.com/products/ivory-multi-blooms-transitional-rug","119","","18108491071578","17648304488538","MERGE","Size","8' x 10'","","","","","2","28514","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913075531866","onyx-pink-blooms-transitional-rug","UPDATE","Onyx & Pink Blooms Transitional Rug","<p>This trendy color palette consists of black onyx, pink blush, and garden green </p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:54:45-04:00","2020-02-13T21:57:49-05:00","true","2019-07-29T23:54:45-04:00","global","","https://www.jenniferfurniture.com/products/onyx-pink-blooms-transitional-rug","120","true","18108496085082","17648308846682","MERGE","Size","5' x 7'","","","","","1","28510","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913075531866","onyx-pink-blooms-transitional-rug","UPDATE","Onyx & Pink Blooms Transitional Rug","","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:54:45-04:00","2020-02-13T21:57:49-05:00","true","2019-07-29T23:54:45-04:00","global","","https://www.jenniferfurniture.com/products/onyx-pink-blooms-transitional-rug","121","","18108496117850","17648308879450","MERGE","Size","8' x 10'","","","","","2","28511","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913076416602","ivory-pink-blooms-transitional-rug","UPDATE","Ivory & Pink Blooms Transitional Rug","<p>This area rug features beautiful shades of pinks and greens on top of a white background</p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:55:48-04:00","2020-02-13T21:57:49-05:00","true","2019-07-29T23:55:48-04:00","global","","https://www.jenniferfurniture.com/products/ivory-pink-blooms-transitional-rug","122","true","18108502081626","17648314253402","MERGE","Size","5' x 7'","","","","","1","28507","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913076416602","ivory-pink-blooms-transitional-rug","UPDATE","Ivory & Pink Blooms Transitional Rug","","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-29T23:55:48-04:00","2020-02-13T21:57:49-05:00","true","2019-07-29T23:55:48-04:00","global","","https://www.jenniferfurniture.com/products/ivory-pink-blooms-transitional-rug","123","","18108502114394","17648314286170","MERGE","Size","8' x 10'","","","","","2","28508","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913077596250","black-multi-blooms-transitional-rug","UPDATE","Black & Multi Blooms Transitional Rug","<p>This medium-length pile is both shiny and soft</p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-black, Exclusive_Neha_10","REPLACE","2019-07-29T23:57:02-04:00","2020-02-13T21:57:49-05:00","true","2019-07-29T23:57:02-04:00","global","","https://www.jenniferfurniture.com/products/black-multi-blooms-transitional-rug","124","true","18108509126746","17648320086106","MERGE","Size","5' x 7'","","","","","1","28504","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913077596250","black-multi-blooms-transitional-rug","UPDATE","Black & Multi Blooms Transitional Rug","","American Rugs","rugs","color-black, Exclusive_Neha_10","REPLACE","2019-07-29T23:57:02-04:00","2020-02-13T21:57:49-05:00","true","2019-07-29T23:57:02-04:00","global","","https://www.jenniferfurniture.com/products/black-multi-blooms-transitional-rug","125","","18108509159514","17648320118874","MERGE","Size","8' x 10'","","","","","2","28505","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913083265114","onyx-pink-gardenias-transitional-rug","UPDATE","Onyx & Pink Gardenias Transitional Rug","<p>The drama of a dark background is beautifully offset by the sweet gardenia pattern on this polypropylene rug’s motif. It also features a traditional frame design, outlined by a bright green hue. This machine-made piece brings robust personality to your space and has a medium-length pile that’s shiny and soft. Bring a touch of design flair to your living or dining room with this remarkable rug. </p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-ivory, Exclusive_Neha_10","REPLACE","2019-07-30T00:03:36-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:03:36-04:00","global","","https://www.jenniferfurniture.com/products/onyx-pink-gardenias-transitional-rug","126","true","18108553265242","17648364683354","MERGE","Size","5' x 7'","","","","","1","28492","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913083265114","onyx-pink-gardenias-transitional-rug","UPDATE","Onyx & Pink Gardenias Transitional Rug","","American Rugs","rugs","color-ivory, Exclusive_Neha_10","REPLACE","2019-07-30T00:03:36-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:03:36-04:00","global","","https://www.jenniferfurniture.com/products/onyx-pink-gardenias-transitional-rug","127","","18108553298010","17648364716122","MERGE","Size","8' x 10'","","","","","2","28493","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913081036890","ivory-pink-gardenias-transitional-rug","UPDATE","Onyx & Blue Gardenias Transitional Rug","<p>A lively design, filled with gardenias and leaves, is featured within a traditional motif structure on this machine-made, polypropylene rug. An affecting color scheme, with hues like onyx, blue, and burnt orange gives this piece a touch of drama. The medium-length pile also boasts a shiny, soft finish, making this rug as nice to walk on as it is to look at. </p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-ivory, Exclusive_Neha_10","REPLACE","2019-07-30T00:01:09-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:01:09-04:00","global","","https://www.jenniferfurniture.com/products/ivory-pink-gardenias-transitional-rug","128","true","18108536029274","17648345481306","MERGE","Size","5' x 7'","","","","","1","28495","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913081036890","ivory-pink-gardenias-transitional-rug","UPDATE","Onyx & Blue Gardenias Transitional Rug","","American Rugs","rugs","color-ivory, Exclusive_Neha_10","REPLACE","2019-07-30T00:01:09-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:01:09-04:00","global","","https://www.jenniferfurniture.com/products/ivory-pink-gardenias-transitional-rug","129","","18108536062042","17648345546842","MERGE","Size","8' x 10'","","","","","2","28496","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913078349914","ivory-blue-gardenias-transitional-rug","UPDATE","Ivory & Blue Gardenias Transitional Rug","<p>With a  beautiful gardenia pattern, this area rug is the perfect pop for any room in the house</p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-black, Exclusive_Neha_10","REPLACE","2019-07-29T23:58:08-04:00","2020-02-13T21:57:49-05:00","true","2019-07-29T23:58:08-04:00","global","","https://www.jenniferfurniture.com/products/ivory-blue-gardenias-transitional-rug","130","true","18108517417050","17648327917658","MERGE","Size","5' x 7'","","","","","1","28501","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913078349914","ivory-blue-gardenias-transitional-rug","UPDATE","Ivory & Blue Gardenias Transitional Rug","","American Rugs","rugs","color-black, Exclusive_Neha_10","REPLACE","2019-07-29T23:58:08-04:00","2020-02-13T21:57:49-05:00","true","2019-07-29T23:58:08-04:00","global","","https://www.jenniferfurniture.com/products/ivory-blue-gardenias-transitional-rug","131","","18108517449818","17648327950426","MERGE","Size","8' x 10'","","","","","2","28502","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913085132890","cream-blue-floral-transitional-rug","UPDATE","Cream Blue Floral Transitional Rug","<p>Designed in the transitional style, this machine-made, polypropylene rug boasts a pile that measures less than a half-inch thick and boasts a shiny, soft finish. The motif has an invigorating color palette, filled with blues, oranges, and yellows. The floral design is set on a neutral cream background, allowing it to be the star of the show.  Spring never goes out of style with this blooming rug.</p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-ivory, Exclusive_Neha_10","REPLACE","2019-07-30T00:06:04-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:06:04-04:00","global","","https://www.jenniferfurniture.com/products/cream-blue-floral-transitional-rug","132","true","18108567027802","17648377135194","MERGE","Size","5' x 7'","","","","","1","28489","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913085132890","cream-blue-floral-transitional-rug","UPDATE","Cream Blue Floral Transitional Rug","","American Rugs","rugs","color-ivory, Exclusive_Neha_10","REPLACE","2019-07-30T00:06:04-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:06:04-04:00","global","","https://www.jenniferfurniture.com/products/cream-blue-floral-transitional-rug","133","","18108567060570","17648377167962","MERGE","Size","8' x 10'","","","","","2","28490","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913089065050","rose-ivory-floral-transitional-rug","UPDATE","Rose Ivory Floral Transitional Rug","<p>The warmth of the rose-colored background on this rug creates the perfect setting for the elegant florals and graceful oval frame. Machine-made and crafted from polypropylene, this piece features a medium-length pile that’s both shiny and soft. Use it to soften a room’s style, or let it be the centerpiece for a traditional space. Either way, it will bring color and a delicate touch to your home.</p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-30T00:09:03-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:09:03-04:00","global","","https://www.jenniferfurniture.com/products/rose-ivory-floral-transitional-rug","134","true","18108599238746","17648407216218","MERGE","Size","5' x 7'","","","","","1","28480","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913089065050","rose-ivory-floral-transitional-rug","UPDATE","Rose Ivory Floral Transitional Rug","","American Rugs","rugs","color-pink, Exclusive_Neha_10","REPLACE","2019-07-30T00:09:03-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:09:03-04:00","global","","https://www.jenniferfurniture.com/products/rose-ivory-floral-transitional-rug","135","","18108599369818","17648407248986","MERGE","Size","8' x 10'","","","","","2","28481","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913087885402","ivory-blue-floral-transitional-rug-1","UPDATE","Ivory Blue Floral Transitional Rug","<p>Floral vines wrap around the oval-shaped centerpiece on this rug’s motif. It creates a wonderful sense of majesty and opulence that is counter-balanced by the design’s delicate details. Constructed from polypropylene and machine-made, it boasts an ivory background, which allows the blues and oranges in the motif to really stand out. The .4-inch pile is both shiny and soft. </p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-ivory, Exclusive_Neha_10","REPLACE","2019-07-30T00:08:13-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:08:13-04:00","global","","https://www.jenniferfurniture.com/products/ivory-blue-floral-transitional-rug-1","136","true","18108587376730","17648395780186","MERGE","Size","5' x 7'","","","","","1","28483","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913087885402","ivory-blue-floral-transitional-rug-1","UPDATE","Ivory Blue Floral Transitional Rug","","American Rugs","rugs","color-ivory, Exclusive_Neha_10","REPLACE","2019-07-30T00:08:13-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:08:13-04:00","global","","https://www.jenniferfurniture.com/products/ivory-blue-floral-transitional-rug-1","137","","18108587409498","17648395812954","MERGE","Size","8' x 10'","","","","","2","28484","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913086672986","cream-pink-floral-transitional-rug","UPDATE","Cream Pink Floral Transitional Rug","<p>A pink-hued bouquet bursts onto a cream-colored backdrop on this machine-made, polypropylene rug. Utilizing spring-inspired colors like pink and green, the bold motif is sure to be noticed. The .4-inch pile is constructed to be both soft and shiny, giving this home décor piece added appeal. </p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-ivory, Exclusive_Neha_10","REPLACE","2019-07-30T00:07:15-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:07:15-04:00","global","","https://www.jenniferfurniture.com/products/cream-pink-floral-transitional-rug","138","true","18108579381338","17648388997210","MERGE","Size","5' x 7'","","","","","1","28486","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913086672986","cream-pink-floral-transitional-rug","UPDATE","Cream Pink Floral Transitional Rug","","American Rugs","rugs","color-ivory, Exclusive_Neha_10","REPLACE","2019-07-30T00:07:15-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:07:15-04:00","global","","https://www.jenniferfurniture.com/products/cream-pink-floral-transitional-rug","139","","18108579577946","17648389029978","MERGE","Size","8' x 10'","","","","","2","28487","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913091653722","ivory-pink-floral-transitional-rug","UPDATE","Ivory Pink Floral Transitional Rug","<p>The delicate motif on this polypropylene rug can provide the perfect counterpoint to a mod setting, or it can lie beautifully among more traditional pieces. Designed on an ivory backdrop, lovely pink flowers intricately wrap around a green oval frame. Striking without being overbearing, this machine-made rug works cohesively with a range of styles and boasts a medium-length, shiny, and soft pile. </p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 7'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-cream, Exclusive_Neha_10","REPLACE","2019-07-30T00:10:39-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:10:39-04:00","global","","https://www.jenniferfurniture.com/products/ivory-pink-floral-transitional-rug","140","true","18108652781658","17648459382874","MERGE","Size","5' x 7'","","","","","1","28477","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913091653722","ivory-pink-floral-transitional-rug","UPDATE","Ivory Pink Floral Transitional Rug","","American Rugs","rugs","color-cream, Exclusive_Neha_10","REPLACE","2019-07-30T00:10:39-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:10:39-04:00","global","","https://www.jenniferfurniture.com/products/ivory-pink-floral-transitional-rug","141","","18108652814426","17648459415642","MERGE","Size","8' x 10'","","","","","2","28478","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1913093488730","pearl-blue-floral-contemporary-rug","UPDATE","Williams Stonewash Rug","<p>Williams Stonewash Gold 6195F 8' x 10'</p>
+<p><strong>DIMENSIONS</strong></p>
+<p>5' x 8'</p>
+<p>8"" X 10""</p>","American Rugs","rugs","color-cream, Exclusive_Neha_10","REPLACE","2019-07-30T00:12:08-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:12:08-04:00","global","","https://www.jenniferfurniture.com/products/pearl-blue-floral-contemporary-rug","142","true","18108669067354","17648476586074","MERGE","Size","5' x 8'","","","","","1","25263","","","0.0","g","299.99","399.99","","false","","","deny","manual","true","",""
+"1913093488730","pearl-blue-floral-contemporary-rug","UPDATE","Williams Stonewash Rug","","American Rugs","rugs","color-cream, Exclusive_Neha_10","REPLACE","2019-07-30T00:12:08-04:00","2020-02-13T21:57:49-05:00","true","2019-07-30T00:12:08-04:00","global","","https://www.jenniferfurniture.com/products/pearl-blue-floral-contemporary-rug","143","","18108669100122","17648476618842","MERGE","Size","8' x 10'","","","","","2","25264","","","0.0","g","499.99","699.99","","false","","","deny","manual","true","",""
+"1796227367002","luxury-zero-gravity-massage-chair","UPDATE","Luxury Zero Gravity Massage Chair","<meta charset=""utf-8""><meta charset=""utf-8"">
+<h3 class=""sc-full-description-heading"">Description</h3>
+<div class=""sc-full-description-long"">
+<p>The Luxury Zero Gravity Massage Chair is equipped with the latest “Smart Chair” technology. The “Smart Chair” is a computer body scan technology which maps out the size, shape, curvature of your back and adjusts the rollers to each individual user. With five massage techniques, this chair offers the ultimate in relaxation.</p>
+<p><b>Maximum Relaxation</b></p>
+<p>The “SL” back rail is engineered to match the curvature of the human back, Maximum Relax, allowing for maximum massage touch points of the mechanical rollers. Additionally, the biomechanical rollers have been engineered to mimic the massage techniques and feel of the human hand. Other features include five massage techniques, 6 pre-programmed massage modes and carbon fiber heat for a comfortable heat therapy massage to loosen up sore stiff muscles.</p>
+<p><b>Full-Body Therapy</b></p>
+<p>The Luxury Zero Gravity Massage Chair not only provides an unprecedented back massage, it's also a complete full-body massage chair equipped with 28 total airbags along with a massive air pump which provides a compression massage for your feet, legs, arms, shoulders and hips. Take the next step and invest in promoting the healthier active lifestyle you desire with massage therapy from the Luxury Zero Gravity Massage Chair. Sit back and relax with the most soothing experience ever!</p>
+<p> </p>
+<meta charset=""utf-8"">
+<h4>Assembled Size</h4>
+<div class=""sc-full-description-blob"">
+<p>58.4"" x 30.1"" x 33.8""</p>
+</div>
+</div>
+<div id=""policies-link"">
+<div id=""specification"" class=""sc-full-description-spec-specifications"">
+<div class=""sc-full-description-blob"">
+<ul></ul>
+</div>
+</div>
+</div>","FurnitureDirect","recliners","color-black, Exclusive_Neha_10, feature-adjustable, feature-adjustable headrests, feature-massager, feature-power, feature-reclining, july2019, No_Discount, power-recliner, power-recliners, recliner, under-2000, under-2500, under-3000, under-3500, under-4000, under-4500","REPLACE","2019-05-07T16:54:01-04:00","2020-02-13T21:57:46-05:00","true","2019-05-07T16:54:01-04:00","global","","https://www.jenniferfurniture.com/products/luxury-zero-gravity-massage-chair","144","true","17364947894362","17034937761882","MERGE","Title","Default Title","","","","","1","BM-E190-BK","","","911.0","kg","1699.99","2499.99","","true","","","deny","manual","true","",""
+"1796226089050","ultra-intelligent-design-zero-gravity-massage-chair","UPDATE","Ultra Intelligent Design Zero Gravity Massage Chair","<meta charset=""utf-8"">
+<h3 class=""sc-full-description-heading"">Description</h3>
+<div class=""sc-full-description-long"">
+<p>The Ultra Intelligent Design Zero Gravity Massage Chair (Assorted Colors) is a smart chair designed to give your body a targeted massage to aid with muscle soreness and general aches and pains. If you are looking for the best zero gravity massage chair on the market, you should consider investing in this Ultra Intelligent Design Zero Gravity Massage Chair.</p>
+<h3>What Is a Smart Chair?</h3>
+<p>The ""smart chair"" is a chair utilizing a computer body scan technology to individualize your massage experience by mapping out your shape, size and the curvature of your back. Based on this data, the chair will adjust its rollers to give you a targeted massage.</p>
+<h3>What Features Does the Ultra Intelligent Design Zero Gravity Massage Chair Offer?</h3>
+<p>This advanced zero gravity massage chair features an ""SL"" back rail created to mimic the curvature of your spine. This allows the mechanical rollers to adjust and facilitate a massage with maximum touch points along your back. Each biomechanical roller is intended to simulate the massage techniques and feel of the human hand.</p>
+<p>Additional features for this massage chair include five massage techniques, five pre-programmed massage modes and heated back rollers to facilitate a true spa experience. The control panel for the chair is located on the armrest and includes a USB port. The back rollers operate under three separate speed settings and three different intensity settings, giving you options for your full body massage. This zero gravity massage chair also comes with 28 total airbags and a large air pump to provide you with a compression massage for your lower extremities, shoulders and hips.</p>
+<p>For more technological features, this massage chair comes with ""zero gravity"" mode up to 118 degrees. Additionally, it has Bluetooth CD speakers so you can create the ambiance of your choice.</p>
+<p>This year, take the step to invest in your health and have consistent, convenient access to professional massage therapy with the Ultra Intelligent Design Zero Gravity Massage Chair.</p>
+</div>
+<div id=""policies-link"">
+<h3 class=""sc-full-description-policy-link"">Policies &amp; plans</h3>
+<div id=""specification"" class=""sc-full-description-spec-specifications"">
+<h4>Specifications</h4>
+<div class=""sc-full-description-blob"">
+<ul>
+<li>Smart chair computer body scan technology</li>
+<li>5 massage techniques</li>
+<li>28 airbags</li>
+<li>5 preprogrammed massage modes</li>
+<li>SL 53"" long shape Back Rail</li>
+<li>Zero wall design to within 2"" from wall</li>
+<li>Heated back rollers</li>
+<li>3 speed settings</li>
+<li>3 intensity settings</li>
+<li>Control panel in armrest with USB</li>
+<li>Zero gravity mode to 118 degrees</li>
+<li>Bluetooth 3D speakers</li>
+<li>Leg extension of 5.9"" for users between 5'0"" to 6'3""</li>
+<li>Mechanical rollers for feet and heals</li>
+<li>LED Rremote</li>
+<li>Weight capacity 260 lbs.</li>
+<li>Auto reset mode when turned off</li>
+</ul>
+</div>
+</div>
+</div>","FurnitureDirect","recliners","color-black, Exclusive_Neha_10, feature-adjustable, feature-adjustable headrests, feature-massager, feature-power, feature-reclining, feature-speaker, feature-speakers, power-recliner, power-recliners, recliner, under-3000, under-3500, under-4000, under-4500","REPLACE","2019-05-07T16:51:59-04:00","2020-02-13T21:57:46-05:00","true","2019-05-07T16:48:10-04:00","global","","https://www.jenniferfurniture.com/products/ultra-intelligent-design-zero-gravity-massage-chair","145","true","17364939800666","17034931503194","MERGE","Title","Default Title","","","","","1","BM-E389-BK","","","911.0","kg","2999.99","4999.99","","true","","","deny","manual","true","",""

@@ -1,0 +1,6 @@
+{
+	"rectangular":[],
+	"round":["round","rnd"],
+	"square":["square","sq"],
+	"invalid":["(\\")\\s*.+(\\")","(\\')\\s*.+(\\')"]
+}

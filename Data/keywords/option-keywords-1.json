@@ -1,0 +1,26 @@
+{
+	"Size":
+	{
+		"King":["kb$"],
+		"Queen":["qb$"],
+		"Full":["fb$"],
+		"Twin":["tb$"]
+	},
+	"Color":
+	{
+		"Beige":["beige"],
+		"Black":["bl", "black"],
+		"Brown":["br", "brown"],
+		"Gray":["grey","gray"],
+		"Pink":["pink"],
+		"Silver":["silver"],
+		"Walnut Brown":["walnut"],
+		"Wenge Brown":["wenge"],
+		"White":["wh", "white"]
+	},
+	"Bed Side":
+	{
+		"Left":["left"],
+		"Right":["right"]
+	}
+}

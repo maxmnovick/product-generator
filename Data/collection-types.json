@@ -1,0 +1,10 @@
+# collection-types.json
+# knowledge of possible types for a product that is required for inventory management
+
+{
+	"C-AR":"Carpets or Area Rugs",
+	"UP":"Upholstery",
+	"CG":"Casegoods",
+	"OTH":"Other",
+	"LIGHTING":"Lighting"
+}

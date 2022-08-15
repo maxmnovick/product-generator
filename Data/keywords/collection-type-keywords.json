@@ -1,0 +1,7 @@
+{
+	"OTH":["accents","armoire base","armoire top","rail","slat","bedding","box spring","footboard","headboard","bed board","mattress","pendant","table top","table base"],
+	"UP":["accent chair","chaise","daybeds","living room set","loveseat","ottoman","recliner","sectional","sofa","swivel chair"],
+	"CG":["chest","table","arm chair","armoire","barstool","bedroom set","bed","bench","bookcase","buffet","cabinet","china","cocktail","coffee","console","desk chair","desk","dining set","dresser","hutch","mirror","nightstand","power base","server","side chair","sideboard","stool","tv unit","wall unit","wardrobe", "occasional table"],
+	"LIGHTING":["lamp"],
+	"C-AR":["rug"]
+}

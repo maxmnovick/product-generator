@@ -1,0 +1,431 @@
+Variant SKU	Handle	Color Description	Material	Finish	Width	Depth	Height
+VICTORIA-KB	gabe-bed	RUSTIC OAK	Rubber Wood	n/a	91	80	56
+VICTORIA-QB	gabe-bed	RUSTIC OAK	Rubber Wood	n/a	91	64	56
+VICTORIA-CH	gabe-chest	RUSTIC OAK	Rubber Wood	n/a	38	18	50
+VICTORIA-D	gabe-dresser	RUSTIC OAK	Rubber Wood	n/a	62	18	40
+VICTORIA-M 	gabe-mirror	RUSTIC OAK	Rubber Wood	n/a	45	1	39
+VICTORIA-NS	gabe-nightstand	RUSTIC OAK	Rubber Wood 	n/a	26	18	26
+LINDA-BL-FB (M) 	gabriel-bed	Black	Chip Board, MDF, Plywood, Veneer	n/a	87	57	56
+LINDA-BL-KB (M)	gabriel-bed	Black	Chip Board, MDF, Plywood, Veneer	n/a	93	78	56
+LINDA-BL-QB (M)	gabriel-bed	Black	Chip Board, MDF, Plywood, Veneer	n/a	93	63	56
+LINDA-M-FB (M)	gabriel-bed	Merlot	Chip Board, MDF, Plywood, Veneer	n/a	87	57	56
+LINDA-M-KB (M)	gabriel-bed	Merlot	Chip Board, MDF, Plywood, Veneer	n/a	79	93	56
+LINDA-M-QB (M) 	gabriel-bed	Merlot	Chip Board, MDF, Plywood, Veneer	n/a	93	63	56
+LINDA(FD0011B)-BL-CH (M)	gabriel-chest	Black	Chip Board, MDF, Plywood, Veneer	n/a	32	17	48
+LINDA(FD0011B)-CH (M)	gabriel-chest	n/a	Chip Board, MDF, Plywood, Veneer	n/a	32	17	48
+LINDA(FD0011B)-BL-D (M) 	gabriel-dresser	Black	Chip Board, MDF, Plywood, Veneer	n/a	59	17	41
+LINDA(FD0011B)-D (M) 	gabriel-dresser	n/a	Chip Board, MDF, Plywood, Veneer	n/a	59	17	41
+LINDA(FD0011A)-BL-M (M)	gabriel-mirror	Black	Chip Board, MDF, Plywood, Veneer	n/a	39	1	35
+LINDA(FD0011A)-M (M)	gabriel-mirror	n/a	Chip Board, MDF, Plywood, Veneer	n/a	39	1	35
+LINDA(FD0011B)-BL-NS (M)	gabriel-nightstand	Black	Chip Board, MDF, Plywood, Veneer	n/a	26	17	25
+LINDA(FD0011B)-NS (M)	gabriel-nightstand	n/a	Chip Board, MDF, Plywood, Veneer	n/a	26	17	25
+SONIA-BL-FB	gadiel-bed	Black	Solid wood with finger joint /No Veneer	n/a	80	56.5	62
+SONIA-BL-KB	gadiel-bed	Black	Solid wood with finger joint /No Veneer	n/a	86	79	62
+SONIA-BL-QB	gadiel-bed	Black	Solid wood with finger joint /No Veneer	n/a	86	63	62
+SONIA-BLACK-CH W/ TR GLITTER-AL	gadiel-chest	METALLIC BLK 	Solid wood with finger joint /No Veneer	n/a	33	16.5	49
+SONIA-BLACK-DR-TR GLITTER-AL	gadiel-dresser	METALLIC BLK 	Solid wood with finger joint /No Veneer	n/a	62	16.5	34.5
+SONIA-BLACK-M W/LED	gadiel-mirror	METALLIC BLK 	Solid wood with finger joint /No Veneer	n/a	42.5	1.5	41
+SONIA-BLACK-NS W/ TR GLITTER-AL	gadiel-nightstand	METALLIC BLK 	Solid wood with finger joint /No Veneer	n/a	25.5	16.5	29.5
+MIRROR-CHOC-FB "STORAGE"	gage-bed	CHOCOLATE	MDF, SPECIAL PARTICLE BOARD, POPLAR LVL SLATS 	n/a	n/a	n/a	n/a
+MIRROR-CHOC-KB "STORAGE"	gage-bed	CHOCOLATE	MDF, SPECIAL PARTICLE BOARD, POPLAR LVL SLATS 	n/a	86	79	62
+MIRROR-CHOC-QB "STORAGE"	gage-bed	CHOCOLATE	MDF, SPECIAL PARTICLE BOARD, POPLAR LVL SLATS 	n/a	86	63	62
+MIRROR-CHOC-CH	gage-chest	CHOCOLATE	MDF	n/a	36	14	50
+MIRROR-CHOC-D	gage-dresser	CHOCOLATE	MDF	n/a	64	16	38
+MIRROR-CHOC-M	gage-mirror	CHOCOLATE	MDF	n/a	44	1	36
+MIRROR-CHOC-NS	gage-nightstand	CHOCOLATE	MDF	n/a	26	16	28
+PARIS- KB	gannon-bed	Champagne 	TEXTURED EMBOSSED DESIGN MDF W/LED - PU UPHOLSTERY 	n/a	84	86.5	68
+PARIS- QB	gannon-bed	Champagne 	TEXTURED EMBOSSED DESIGN MDF W/LED - PU UPHOLSTERY 	n/a	83.25	71	68
+PARIS-CHAMPAGNE-BN	gannon-bench	n/a	TEXTURED DESIGN MDF W/ACRLYIC LEGS	n/a	53.5	19	17.5
+PARIS-CHAMPAGNE-CH W/ AL	gannon-chest	n/a	TEXTURED DESIGN MDF W/ACRLYIC LEGS	n/a	37.25	17.75	49
+PARIS-CHAMPAGNE-DR W/JEWELRY DR & AL	gannon-dresser	n/a	TEXTURED DESIGN MDF W/ACRLYIC LEGS	n/a	64.5	18	42
+PARIS-CHAMPAGNE-MR W/LIGHT	gannon-mirror	n/a	TEXTURED DESIGN MDF 	n/a	46.5	1.5	38
+PARIS-CHAMPAGNE-NS W/ AL	gannon-nightstand	n/a	TEXTURED DESIGN MDF W/ACRLYIC LEGS	n/a	29	17.75	25.75
+ROSA-KB (BX) (M)	garrison-bed	ANTIQUE BLACK	Chip Board, MDF, Plywood, Veneer 	n/a	79	84	51
+ROSA-QB (BX) (M)	garrison-bed	ANTIQUE BLACK	Chip Board, MDF, Plywood, Veneer 	n/a	63	84	51
+ROSA(FD0060A)-CH (M)	garrison-chest	ANTIQUE BLACK	Chip Board, MDF, Plywood, Veneer 	n/a	30	17	48
+ROSA(FD0060A)-D (M)	garrison-dresser	ANTIQUE BLACK	Chip Board, MDF, Plywood, Veneer 	n/a	56	17	39
+ROSA(FD0060C)-M (M)	garrison-mirror	ANTIQUE BLACK	Chip Board, MDF, Plywood, Veneer 	n/a	39	1	38
+ROSA(FD0060A)-NS (M)	garrison-nightstand	ANTIQUE BLACK	Chip Board, MDF, Plywood, Veneer 	n/a	22	17	27
+REMI-SILVER-KB	gatlin-bed	SILVER METALLIC SHEEN	SOLID WOOD W/FINGER JOINT / NO VENEER	n/a	88	83	68
+REMI-SILVER-QB	gatlin-bed	SILVER METALLIC SHEEN	SOLID WOOD W/FINGER JOINT / NO VENEER	n/a	88	67	68
+REMI-SILVER-CH	gatlin-chest	SILVER METALLIC SHEEN	Solid wood with finger joint /No Veneer	n/a	36.5	16.5	55
+REMI-SILVER-DR	gatlin-dresser	SILVER METALLIC SHEEN	Solid wood with finger joint /No Veneer	n/a	66	16.5	39
+REMI-SILVER-MR W/LED	gatlin-mirror	SILVER METALLIC SHEEN	Solid wood with finger joint /No Veneer	n/a	40	2	42
+REMI-SILVER-NS	gatlin-nightstand	SILVER METALLIC SHEEN	Solid wood with finger joint /No Veneer	n/a	27	16.5	28
+VERONA-GOLD-FB	gene-bed	GOLD	Tropical Wood / MDF & Croco. Veneer	n/a	79	59	56
+VERONA-GOLD-KB	gene-bed	GOLD	Tropical Wood / MDF & Croco. Veneer	n/a	85	81	56
+VERONA-GOLD-QB	gene-bed	GOLD	Tropical Wood / MDF & Croco. Veneer	n/a	85	65	56
+VERONA-GOLD-TB	gene-bed	GOLD	Tropical Wood / MDF & Croco. Veneer	n/a	79	44	56
+VERONA-SILVER-FB	gene-bed	SILVER W/CRUSHED VELVET & RHINESTONE DETAIL	Tropical Wood / MDF & Croco. Veneer	n/a	79	59	56
+VERONA-SILVER-KB	gene-bed	SILVER W/CRUSHED VELVET & RHINESTONE DETAIL	Tropical Wood / MDF & Croco. Veneer	n/a	85	81	56
+VERONA-SILVER-QB	gene-bed	SILVER W/CRUSHED VELVET & RHINESTONE DETAIL	Tropical Wood / MDF & Croco. Veneer	n/a	85	65	56
+VERONA-SILVER-TB	gene-bed	SILVER W/CRUSHED VELVET & RHINESTONE DETAIL	Tropical Wood / MDF & Croco. Veneer	n/a	79	44	56
+VERONA-GOLD-CH	gene-chest	GOLD	Tropical Wood / MDF & Croco. Veneer	n/a	31	16	48
+VERONA-SILVER-CH	gene-chest	SILVER	Tropical Wood / MDF & Croco. Veneer	n/a	31	16	48
+VERONA-GOLD-DR	gene-dresser	GOLD	Tropical Wood / MDF & Croco. Veneer	n/a	58	16	33.5
+VERONA-SILVER-DR	gene-dresser	SILVER	Tropical Wood / MDF & Croco. Veneer	n/a	58	16	33.5
+VERONA-GOLD-M	gene-mirror	GOLD	Tropical Wood / MDF & Croco. Veneer	n/a	38	1.5	38
+VERONA-SILVER-M	gene-mirror	SILVER	Tropical Wood / MDF & Croco. Veneer	n/a	38	1.5	38
+VERONA-GOLD-NS	gene-nightstand	GOLD	Tropical Wood / MDF & Croco. Veneer	n/a	21.5	15.75	24
+VERONA-SILVER-NS	gene-nightstand	SILVER	Tropical Wood / MDF & Croco. Veneer	n/a	21.5	15.75	24
+SOHO-SILVER-KB	gentry-bed	SILVER	n/a	n/a	88	79	64
+SOHO-SILVER-QB	gentry-bed	SILVER	n/a	n/a	88	63	64
+SOHO-SILVER-CH	gentry-chest	SILVER	Poplar Wood , Oak Laminate	n/a	42	18	52
+SOHO-SILVER-DR	gentry-dresser	SILVER	Poplar Wood , Oak Laminate	n/a	68	18	38
+SOHO-SILVER-MR	gentry-mirror	SILVER	Poplar Wood , Oak Laminate , Glass	n/a	44	2	36
+SOHO-SILVER-NS	gentry-nightstand	SILVER	Poplar Wood , Oak Laminate	n/a	30	17	28
+POMPEI-GR-FB	gerald-bed	METALLIC GREY	Tropical Wood / MDF & Croco. Veneer	n/a	79	59	56
+POMPEI-GR-KB	gerald-bed	METALLIC GREY	Tropical Wood / MDF & Croco. Veneer	n/a	82	81.5	56
+POMPEI-GR-QB	gerald-bed	METALLIC GREY	Tropical Wood / MDF & Croco. Veneer	n/a	82	63	56
+POMPEI-WH-FB	gerald-bed	METALLIC WHITE	Tropical Wood / MDF & Croco. Veneer	n/a	79	59	56
+POMPEI-WH-KB	gerald-bed	METALLIC WHITE	Tropical Wood / MDF & Croco. Veneer	n/a	82	81.5	56
+POMPEI-WH-QB	gerald-bed	METALLIC WHITE	Tropical Wood / MDF & Croco. Veneer	n/a	82	63	56
+POMPEI-METALLIC GREY-CH	gerald-chest	n/a	n/a	n/a	31	16	48
+POMPEI-METALLIC WHITE-CH	gerald-chest	n/a	n/a	n/a	31	16	48
+POMPEI-METALLIC GREY-DR	gerald-dresser	n/a	n/a	n/a	58	16	33
+POMPEI-METALLIC WHITE-DR 	gerald-dresser	n/a	n/a	n/a	58	16	33
+POMPEI-METALLIC GREY-MR	gerald-mirror	n/a	n/a	n/a	38	1	38
+POMPEI-METALLIC WHITE-MR	gerald-mirror	n/a	n/a	n/a	38	1	38
+POMPEI-METALLIC GREY-NS	gerald-nightstand	n/a	n/a	n/a	22	16	24
+POMPEI-METALLIC WHITE-NS	gerald-nightstand	n/a	n/a	n/a	22	16	24
+2191-GREY-KB	gerard-bed	GREY	LVL & MDF	n/a	88	96	64
+2191-GREY-QB	gerard-bed	GREY	LVL & MDF	n/a	88	78	64
+NOMA- FB	gerardo-bed	DARK MERLOT	Chip Board, MDF, Plywood , PU Paper 	n/a	84	57	48
+NOMA-KB	gerardo-bed	DARK MERLOT	Chip Board, MDF, Plywood , PU Paper 	n/a	88	79	48
+NOMA-QB	gerardo-bed	DARK MERLOT	Chip Board, MDF, Plywood , PU Paper 	n/a	88	63	48
+NOMA-CH	gerardo-chest	DARK MERLOT	Chip Board, MDF, Plywood , PU Paper 	n/a	31	16	47
+NOMA-D	gerardo-dresser	DARK MERLOT	Chip Board, MDF, Plywood , PU Paper 	n/a	57	16	39
+NOMA-MR	gerardo-mirror	DARK MERLOT	Chip Board, MDF, Plywood , PU Paper 	n/a	45	1	35
+NOMA-NS	gerardo-nightstand	DARK MERLOT	Chip Board, MDF, Plywood , PU Paper 	n/a	22	16	22
+8103-BR-FB (M) 	gerhardina-bed	BROWN GLOSS	MDF, Poplar LVL, PU	n/a	57	80	48
+8103-BR-KB (M) 	gerhardina-bed	BROWN GLOSS	MDF, Poplar LVL, PU	n/a	79	84	48
+8103-BR-QB (M) 	gerhardina-bed	BROWN GLOSS	MDF, Poplar LVL, PU	n/a	63	84	48
+8103-BR-TB (M)	gerhardina-bed	BROWN GLOSS	MDF, Poplar LVL, PU	n/a	42	80	48
+8103-P-FB (M)	gerhardina-bed	PINK	MDF, Poplar LVL, PU	n/a	57	80	48
+8103-P-TB (M)	gerhardina-bed	PINK	MDF, Poplar LVL, PU	n/a	42	80	48
+8103-WH- KB (M)	gerhardina-bed	WHITE GLOSS	MDF, Poplar LVL, PU	n/a	79	84	48
+8103-WH- QB (M)	gerhardina-bed	WHITE GLOSS	MDF, Poplar LVL, PU	n/a	63	84	48
+8103-WH- TB (M)	gerhardina-bed	WHITE GLOSS	MDF, Poplar LVL, PU	n/a	42	80	48
+8103-WH-FB (M)	gerhardina-bed	WHITE GLOSS	MDF, Poplar LVL, PU	n/a	57	80	48
+8269-WH-KB (M) 	germain-bed	WHITE PU	MDF, Poplar LVL, PU	n/a	91	90	39
+8269-WH-QB (M)	germain-bed	WHITE PU	MDF, Poplar LVL, PU	n/a	93	74	39
+SOFIA-WH-FB	gerson-bed	PEARL WHITE	Solid wood with finger joint /No Veneer	n/a	80	56.5	62
+SOFIA-WH-KB	gerson-bed	PEARL WHITE	Solid wood with finger joint /No Veneer	n/a	86	79	62
+SOFIA-WH-QB	gerson-bed	PEARL WHITE	Solid wood with finger joint /No Veneer	n/a	86	63	62
+SOFIA-PEARL WHITE-CH-AL	gerson-chest	PEARL WHITE	Solid wood with finger joint /No Veneer	n/a	33	16.5	49
+SOFIA-PEARL WHITE-D-AL	gerson-dresser	PEARL WHITE	Solid wood with finger joint /No Veneer	n/a	62	16.5	34.5
+SOFIA-PEARL WHITE-M W/LED 	gerson-mirror	PEARL WHITE	Solid wood with finger joint /No Veneer	n/a	42.5	1.5	41
+SOFIA-PEARL WHITE-NS-AL 	gerson-nightstand	PEARL WHITE	Solid wood with finger joint /No Veneer	n/a	25.5	16.5	29.5
+8272-BL- KB (M) 	gertraud-bed	BLACK MATTE	MDF, Poplar LVL, PU	n/a	82	92	49
+8272-BL- QB (M) 	gertraud-bed	BLACK MATTE	MDF, Poplar LVL, PU	n/a	66	92	49
+8272-GR- KB (M) 	gertraud-bed	GREY MATTE	MDF, Poplar LVL, PU	n/a	82	92	49
+8272-GR-QB (M) 	gertraud-bed	GREY MATTE	MDF, Poplar LVL, PU	n/a	66	92	49
+8819-GR-FB	ghita-bed	METALLIC GREY PU	LVL & MDF	n/a	84	63	66
+8819-GR-KB	ghita-bed	METALLIC GREY PU	LVL & MDF	n/a	88	83	66
+8819-GR-QB	ghita-bed	METALLIC GREY PU	LVL & MDF	n/a	88	68	66
+8820-FB	gianara-bed	GREY VELVET	LEATHER MATCH  & MDF	n/a	82	60.5	66
+8820-KB	gianara-bed	GREY VELVET	LVL & MDF	n/a	87	82	66
+8820-QB	gianara-bed	GREY VELVET	LVL & MDF	n/a	87	66	66
+RILEY-FB	giancarlo-bed	SILVER	Rubberwood with finger joint ; MDF	n/a	82	56	56
+RILEY-KB	giancarlo-bed	SILVER	Rubberwood with finger joint ; MDF	n/a	87	79	56
+RILEY-QB	giancarlo-bed	SILVER	Rubberwood with finger joint ; MDF	n/a	87	63	56
+RILEY (1621) CHEST	giancarlo-chest	SILVER	Rubberwood with finger joint ; MDF	n/a	33	17	48
+RILEY (1621) DRESSER	giancarlo-dresser	SILVER	Rubberwood with finger joint ; MDF	n/a	62	17	38
+RILEY (1621) MIRROR	giancarlo-mirror	SILVER	Rubberwood with finger joint ; MDF	n/a	42	1	36
+RILEY (1621) NIGHT STAND	giancarlo-nightstand	SILVER	Rubberwood with finger joint ; MDF	n/a	25	17	28
+9088-BL-FB	gianina-bed	BLACK	MDF, PARTICLE BOARD	n/a	87.25	58.5	60.5
+9088-BL-KB	gianina-bed	BLACK	MDF, PARTICLE BOARD	n/a	91.5	80.5	60.5
+9088-BL-QB	gianina-bed	BLACK	MDF, PARTICLE BOARD	n/a	91.5	63.5	60.5
+NORTH(138)-KB	gianni-bed	ZEBRA WOOD/BLACK	MDF & Particle Board 	n/a	80	76	52
+NORTH(138)-QB	gianni-bed	ZEBRA WOOD/BLACK	MDF & Particle Board 	n/a	80	60	52
+NORTH(138)-CH	gianni-chest	ZEBRA WOOD/BLACK	MDF & Particle Board 	n/a	35	20	48
+NORTH(138)-DR 	gianni-dresser	ZEBRA WOOD/BLACK	MDF & Particle Board 	n/a	68	18	31
+NORTH(138)-MR	gianni-mirror	ZEBRA WOOD/BLACK	MDF & Particle Board 	n/a	36	1	44
+NORTH(138)-NS	gianni-nightstand	ZEBRA WOOD/BLACK	MDF & Particle Board 	n/a	25	17	25
+REINA-CHAMPAGNE-KB	gibson-bed	CHAMPAGNE	SOLID WOOD W/FINGER JOINT / DRAWER FRONT LYCHEE VENEER	n/a	86	79	62
+REINA-CHAMPAGNE-QB	gibson-bed	CHAMPAGNE	SOLID WOOD W/FINGER JOINT / DRAWER FRONT LYCHEE VENEER	n/a	86	63	62
+REINA-CHAMPAGNE-LC	gibson-chest	TEXTURED WITH METALLIC SHEEN - RHINESTONE DETAILS	SOLID WOOD W/FINGER JOINT/ DRAWER FRONT LYCHEE VENEER	n/a	21	16.5	60.5
+REINA-CHAMPAGNE-DR	gibson-dresser	TEXTURED WITH METALLIC SHEEN - RHINESTONE DETAILS	SOLID WOOD W/FINGER JOINT/ DRAWER FRONT LYCHEE VENEER	n/a	64	16.5	38
+REINA-CHAMPAGNE-MR	gibson-mirror	n/a	SOLID WOOD W/FINGER JOINT/ DRAWER FRONT LYCHEE VENEER	n/a	39	1.5	39
+REINA-CHAMPAGNE-NS	gibson-nightstand	TEXTURED WITH METALLIC SHEEN - RHINESTONE DETAILS	SOLID WOOD W/FINGER JOINT/ DRAWER FRONT LYCHEE VENEER	n/a	26	16.5	28
+MIRROR-CHAMP-FB "STORAGE"	gideon-bed	CHAMPAGNE	MDF, SPECIAL PARTICLE BOARD, POPLAR LVL SLATS 	n/a	n/a	n/a	n/a
+MIRROR-CHAMP-KB "STORAGE"	gideon-bed	CHAMPAGNE	MDF, SPECIAL PARTICLE BOARD, POPLAR LVL SLATS 	n/a	86	79	62
+MIRROR-CHAMP-QB "STORAGE"	gideon-bed	CHAMPAGNE	MDF, SPECIAL PARTICLE BOARD, POPLAR LVL SLATS 	n/a	86	63	62
+MIRROR-CHAMP-CH	gideon-chest	CHAMPAGNE	MDF	n/a	36	14	50
+MIRROR-CHAMP-D	gideon-dresser	CHAMPAGNE	MDF	n/a	64	16	38
+MIRROR-CHAMP-M	gideon-mirror	CHAMPAGNE	MDF	n/a	44	1	36
+MIRROR-CHAMP-NS	gideon-nightstand	CHAMPAGNE	MDF	n/a	26	16	28
+9097-S-FB	gila-bed	SILVER	MDF, PARTICLE BOARD	n/a	82.5	74.75	61
+9097-S-KB	gila-bed	SILVER	MDF, PARTICLE BOARD	n/a	81	97	61
+9097-S-QB	gila-bed	SILVER	MDF, PARTICLE BOARD	n/a	87	81	61
+9098-GR-FB	gilana-bed	GREY	MDF, PARTICLE BOARD	n/a	84	120	64
+9098-GR-KB	gilana-bed	GREY	MDF, PARTICLE BOARD	n/a	86	141	64
+9098-GR-QB	gilana-bed	GREY	MDF, PARTICLE BOARD	n/a	86	125	64
+9652-BL PU/GR-KB W/STEREO & LIGHT	gilat-bed	BLACK PU W/GREY FABRIC 	PU,FABRIC,USB,LIGHTS,SPEAKERS	n/a	92	82	62
+9652-BL PU/GR-QB W/STEREO & LIGHT 	gilat-bed	BLACK PU W/GREY FABRIC 	PU,FABRIC,USB,LIGHTS,SPEAKERS	n/a	92	65.5	62
+9652-WH PU/GR-KB W/STEREO & LIGHT	gilat-bed	WHITE PU W/GREY FABRIC 	PU,FABRIC,USB,LIGHTS,SPEAKERS	n/a	92	82	62
+9652-WH PU/GR-QB W/STEREO & LIGHT	gilat-bed	WHITE PU W/GREY FABRIC 	PU,FABRIC,USB,LIGHTS,SPEAKERS	n/a	92	65.5	62
+ATHENA-BEIGE-KB	gilbert-bed	ASH BEIGE	Poplar solid+ OAK venner	n/a	91	81	64
+ATHENA-BEIGE-QB	gilbert-bed	ASH BEIGE	Poplar solid+ OAK venner	n/a	91	65	64
+ATHENA-ASH BEIGE-CH	gilbert-chest	WOOD GRAIN DETAIL WITH METALLIC GOLD FINISH WITH MARBLE TOP ACCENT	Poplar solid+ OAK venner	n/a	39	19	58
+ATHENA-ASH BEIGE-DR	gilbert-dresser	WOOD GRAIN DETAIL WITH METALLIC GOLD FINISH WITH MARBLE TOP ACCENT	Poplar solid+ OAK venner	n/a	66.5	18	37
+ATHENA-ASH BEIGE-MR 	gilbert-mirror	WOOD GRAIN DETAIL WITH METALLIC GOLD FINISH	Poplar solid+ OAK venner	n/a	51	1	41
+ATHENA-ASH BEIGE-NS	gilbert-nightstand	WOOD GRAIN DETAIL WITH METALLIC GOLD FINISH WITH MARBLE TOP ACCENT	Poplar solid+ OAK venner	n/a	28.5	18	26
+AURORA-W-FB (M)	gilberta-bed	WENGE	MDF	n/a	59	81	43
+AURORA-W-KB (M)	gilberta-bed	WENGE	MDF	n/a	84	85	43
+AURORA-W-QB (M)	gilberta-bed	WENGE	MDF	n/a	65	85	43
+AURORA-WH-FB (M)	gilberta-bed	WHITE	MDF	n/a	59	81	43
+AURORA-WH-KB (M)	gilberta-bed	WHITE	MDF	n/a	84	85	43
+AURORA-WH-QB (M)	gilberta-bed	WHITE	MDF	n/a	65	85	43
+AURORA-W-CH (M)	gilberta-chest	WENGE	MDF	n/a	35	18	49
+AURORA-WH-CH (M) 	gilberta-chest	WHITE	MDF	n/a	35	18	49
+AURORA-W-D (M) 	gilberta-dresser	WENGE	MDF	n/a	59	18	32
+AURORA-WH-D (M)	gilberta-dresser	WHITE	MDF	n/a	59	18	32
+AURORA-W-EU (M)	gilberta-entertainment-unit	WENGE	MDF	n/a	47	19	27
+AURORA-WH-EU (M)	gilberta-entertainment-unit	WHITE	MDF	n/a	47	19	27
+AURORA-W-M (M) 	gilberta-mirror	WENGE	MDF	n/a	31	1	43
+AURORA-WH-M (M)	gilberta-mirror	WHITE	MDF	n/a	31	1	43
+AURORA-W-NS (M)	gilberta-nightstand	WENGE	MDF	n/a	24	16	16
+AURORA-WH-NS (M)	gilberta-nightstand	WHITE	MDF	n/a	24	16	16
+AVA-BLACK-FB	gili-bed	BLACK	SOLID WOOD / 3D PAPER	n/a	79	58.5	56
+AVA-BLACK-KB	gili-bed	BLACK	SOLID WOOD / 3D PAPER	n/a	85	81	56
+AVA-BLACK-QB	gili-bed	BLACK	SOLID WOOD / 3D PAPER	n/a	85	65	56
+AVA-WHITE-FB	gili-bed	WHITE	SOLID WOOD / 3D PAPER	n/a	79	58.5	56
+AVA-WHITE-KB	gili-bed	WHITE	SOLID WOOD / 3D PAPER	n/a	85	81	56
+AVA-WHITE-QB	gili-bed	WHITE	SOLID WOOD / 3D PAPER	n/a	85	65	56
+AVA-BLACK-CH	gili-chest	MIRROR ACCENTS - SMOOTH WITH WOODGRAIN DETAILS	SOLID WOOD / 3D PAPER	n/a	36	16	50
+AVA-WHITE--CH	gili-chest	MIRROR ACCENTS - SMOOTH WITH WOODGRAIN DETAILS	SOLID WOOD / 3D PAPER	n/a	36	16	50
+AVA-BLACK-DR	gili-dresser	MIRROR ACCENTS - SMOOTH WITH WOODGRAIN DETAILS	SOLID WOOD / 3D PAPER	n/a	60	16	39
+AVA-WHITE-DR	gili-dresser	MIRROR ACCENTS - SMOOTH WITH WOODGRAIN DETAILS	SOLID WOOD / 3D PAPER	n/a	60	16	39
+AVA-BLACK-MR	gili-mirror	MIRROR ACCENTS - SMOOTH WITH WOODGRAIN DETAILS	SOLID WOOD / 3D PAPER	n/a	37	1	37.5
+AVA-WHITE--MR	gili-mirror	MIRROR ACCENTS - SMOOTH WITH WOODGRAIN DETAILS	SOLID WOOD / 3D PAPER	n/a	36.5	1	37.5
+AVA-BLACK-NS	gili-nightstand	MIRROR ACCENTS - SMOOTH WITH WOODGRAIN DETAILS	SOLID WOOD / 3D PAPER	n/a	24	16	26
+AVA-WHITE--NS	gili-nightstand	MIRROR ACCENTS - SMOOTH WITH WOODGRAIN DETAILS	SOLID WOOD / 3D PAPER	n/a	24	16	26
+AYDEN-ESPRESSO-CH	gilit-chest	ESPRESSO	RUBBER WOOD,TROPICAL WOOD,BIRCH BERTULA VENEER,MDF,CB,PLYWOOD	n/a	34	16	51
+AYDEN-ESPRESSO-DR	gilit-dresser	ESPRESSO	RUBBER WOOD,TROPICAL WOOD,BIRCH BERTULA VENEER,MDF,CB,PLYWOOD	n/a	59	16.25	38
+AYDEN-ESPRESSO-MR	gilit-mirror	ESPRESSO	RUBBER WOOD,TROPICAL WOOD,BIRCH BERTULA VENEER,MDF,CB,PLYWOOD	n/a	39.5	1	35
+AYDEN-ESPRESSO-NS	gilit-nightstand	ESPRESSO	RUBBER WOOD,TROPICAL WOOD,BIRCH BERTULA VENEER,MDF,CB,PLYWOOD	n/a	26	16	25
+BAYVIEW-WHITE-CH 	ginevra-chest	High Gloss Smooth White	MDF	n/a	31	18	47.5
+BAYVIEW-WHITE-DR	ginevra-dresser	High Gloss Smooth White	MDF	n/a	61.5	18	36
+BAYVIEW-WHITE-M	ginevra-mirror	High Gloss Smooth White	MDF	n/a	40	1.5	37.5
+BAYVIEW-WHITE-NS	ginevra-nightstand	High Gloss Smooth White	MDF	n/a	25.5	15.5	24.5
+SALERNO-BL-FB	gino-bed	BLACK	MDF/ Chip Board/ Solid Wood/ Plywood	n/a	78.5	57	58.5
+SALERNO-BL-KB	gino-bed	BLACK	MDF/ Chip Board/ Solid Wood/ Plywood	n/a	84	79	58.5
+SALERNO-BL-QB	gino-bed	BLACK	MDF/ Chip Board/ Solid Wood/ Plywood	n/a	64	84	59
+SALERNO-M-FB	gino-bed	NEW MERLOT	MDF/ Chip Board/ Solid Wood/ Plywood	n/a	78.5	57	58.5
+SALERNO-M-KB	gino-bed	NEW MERLOT	MDF/ Chip Board/ Solid Wood/ Plywood	n/a	83	79	58.5
+SALERNO-M-QB	gino-bed	NEW MERLOT	MDF/ Chip Board/ Solid Wood/ Plywood	n/a	85	63.75	58.5
+MANHATTAN(961-M)-EKB 	giovanni-bed	BLACK HG	MDF & Particle Board 	n/a	90	80	44
+MANHATTAN(961-M)-QB	giovanni-bed	BLACK HG	MDF & Particle Board 	n/a	76	80	44
+MANHATTAN(961-M)-CH	giovanni-chest	BLACK HG	MDF & Particle Board 	n/a	35	20	48
+MANHATTAN(961-M)-D	giovanni-dresser	BLACK HG	MDF & Particle Board 	n/a	63	20	32
+MANHATTAN(961-M)-M	giovanni-mirror	BLACK HG	MDF & Particle Board 	n/a	36	1	39
+MANHATTAN(961-M)-NS	giovanni-nightstand	BLACK HG	MDF & Particle Board 	n/a	26	20	20
+BEVERLY-BL-FB	glad-bed	METALLIC BLACK	Solid wood with finger joint /No Veneer	n/a	81	67	67
+BEVERLY-BL-KB	glad-bed	METALLIC BLACK	Solid wood with finger joint /No Veneer	n/a	87	90	67
+BEVERLY-BL-QB	glad-bed	METALLIC BLACK	Solid wood with finger joint /No Veneer	n/a	87	74	67
+BEVERLY-METALLIC BLACK-CH	glad-chest	Metallic Black with crystal accents	Solid wood with finger joint /No Veneer	n/a	35	17	50
+BEVERLY-METALLIC BLACK-DR	glad-dresser	Metallic Black with crystal accents	Solid wood with finger joint /No Veneer	n/a	64	17	39
+BEVERLY-METALLIC BLACK-MR	glad-mirror	Metallic Black with crystal accents	Solid wood with finger joint /No Veneer	n/a	44	43	1
+BEVERLY-METALLIC BLACK-NS	glad-nightstand	Metallic Black with crystal accents	Solid wood with finger joint /No Veneer	n/a	26	17	29
+JULIET-KB	glenn-bed	n/a	Pine solid with Acacia veneer / Ball Bearing Glides	n/a	98	82	73
+JULIET-QB	glenn-bed	SILVER	Pine solid with Acacia veneer / Ball Bearing Glides	n/a	98	68	70
+JULIET-CH	glenn-chest	SILVER	Pine solid with Acacia veneer	n/a	41	19	55
+JULIET-DR	glenn-dresser	SILVER	Pine solid with Acacia veneer	n/a	68	20	40
+JULIET-MR	glenn-mirror	SILVER	Pine solid with Acacia veneer	n/a	51	41	4
+JULIET-NS	glenn-nightstand	SILVER	Pine solid with Acacia veneer	n/a	30	18	29
+BORDEAUX-FB 	gloriana-bed	Gold	n/a	n/a	84	62	78
+BORDEAUX-KB	gloriana-bed	Gold	n/a	n/a	88	83	78
+BORDEAUX-QB	gloriana-bed	Gold	n/a	n/a	88	67	78
+BORDEAUX-PU/GOLD-CH	gloriana-chest	n/a	Poplar wood, MDF, Birch Veneer	n/a	42	20	58
+BORDEAUX-PU/GOLD-DR 	gloriana-dresser	n/a	Poplar wood, MDF, Birch Veneer	n/a	68	21	41
+BORDEAUX-PU/GOLD-MR	gloriana-mirror	n/a	Poplar wood, MDF, Birch Veneer, PU	n/a	48	2	46
+BORDEAUX-PU/GOLD-NS 	gloriana-nightstand	n/a	Poplar wood, MDF, Birch Veneer	n/a	31	19.5	31
+CARTER-FB	gloriann-bed	BLACK	Rubberwood with finger joint ; MDF 	n/a	82	60	56
+CARTER-KB	gloriann-bed	BLACK	Rubberwood with finger joint ; MDF 	n/a	86	82	56
+CARTER-QB	gloriann-bed	BLACK	Rubberwood with finger joint ; MDF 	n/a	86	66	56
+CARTER - CH	gloriann-chest	BLACK	Rubberwood with finger joint ; MDF 	n/a	34	16	48
+CARTER - D	gloriann-dresser	BLACK	Rubberwood with finger joint ; MDF 	n/a	60	16	36
+CARTER - M	gloriann-mirror	BLACK	Rubberwood with finger joint ; MDF 	n/a	43	2	37
+CARTER - NS	gloriann-nightstand	BLACK	Rubberwood with finger joint ; MDF 	n/a	28	16	26
+PORTOFINO-GOLD-FB	goldie-bed	GOLD	Rubber wood with finger joint /No Veneer	n/a	79	56.5	64
+PORTOFINO-GOLD-KB	goldie-bed	GOLD	Rubber wood with finger joint /No Veneer	n/a	85	79	64
+PORTOFINO-GOLD-QB	goldie-bed	GOLD	Rubber wood with finger joint /No Veneer	n/a	85	63	64
+PORTOFINO-GOLD-CH	goldie-chest	n/a	Rubber wood with finger joint /No Veneer	n/a	38	17	57
+PORTOFINO-GOLD-DR	goldie-dresser	n/a	Rubber wood with finger joint /No Veneer	n/a	65	17	42
+PORTOFINO-GOLD-MR 	goldie-mirror	n/a	Rubber wood with finger joint /No Veneer	n/a	41	1.5	38.5
+PORTOFINO-GOLD-NS	goldie-nightstand	n/a	Rubber wood with finger joint /No Veneer	n/a	26	17	29.5
+SEVILLE-FB	gonzalo-bed	GREY	MDF/MDF Chipboard, Veneer, Rubberwood	n/a	77.5	57	50
+SEVILLE-KB	gonzalo-bed	GREY	MDF/MDF Chipboard, Veneer, Rubberwood	n/a	83	79	50
+SEVILLE-QB	gonzalo-bed	GREY	MDF/MDF Chipboard, Veneer, Rubberwood	n/a	83	63.5	50
+SEVILLE-MALAMINE GREY-CH	gonzalo-chest	n/a	MDF/MDF Chipboard, Veneer, Rubberwood	n/a	34.5	17	51.5
+SEVILLE-MALAMINE GREY-DR	gonzalo-dresser	n/a	MDF/MDF Chipboard, Veneer, Rubberwood	n/a	62	16	39.5
+SEVILLE-MALAMINE GREY-MR	gonzalo-mirror	n/a	MDF/MDF Chipboard, Veneer, Rubberwood	n/a	49	39	2
+SEVILLE-MALAMINE GREY-NS	gonzalo-nightstand	n/a	MDF/MDF Chipboard, Veneer, Rubberwood	n/a	26	17	27
+PISA-FB	gordon-bed	METALLIC GREY	Solid Wood w/ finger joint - no veneer	n/a	77.5	56	42
+PISA-KB	gordon-bed	METALLIC GREY	Solid Wood w/ finger joint - no veneer	n/a	79	86	62
+PISA-QB	gordon-bed	METALLIC GREY	Solid Wood w/ finger joint - no veneer	n/a	86	63	62
+PISA-METALLIC GREY-CH	gordon-chest	METALLIC GREY	solid wood w/finger joint - no veneer	n/a	34	17	50
+PISA-METALLIC GREY-DR	gordon-dresser	METALLIC GREY	solid wood w/finger joint - no veneer	n/a	64	17	38
+PISA-METALLIC GREY-MR W/LIGHT	gordon-mirror	METALLIC GREY	solid wood w/finger joint - no veneer	n/a	46	2	40
+PISA-METALLIC GREY-NS	gordon-nightstand	METALLIC GREY	solid wood w/finger joint - no veneer	n/a	26	17	29
+CASSIE-WH-KB	gote-bed	WHITE/SILVER	SOLID WOOD W/FINGER JOINT / NO VENEER	n/a	n/a	n/a	n/a
+CASSIE-WH-QB	gote-bed	WHITE/SILVER	SOLID WOOD W/FINGER JOINT / NO VENEER	n/a	87	63.5	56.5
+CASSIE-WHITE/SILVER-CH	gote-chest	HIGH GLOSS FINISH W/METALLIC SHEEN	SOLID WOOD W/FINGER JOINT / NO VENEER	n/a	33	16.5	50.5
+CASSIE-WHITE/SILVER-DR	gote-dresser	HIGH GLOSS FINISH W/METALLIC SHEEN	SOLID WOOD W/FINGER JOINT / NO VENEER	n/a	63	16.5	39
+CASSIE-WHITE/SILVER-MR	gote-mirror	HIGH GLOSS FINISH W/METALLIC SHEEN	SOLID WOOD W/FINGER JOINT / NO VENEER	n/a	40	2	44
+CASSIE-WHITE/SILVER-NS	gote-nightstand	HIGH GLOSS FINISH W/METALLIC SHEEN	SOLID WOOD W/FINGER JOINT / NO VENEER	n/a	26	16.5	30
+CATANIA-FB	gracella-bed	MATTE BLACK W/MIRROR ACCENTS	SOLID WOOD W/FINGER JOINT 	n/a	80.5	56.5	64
+CATANIA-KB	gracella-bed	MATTE BLACK W/MIRROR ACCENTS	SOLID WOOD W/FINGER JOINT 	n/a	87.5	80	64
+CATANIA-QB	gracella-bed	MATTE BLACK W/MIRROR ACCENTS	SOLID WOOD W/FINGER JOINT 	n/a	87.25	63	64
+CATANIA-BLACK-CH	gracella-chest	Matte black w/mirror accents	n/a	n/a	38.5	17.25	51
+CATANIA-BLACK-DR	gracella-dresser	Matte black w/mirror accents	n/a	n/a	65	16.75	42
+CATANIA-BLACK-MR	gracella-mirror	Matte black w/mirror accents	n/a	n/a	47	1.75	41.5
+CATANIA-BLACK-NS	gracella-nightstand	Matte black w/mirror accents	n/a	n/a	26	17	30
+DIANA-BL-FB	gracelynne-bed	BLACK	MDF, Birch Veneer	n/a	86	59	69
+DIANA-BL-KB	gracelynne-bed	BLACK	MDF, Poplar Wood	n/a	91.5	65	72
+DIANA-BL-QB	gracelynne-bed	BLACK	MDF, Poplar Wood	n/a	91.5	65	69
+DIANA-BR-FB	gracelynne-bed	BROWN	MDF, Birch Veneer	n/a	86	59	69
+DIANA-BR-KB	gracelynne-bed	Brown	MDF, Birch Veneer	n/a	91.5	65	69
+DIANA-BR-QB	gracelynne-bed	Brown	MDF, Birch Veneer	n/a	91.5	65	69
+DIANA-S-FB	gracelynne-bed	SILVER	MDF, Birch Veneer	n/a	86	59	69
+DIANA-S-KB	gracelynne-bed	SILVER	MDF, Poplar Wood	n/a	91.5	65	69
+DIANA-S-QB	gracelynne-bed	SILVER	MDF, Poplar Wood	n/a	91.5	65	69
+DIANA-BLACK-BENCH	gracelynne-bench	BLACK	n/a	n/a	52	20	18
+DIANA-BROWN-BENCH	gracelynne-bench	Brown	MDF, Birch Veneer	n/a	52	20	18
+DIANA-SILVER-BENCH	gracelynne-bench	SILVER	n/a	n/a	52	20	18
+DIANA-BLACK-CH	gracelynne-chest	BLACK	n/a	n/a	42	18	57
+DIANA-BROWN-CH	gracelynne-chest	Brown	MDF, Birch Veneer	n/a	42	18	57
+DIANA-SILVER-CH	gracelynne-chest	SILVER	n/a	n/a	42	18	57
+DIANA-BLACK-DR	gracelynne-dresser	BLACK	n/a	n/a	68	18	39
+DIANA-BROWN-DR	gracelynne-dresser	Brown	MDF, Birch Veneer	n/a	68	18	39
+DIANA-SILVER-DR	gracelynne-dresser	SILVER	n/a	n/a	68	18	39
+DIANA-BLACK-MR	gracelynne-mirror	BLACK	n/a	n/a	52	3	45
+DIANA-BROWN-MR	gracelynne-mirror	Brown	MDF, Birch Veneer, Glass	n/a	52	3	45
+DIANA-SILVER-MR	gracelynne-mirror	SILVER	n/a	n/a	52	3	45
+DIANA-BLACK-NS W/ USB	gracelynne-nightstand	BLACK	n/a	n/a	29	18	29
+DIANA-BROWN-NS W/ USB	gracelynne-nightstand	Brown	MDF, Birch Veneer	n/a	29	18	28
+DIANA-SILVER-NS W/ USB	gracelynne-nightstand	SILVER	n/a	n/a	29	18	29
+MIRROR(8856)-CHAMP-FB "UPHOLSTERED" 	grady-bed	CHAMPAGNE	MDF, SPECIAL PARTICLE BOARD, POPLAR LVL SLATS 	n/a	83	78	64
+MIRROR(8856)-CHAMP-KB "UPHOLSTERED" 	grady-bed	CHAMPAGNE	MDF, SPECIAL PARTICLE BOARD, POPLAR LVL SLATS 	n/a	99	87	64
+MIRROR(8856)-CHAMP-QB "UPHOLSTERED"	grady-bed	CHAMPAGNE	MDF, SPECIAL PARTICLE BOARD, POPLAR LVL SLATS 	n/a	85	67	62
+MARSEILLE-CH-KB W/O TOWER	graham-bed	Brown	Poplar	n/a	89	84	72.5
+MARSEILLE-CH-KB W/TOWER	graham-bed	Brown	Poplar	n/a	107.5	84	72.5
+MARSEILLE-CH-QB W/O TOWER	graham-bed	Brown	Poplar	n/a	89	68	72.5
+MARSEILLE-CH-QB W/TOWER	graham-bed	Brown	Poplar	n/a	107.5	68	72.5
+MARSEILLE-GR-KB W/O TOWER	graham-bed	Grey	Poplar	n/a	89	84	72.5
+MARSEILLE-GR-KB W/TOWER	graham-bed	Grey	Poplar	n/a	107.5	84	72.5
+MARSEILLE-GR-QB W/O TOWER	graham-bed	Grey	Poplar	n/a	89	68	72.5
+MARSEILLE-GR-QB W/TOWER	graham-bed	Grey	Poplar	n/a	107.5	68	72.5
+MARSEILLE-CHERRY-CH	graham-chest	n/a	n/a	n/a	42	21	58
+MARSEILLE-GREY-CH	graham-chest	n/a	n/a	n/a	42	21	58
+MARSEILLE-CHERRY-DR	graham-dresser	n/a	n/a	n/a	70	20	42
+MARSEILLE-GREY-DR	graham-dresser	n/a	n/a	n/a	70	20	42
+MARSEILLE-CHERRY-MR	graham-mirror	n/a	n/a	n/a	52	5	41
+MARSEILLE-GREY-MR	graham-mirror	n/a	n/a	n/a	52	5	41
+MARSEILLE-CHERRY-NS W/USB	graham-nightstand	n/a	n/a	n/a	30	18	30.5
+MARSEILLE-GREY NS W/USB	graham-nightstand	n/a	n/a	n/a	30	18	30.5
+SANTORINI-WH-FB	granger-bed	METALLIC WHITE/FAUX MARBLE	Solid wood w/finger joint/no veneer w/white marble paper	n/a	80	56.5	60
+SANTORINI-WH-KB	granger-bed	METALLIC WHITE/FAUX MARBLE	Solid wood w/finger joint/no veneer w/white marble paper	n/a	85	79	60
+SANTORINI-WH-QB	granger-bed	METALLIC WHITE/FAUX MARBLE	Solid wood w/finger joint/no veneer w/white marble paper	n/a	85	63	60
+SANTORINI-METALLIC WHITE-CH	granger-chest	n/a	Solid wood w/finger joint/no veneer w/white marble paper 	n/a	33.5	16.5	47.75
+SANTORINI-METALLIC WHITE-DR	granger-dresser	n/a	Solid wood w/finger joint/no veneer w/white marble paper 	n/a	62	16.5	38.5
+SANTORINI-METALLIC WHITE-MR	granger-mirror	n/a	Solid wood w/finger joint/no veneer w/white marble paper 	n/a	43	1	41
+SANTORINI-METALLIC WHITE-NS	granger-nightstand	n/a	Solid wood w/finger joint/no veneer w/white marble paper 	n/a	26.5	16.5	29.25
+MARLEY-M-KB	grant-bed	MERLOT	Tropical wood ; MDF 	n/a	89	79	47
+MARLEY-M-QB	grant-bed	MERLOT	Tropical wood ; MDF 	n/a	89	63	47
+MARLEY-S-FB	grant-bed	SILVER	Tropical wood ; MDF 	n/a	84	57	47
+MARLEY-S-KB	grant-bed	SILVER	Tropical wood ; MDF 	n/a	89	79	47
+MARLEY-S-QB	grant-bed	SILVER	Tropical wood ; MDF 	n/a	89	63	47
+MARLEY - MERLOT - CH	grant-chest	MERLOT	Tropical wood ; MDF 	n/a	32	16	48
+MARLEY - SILVER - CH	grant-chest	SILVER	Tropical wood ; MDF 	n/a	32	16	48
+MARLEY - MERLOT - DR	grant-dresser	MERLOT	Tropical wood ; MDF 	n/a	58	16	33
+MARLEY - SILVER - DR	grant-dresser	SILVER	Tropical wood ; MDF 	n/a	58	16	33
+MARLEY - MERLOT - MR	grant-mirror	MERLOT	Tropical wood ; MDF 	n/a	38	1	38
+MARLEY - SILVER - MR	grant-mirror	SILVER	Tropical wood ; MDF 	n/a	38	1	38
+MARLEY - MERLOT - NS	grant-nightstand	MERLOT	Tropical wood ; MDF 	n/a	22	16	24
+MARLEY - SILVER - NS	grant-nightstand	SILVER	Tropical wood ; MDF 	n/a	22	16	24
+MACKENZIE-FB	grayson-bed	WHITE/SILVER PU	 Solid wood with finger joint / No veneer	n/a	81	57	62
+MACKENZIE-KB	grayson-bed	WHITE/SILVER PU	 Solid wood with finger joint / No veneer	n/a	87	79	56
+MACKENZIE-QB 	grayson-bed	WHITE/SILVER PU	 Solid wood with finger joint / No veneer	n/a	87	63	56
+MACKENZIE - CH 	grayson-chest	WHITE	 Solid wood with finger joint / No veneer	n/a	33	16	49
+MACKENZIE - D 	grayson-dresser	WHITE	 Solid wood with finger joint / No veneer	n/a	62	16	39
+MACKENZIE - M	grayson-mirror	WHITE	 Solid wood with finger joint / No veneer	n/a	42	1	36
+MACKENZIE - PEARLIZED WHITE - NS	grayson-nightstand	WHITE	 Solid wood with finger joint / No veneer	n/a	25	16	28
+HALEY-BROWN-FB	greenleigh-bed	BROWN	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	n/a	n/a	n/a
+HALEY-BROWN-KB	greenleigh-bed	BROWN	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	n/a	n/a	n/a
+HALEY-BROWN-QB	greenleigh-bed	BROWN	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	n/a	n/a	n/a
+HALEY-BROWN-CH	greenleigh-chest	n/a	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	n/a	n/a	n/a
+HALEY-BROWN-DR	greenleigh-dresser	n/a	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	n/a	n/a	n/a
+HALEY-BROWN-MR	greenleigh-mirror	n/a	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	n/a	n/a	n/a
+HALEY-BROWN-NS	greenleigh-nightstand	n/a	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	n/a	n/a	n/a
+MONTEREY-KB	gregory-bed	n/a	n/a	n/a	n/a	n/a	n/a
+MONTEREY-QB	gregory-bed	n/a	n/a	n/a	83	68	62
+MONTEREY-CH	gregory-chest	n/a	n/a	n/a	36.5	17	48.5
+MONTEREY-DR 	gregory-dresser	n/a	n/a	n/a	62	17	40
+MONTEREY-MR	gregory-mirror	n/a	n/a	n/a	46	1	38
+MONTEREY-NS	gregory-nightstand	n/a	n/a	n/a	27	17	23.5
+MIA-BL-FB	griffin-bed	METALLIC BLACK WITH METALLIC SILVER UPHOLSTERY	Solid wood with finger joint / no veneer	n/a	79	56.5	56
+MIA-BL-KB	griffin-bed	METALLIC BLACK WITH METALLIC SILVER UPHOLSTERY	Solid wood with finger joint / no veneer	n/a	85	81	56
+MIA-BL-QB	griffin-bed	METALLIC BLACK WITH METALLIC SILVER UPHOLSTERY	Solid wood with finger joint / no veneer	n/a	85	65	56
+MIA-METALLIC BLACK-CH	griffin-chest	METALLIC BLACK   	n/a	n/a	31	16	48.5
+MIA-METALLIC BLACK-DR	griffin-dresser	METALLIC BLACK   	n/a	n/a	59	16	34
+MIA-METALLIC BLACK-MR	griffin-mirror	METALLIC BLACK   	n/a	n/a	38	38	
+MIA-METALLIC BLACK-NS	griffin-nightstand	METALLIC BLACK   	n/a	n/a	21.5	16	24
+HUDSON(988)-EKB	griselle-bed	ZEBRA GREY & WHITE HG	MDF & Particle Board	n/a	76	80	45
+HUDSON(988)-QB 	griselle-bed	ZEBRA GREY & WHITE HG	MDF & Particle Board	n/a	80	60	45
+HUDSON(988)-CH	griselle-chest	ZEBRA GREY & WHITE HG	MDF & Particle Board	n/a	35	19	45
+HUDSON(988)-D	griselle-dresser	ZEBRA GREY & WHITE HG	MDF & Particle Board	n/a	54	18	32
+HUDSON(988)-M	griselle-mirror	ZEBRA GREY & WHITE HG	MDF & Particle Board	n/a	34	1	44
+HUDSON(988)-NS	griselle-nightstand	ZEBRA GREY & WHITE HG	MDF & Particle Board	n/a	24	17	21
+PENELOPE-KB	guillermo-bed	METALLIC GREY	MDF WITH CROCODILE EMBOSSED	n/a	88	80	64
+PENELOPE-QB	guillermo-bed	METALLIC GREY	MDF WITH CROCODILE EMBOSSED	n/a	88	64	64
+PENELOPE-CH	guillermo-chest	METALLIC GREY	MDF WITH CROCODILE EMBOSSED	n/a	36	18	54
+PENELOPE-D	guillermo-dresser	METALLIC GREY	MDF WITH CROCODILE EMBOSSED	n/a	64	19	38
+PENELOPE-M	guillermo-mirror	METALLIC GREY	MDF WITH CROCODILE EMBOSSED	n/a	48	2	40
+PENELOPE-NS	guillermo-nightstand	METALLIC GREY	MDF WITH CROCODILE EMBOSSED	n/a	29	18	28
+JADE-FB	gunhilda-bed	SILVER CHAMPAGNE	MDF, CHIPBOARD, VENEER, RUBBERWOOD	n/a	78	57	58.5
+JADE-KB	gunhilda-bed	SILVER CHAMPAGNE	MDF, CHIPBOARD, VENEER, RUBBERWOOD	n/a	83	79	58.5
+JADE-QB	gunhilda-bed	SILVER CHAMPAGNE	MDF, CHIPBOARD, VENEER, RUBBERWOOD	n/a	83	63.5	58.5
+JADE-CHAMPAGNE-CH	gunhilda-chest	METALLIC FINISH WITH MIRROR ACCENTS	MDF, CHIPBOARD, VENEER, RUBBERWOOD	n/a	36	17	51
+JADE-CHAMPAGNE-DR	gunhilda-dresser	METALLIC FINISH WITH MIRROR ACCENTS	MDF, CHIPBOARD, VENEER, RUBBERWOOD	n/a	59	17	43
+JADE-CHAMPAGNE-MR	gunhilda-mirror	METALLIC FINISH	MDF, CHIPBOARD, VENEER, RUBBERWOOD	n/a	36	1	31.5
+JADE-CHAMPAGNE-NS	gunhilda-nightstand	METALLIC FINISH WITH MIRROR ACCENTS	MDF, CHIPBOARD, VENEER, RUBBERWOOD	n/a	26	17	28
+JEWEL-GREY-LC	gustaaf-chest	PEWTER GREY W/SILVER GLITTER ACCENT	RUBBERWOOD, MDF	n/a	21	17	64
+JEWEL-GREY-M	gustaaf-mirror	PEWTER GREY W/SILVER GLITTER ACCENT	RUBBERWOOD, MDF	n/a	48	2	41
+JEWEL-GREY-NS	gustaaf-nightstand	PEWTER GREY W/SILVER GLITTER ACCENT	RUBBERWOOD, MDF	n/a	29.5	17	28
+JEWEL-GREY-D	gustaff-dresser	PEWTER GREY W/SILVER GLITTER ACCENT	RUBBERWOOD, MDF	n/a	64	17	38
+JORDYN-GREY-FB	gustav-bed	GREY	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	87	56	56
+JORDYN-GREY-KB	gustav-bed	GREY	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	92	78	56
+JORDYN-GREY-QB	gustav-bed	GREY	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	92	62.5	56
+JORDYN-WHITE-FB	gustav-bed	WHITE	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	87	56	56
+JORDYN-WHITE-KB	gustav-bed	WHITE	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	92	78	56
+JORDYN-WHITE-QB	gustav-bed	WHITE	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	92	62.5	56
+JORDYN-GREY-CH	gustav-chest	n/a	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	35	17	53
+JORDYN-WHITE-CH	gustav-chest	n/a	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	35	17	53
+JORDYN-GREY-DR	gustav-dresser	n/a	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	59	17	39
+JORDYN-WHITE-DR	gustav-dresser	n/a	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	59	17	39
+JORDYN-GREY-MR	gustav-mirror	n/a	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	46	1	34.5
+JORDYN-WHITE-MR	gustav-mirror	n/a	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	46	1	34.5
+JORDYN-GREY-NS	gustav-nightstand	n/a	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	24	17	27
+JORDYN-WHITE-NS	gustav-nightstand	n/a	R/Wood, T/Wood, MDF Board, Chipboard, Plywood	n/a	24	17	27
+KATE-GR-FB 	gwenda-bed	FOIL GREY	Chip Board, MDF, Plywood , PU Paper	n/a	78	57	56
+KATE-GR-KB	gwenda-bed	FOIL GREY	Chip Board, MDF, Plywood , PU Paper	n/a	86	79	56
+KATE-GR-QB	gwenda-bed	FOIL GREY	Chip Board, MDF, Plywood , PU Paper	n/a	86	63	56
+KATE-WH-FB 	gwenda-bed	WHITE	Chip Board, MDF, Plywood , PU Paper	n/a	78	57	56
+KATE-WH-KB 	gwenda-bed	WHITE	Chip Board, MDF, Plywood , PU Paper	n/a	86	79	56
+KATE-WH-QB 	gwenda-bed	WHITE	Chip Board, MDF, Plywood , PU Paper	n/a	86	63	56
+KATE-FOIL GREY-CH	gwenda-chest	FOIL GREY	Chip Board, MDF, Plywood , PU Paper	n/a	31	16	46
+KATE-WHITE-CH	gwenda-chest	WHITE	Chip Board, MDF, Plywood , PU Paper	n/a	31	16	46
+KATE-FOIL GREY-D	gwenda-dresser	FOIL GREY	Chip Board, MDF, Plywood , PU Paper	n/a	58	16	37
+KATE-WHITE-D	gwenda-dresser	WHITE	Chip Board, MDF, Plywood , PU Paper	n/a	58	16	37
+KATE-FOIL GREY-M	gwenda-mirror	FOIL GREY	Chip Board, MDF, Plywood , PU Paper	n/a	39	1	35
+KATE-WHITE-M	gwenda-mirror	WHITE	Chip Board, MDF, Plywood , PU Paper	n/a	39	1	35
+KATE-FOIL GREY-NS	gwenda-nightstand	FOIL GREY	Chip Board, MDF, Plywood , PU Paper	n/a	24	16	25
+KATE-WHITE-NS	gwenda-nightstand	WHITE	Chip Board, MDF, Plywood , PU Paper	n/a	24	16	25
+KYLIE-WHITE/SILVER-KB	gyldan-bed	WHITE/SILVER	SOLID WOOD WITH FINGER JOINT	n/a	85	79	67.5
+KYLIE-WHITE/SILVER-QB	gyldan-bed	WHITE/SILVER	SOLID WOOD WITH FINGER JOINT	n/a	85	63	67.5
+KYLIE-WHITE/SILVER-LC	gyldan-chest	GLASS ACCENTS / UPH FRONT DRAWERS	SOLID WOOD WITH FINGER JOINT	n/a	21	16.5	65
+KYLIE-WHITE/SILVER-DR	gyldan-dresser	GLASS ACCENTS / UPH FRONT DRAWERS 	SOLID WOOD WITH FINGER JOINT	n/a	63.75	16.5	38.25
+KYLIE-WHITE/SILVER-MR	gyldan-mirror	n/a	SOLID WOOD WITH FINGER JOINT	n/a	43	1	43
+KYLIE-WHITE/SILVER-NS	gyldan-nightstand	GLASS ACCENTS / UPH FRONT DRAWERS	SOLID WOOD WITH FINGER JOINT	n/a	26	16.5	28.75

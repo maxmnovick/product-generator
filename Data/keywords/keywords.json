@@ -1,0 +1,18 @@
+{
+	"accent chairs":[],
+	"accent chests":[],
+	"accents":[],
+	"arm chairs":[],
+	"armoires":[],
+	"barstools":[],
+	"beddings":[],
+	"bedroom sets":[],
+	"beds":["king\\s*\\w*\\s*bed"],
+	"chests":["chest"],
+	"desks":["desk$"],
+	"dressers":["dresser"],
+	"mirrors":["mir+or"],
+	"nightstands":["night\s*stand","n/s","night\s*table"],
+	"tv units":["tv panel","tv unit"],
+	"wall units":["wall unit"]
+}
