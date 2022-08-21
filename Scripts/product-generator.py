@@ -30,8 +30,11 @@ cost_idx = 12
 img_src_idx = 13
 barcode_idx = 14
 
-vendor = "Kalaty"
-input = "details"
+# set the seller for different cost to price conversions and other requirements such as if inventory tracking capable
+seller = 'HFF' # examples: JF, HFF
+
+vendor = "Furniture World"
+input = "new" # example inputs: details, options, names, new, all, raw
 output = "product"
 extension = "tsv"
 
@@ -119,11 +122,18 @@ for item_details in all_details:
 	item_details[weight_idx] = weight
 	all_weights.append(weight)
 
+all_weights_in_grams = [] # shopify requires grams
+for item_weight in all_weights:
+	print("item_weight: " + item_weight)
+	weight_in_grams = int(item_weight) * 453.59237
+	all_weights_in_grams.append(str(weight_in_grams))
+
 # use from details table for shopify import
 all_handles = []
 for item_details in all_details:
 	handle = item_details[handle_idx]
 	all_handles.append(handle)
+	
 all_costs = []
 for item_details in all_details:
 	cost = ''
@@ -204,7 +214,12 @@ def compute_vrnt_price(cost, type):
 		rug_deliv_price = 70
 		mattress_multiplier = 3
 		common_deliv_rate = 1.15
-		common_multiplier = 2.4
+		if seller == 'JF':
+			common_multiplier = 2.4
+		elif seller == 'HFF':
+			common_multiplier = 2.0
+		else:
+			common_multiplier = 2.0
 
 		if type == 'rugs':
 			vrnt_price = cost_value * common_multiplier + rug_deliv_price
@@ -386,7 +401,7 @@ def sort_items_by_size(all_item_info, import_type):
 	return all_sorted_items
 
 # print as single string that can then be separated by semicolon delimiter
-def display_shopify_variants():
+def display_shopify_variants(import_tool = 'shopify'): # set import tool when calling to display the variants to be imported with the given import tool, bc they have different import orders although some do not care about order but use the title to determine field value match
 
 	print("\n === Display Shopify Variants === \n")
 
@@ -424,7 +439,23 @@ def display_shopify_variants():
 		sku = all_skus[item_idx]
 		item_weight = all_weights[item_idx]
 
-		final_item_info = sku + ";" + handle + ";" + item_weight + ";" + item_cost + ";" + barcode + ";=" + body_html + ";" + product_option_string + ";" + product_tag_string + ";" + img_src + ";" + product_type + ";" + product_title + ";" + published + ";" + published_scope + ";" + vrnt_inv_tracker + ";" + vrnt_inv_policy + ";" + vrnt_weight_unit + ";" + cmd + ";" + vendor + ";" + vrnt_price + ";" + vrnt_compare_price
+		final_item_info = ""
+		if import_tool == 'shopify':
+			# shopify specific fields
+			standard_product_type = ''
+			item_weight_in_grams = all_weights_in_grams[item_idx]
+			vrnt_fulfill_service = 'manual'
+			vrnt_req_ship = 'TRUE'
+			vrnt_taxable = 'TRUE'
+			img_position = ''
+			img_alt = ''
+			gift_card = 'FALSE'
+			vrnt_tax_code = ''
+			product_status = 'active'
+
+			final_item_info = handle + ";" + product_title + ";" + body_html + ";" + vendor + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + img_src + ";" + img_position + ";" + img_alt + ";" + gift_card + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+		elif import_tool == 'excelify':
+			final_item_info = sku + ";" + handle + ";" + item_weight + ";" + item_cost + ";" + barcode + ";=" + body_html + ";" + product_option_string + ";" + product_tag_string + ";" + img_src + ";" + product_type + ";" + product_title + ";" + published + ";" + published_scope + ";" + vrnt_inv_tracker + ";" + vrnt_inv_policy + ";" + vrnt_weight_unit + ";" + cmd + ";" + vendor + ";" + vrnt_price + ";" + vrnt_compare_price
 
 		#print(final_item_info)
 		all_final_item_info.append(final_item_info)
@@ -443,57 +474,62 @@ all_final_item_info = display_shopify_variants()
 generator.write_data(all_final_item_info, vendor, output, extension)
 
 # ====== Zoho Inventory ======
-print("\n====== Zoho Inventory ======\n")
 
-# generate item names
-item_names = generator.generate_all_item_names(all_details, init_all_details)
-#writer.display_field_values(item_names)
+inventory_enabled = False # ask seller if separate tracking capable and if so what platform (eg zoho inventory)
 
-# generate "inventory" types (formerly "collection" types)
-item_collection_types = generator.generate_all_collection_types(all_details)
-#writer.display_field_values(item_collection_types)
+if inventory_enabled:
 
-# print as single string that can then be separated by comma delimiter
-def display_zoho_items():
+	print("\n====== Zoho Inventory ======\n")
 
-	all_final_item_info = []
+	# generate item names
+	item_names = generator.generate_all_item_names(all_details, init_all_details)
+	#writer.display_field_values(item_names)
 
-	for item_idx in range(len(item_names)):
+	# generate "inventory" types (formerly "collection" types)
+	item_collection_types = generator.generate_all_collection_types(all_details)
+	#writer.display_field_values(item_collection_types)
 
-		# fields generated specifically for zoho import
-		item_name = item_names[item_idx]
-		item_collection_type = item_collection_types[item_idx]
+	# print as single string that can then be separated by comma delimiter
+	def display_zoho_items():
 
-		ref_num = item_idx + 1
-		account = 'Cost of Goods Sold'
-		reason = 'Update Inventory'
+		all_final_item_info = []
 
-		# fields determined by request content/context
-		adj_date = ''
-		warehouse = ''
-		qty_adj = ''
-		adj_descrip = ''
+		for item_idx in range(len(item_names)):
 
-		# fields copied from details to zoho import
-		item_width = all_widths[item_idx]
-		item_depth = all_depths[item_idx]
-		item_height = all_heights[item_idx]
+			# fields generated specifically for zoho import
+			item_name = item_names[item_idx]
+			item_collection_type = item_collection_types[item_idx]
 
-		# general fields
-		sku = all_skus[item_idx]
-		item_weight = all_weights[item_idx]
+			ref_num = item_idx + 1
+			account = 'Cost of Goods Sold'
+			reason = 'Update Inventory'
 
-		final_item_info = sku + ";" + item_name + ";" + item_width + ";" + item_depth + ";" + item_height + ";" + item_weight + ";" + item_collection_type + ";" + str(ref_num) + ";" + account + ";" + reason + ";" + vendor + ";" + adj_date + ";" + warehouse + ";" + adj_descrip + ";" + qty_adj
+			# fields determined by request content/context
+			adj_date = ''
+			warehouse = ''
+			qty_adj = ''
+			adj_descrip = ''
 
-		#print(final_item_info)
-		all_final_item_info.append(final_item_info)
+			# fields copied from details to zoho import
+			item_width = all_widths[item_idx]
+			item_depth = all_depths[item_idx]
+			item_height = all_heights[item_idx]
 
-	import_type = 'zoho'
-	sorted_final_item_info = sort_items_by_size(all_final_item_info, import_type)
-	#sorted_final_item_info = all_final_item_info
+			# general fields
+			sku = all_skus[item_idx]
+			item_weight = all_weights[item_idx]
 
-	writer.display_zoho_item_headers()
-	for item_info in sorted_final_item_info:
-		print(item_info)
+			final_item_info = sku + ";" + item_name + ";" + item_width + ";" + item_depth + ";" + item_height + ";" + item_weight + ";" + item_collection_type + ";" + str(ref_num) + ";" + account + ";" + reason + ";" + vendor + ";" + adj_date + ";" + warehouse + ";" + adj_descrip + ";" + qty_adj
 
-display_zoho_items()
+			#print(final_item_info)
+			all_final_item_info.append(final_item_info)
+
+		import_type = 'zoho'
+		sorted_final_item_info = sort_items_by_size(all_final_item_info, import_type)
+		#sorted_final_item_info = all_final_item_info
+
+		writer.display_zoho_item_headers()
+		for item_info in sorted_final_item_info:
+			print(item_info)
+
+	display_zoho_items()
