@@ -6,7 +6,7 @@ import numpy as np
 
 # order of detail fields
 sku_idx = 0
-handle_idx = 1
+collection_idx = handle_idx = 1 # formerly handle_idx = 1 when we were given handle but now we need to make handle from description and collection name
 title_idx = 2
 intro_idx = 3
 color_idx = 4
@@ -72,6 +72,7 @@ def extract_data(vendor, input, extension):
 # write data from a list into a file
 def write_data(arranged_data, vendor, output, extension):
 	output = re.sub(' ','-',output)
+	vendor = re.sub(' ','-',vendor)
 	catalog_filename = "../Data/" + vendor + "-" + output + "-import." + extension
 	catalog_file = open(catalog_filename, "w", encoding="utf8") # overwrite existing content
 
@@ -82,12 +83,67 @@ def write_data(arranged_data, vendor, output, extension):
 
 	catalog_file.close()
 
+# generate handles based on descriptions or titles (see handle-generator.py)
+def generate_handle(item_details):
+
+	# descrip of what type of furniture needed to make title
+	descrip = final_title_suffix = final_handle_suffix = final_handle = ''
+
+	output = "title"
+	all_keywords = reader.read_keywords(output)
+
+	if len(item_details) > 0:
+		# need to know field number in given table (in this case catalog table but could also use product names table)
+		sku = item_details[sku_idx]
+		descrip = item_details[title_idx]
+		collection_name = item_details[collection_idx]
+
+		# keywords in form without dashes so remove excess from descrip to compare to keywords
+		plain_descrip = descrip.lower().strip()
+
+		for title_suffix, title_keywords in all_keywords.items():
+			#print("Title Suffix: " + title_suffix)
+			#print("Title Keywords: " + str(title_keywords))
+			for keyword in title_keywords:
+				#print("Keyword: " + keyword + "\n")
+				if re.search(keyword,plain_descrip):
+					final_title_suffix = title_suffix
+					break
+
+			if final_title_suffix != '':
+				break
+
+		# go from title format to handle format by adding dashes b/t words, b/c already lowercase
+		final_handle_suffix = re.sub(' ','-',final_title_suffix)
+		#print("Final Handle Suffix: " + final_handle_suffix)
+		collection_name = re.sub(' ','-',collection_name)
+
+		final_handle = collection_name + "-" + final_handle_suffix
+	else:
+		print("Warning: No details for this item!")
+
+	return final_handle
+
+# generate all handles for a set of products
+def generate_all_handles(all_details):
+	all_handles = []
+
+	for item_details in all_details:
+		handle = generate_handle(item_details)
+		all_handles.append(handle)
+
+	return all_handles
+
 # title is based on handle
-def generate_title(item_details):
+# so do we need to add generate handle fcn here or just pass it the handle as a param?
+# it simplifies the params if only given item details and it is more robust only if it was reading the title of the column/field whereas right now it is given a set column coordinate
+def generate_title(item_details, handle=''):
 	handle = title = ''
 
 	if len(item_details) > 0:
-		handle = item_details[1].strip().lower()
+		if handle == '':
+			handle = generate_handle(item_details)
+
 		#print("Handle: " + handle)
 
 		if handle != '':
@@ -107,11 +163,15 @@ def generate_title(item_details):
 	return title
 
 # generate all titles for a set of products
-def generate_all_titles(all_details):
+def generate_all_titles(all_details, all_handles=[]):
 	all_titles = []
 
-	for item_details in all_details:
-		title = generate_title(item_details)
+	handle = ''
+	for item_idx in range(len(all_details)):
+		item_details = all_details[item_idx]
+		if len(all_handles) == len(all_details):
+			handle = all_handles[item_idx]
+		title = generate_title(item_details, handle)
 		all_titles.append(title)
 
 	return all_titles
@@ -209,7 +269,7 @@ def generate_product_type(item_details):
 
 	# look at item handle to determine type
 	if len(item_details) > 0:
-		handle = item_details[1].strip().lower() # need to know field number in given table
+		handle = generate_handle(item_details) #item_details[1].strip().lower() # need to know field number in given table
 
 		if handle != '':
 			# keywords in form without dashes so remove dashes from handle to compare to keywords
@@ -231,7 +291,7 @@ def generate_product_type(item_details):
 	else:
 		print("Warning: No details for this item!")
 
-	return final_type
+	return final_type.capitalize()
 
 def generate_all_product_types(all_details):
 	all_product_types = []
@@ -241,6 +301,29 @@ def generate_all_product_types(all_details):
 		all_product_types.append(types)
 
 	return all_product_types
+
+def generate_product_img_src(item_details):
+
+	img_src = item_details[img_src_idx]
+
+	if re.search('drive.google.com',img_src):
+		# extract ID
+		img_id = re.sub("https://drive.google.com/file/d/|/view\?usp=sharing","",img_src)
+		#img_id = re.sub("/view\?usp=sharing","",img_id)
+		print("img_id: " + img_id)
+
+		img_src = "https://drive.google.com/uc?export=view&id=" + img_id
+
+	return img_src
+
+def generate_all_product_img_srcs(all_details):
+	all_product_img_srcs = []
+
+	for item_details in all_details:
+		img_srcs = generate_product_img_src(item_details)
+		all_product_img_srcs.append(img_srcs)
+
+	return all_product_img_srcs
 
 def generate_options(item_details, init_item_details):
 

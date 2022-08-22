@@ -124,7 +124,7 @@ for item_details in all_details:
 
 all_weights_in_grams = [] # shopify requires grams
 for item_weight in all_weights:
-	print("item_weight: " + item_weight)
+	#print("item_weight: " + item_weight)
 	weight_in_grams = int(item_weight) * 453.59237
 	all_weights_in_grams.append(str(weight_in_grams))
 
@@ -178,8 +178,12 @@ print("\n====== Shopify Product Catalog ======\n")
 
 #writer.display_all_item_details(init_all_details)
 
-# generate titles
-product_titles = generator.generate_all_titles(all_details)
+# generate handles
+product_handles = generator.generate_all_handles(all_details)
+#writer.display_field_values(product_handles)
+
+# generate titles, based on handles
+product_titles = generator.generate_all_titles(all_details, product_handles)
 #writer.display_field_values(product_titles)
 
 # generate tags
@@ -189,6 +193,10 @@ product_tags = generator.generate_all_tags(all_details, vendor)
 # generate product types
 product_types = generator.generate_all_product_types(all_details)
 #writer.display_field_values(product_types)
+
+# generate product img srcs
+product_img_srcs = generator.generate_all_product_img_srcs(all_details)
+writer.display_field_values(product_img_srcs)
 
 # generate options
 product_options = generator.generate_all_options(all_details, init_all_details) # we need init details to detect measurement type
@@ -410,22 +418,27 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 	for item_idx in range(len(product_titles)):
 
 		# fields copied from details to shopify import
-		handle = all_handles[item_idx]
+		#handle = all_handles[item_idx] formerly copied directly from catalog table but now made automatically from raw data descrip and collection name (if col name not given by vendor then look in product names table)
 		item_cost = all_costs[item_idx]
 		barcode = all_barcodes[item_idx]
-		img_src = all_img_srcs[item_idx]
+		#img_src = all_img_srcs[item_idx] # formerly copied from catalog but img src may need to be reformatted as with google drive
 
 		# fields generated specifically for shopify import
+		product_handle = product_handles[item_idx] # added new way to make product handle 8/21/22
 		product_title = product_titles[item_idx]
 		product_tag_string = product_tags[item_idx]
 		product_type = product_types[item_idx]
+		product_img_src = product_img_srcs[item_idx]
 
 		product_option_string = writer.format_option_string(product_options[item_idx])
 
 		body_html = product_descriptions[item_idx]
-
-		vrnt_inv_tracker = 'shopify'
-		vrnt_inv_policy = 'continue'
+		vrnt_inv_tracker = '' # leave blank unless inv track capable
+		vrnt_inv_policy = ''
+		if import_tool == 'excelify':
+			vrnt_inv_policy = 'continue'
+		else:
+			vrnt_inv_policy = 'deny'
 		vrnt_weight_unit = 'lb'
 		cmd = 'UPDATE'
 		vrnt_price = compute_vrnt_price(item_cost, product_type)
@@ -444,6 +457,7 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 			# shopify specific fields
 			standard_product_type = ''
 			item_weight_in_grams = all_weights_in_grams[item_idx]
+			vrnt_inv_qty = ''
 			vrnt_fulfill_service = 'manual'
 			vrnt_req_ship = 'TRUE'
 			vrnt_taxable = 'TRUE'
@@ -453,9 +467,13 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 			vrnt_tax_code = ''
 			product_status = 'active'
 
-			final_item_info = handle + ";" + product_title + ";" + body_html + ";" + vendor + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + img_src + ";" + img_position + ";" + img_alt + ";" + gift_card + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+			print("product_type: " + product_type)
+
+			vrnt_img = product_img_src # still need to account for multiple img srcs given
+
+			final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
 		elif import_tool == 'excelify':
-			final_item_info = sku + ";" + handle + ";" + item_weight + ";" + item_cost + ";" + barcode + ";=" + body_html + ";" + product_option_string + ";" + product_tag_string + ";" + img_src + ";" + product_type + ";" + product_title + ";" + published + ";" + published_scope + ";" + vrnt_inv_tracker + ";" + vrnt_inv_policy + ";" + vrnt_weight_unit + ";" + cmd + ";" + vendor + ";" + vrnt_price + ";" + vrnt_compare_price
+			final_item_info = sku + ";" + product_handle + ";" + item_weight + ";" + item_cost + ";" + barcode + ";=" + body_html + ";" + product_option_string + ";" + product_tag_string + ";" + product_img_src + ";" + product_type + ";" + product_title + ";" + published + ";" + published_scope + ";" + vrnt_inv_tracker + ";" + vrnt_inv_policy + ";" + vrnt_weight_unit + ";" + cmd + ";" + vendor + ";" + vrnt_price + ";" + vrnt_compare_price
 
 		#print(final_item_info)
 		all_final_item_info.append(final_item_info)
