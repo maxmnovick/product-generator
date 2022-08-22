@@ -237,7 +237,8 @@ def generate_tags(item_details, vendor):
 	finish_tags = finish_tags.rstrip(', ')
 	#print("Finish Tags: " + finish_tags)
 
-	tags = vendor + publication_year
+	
+	tags = vendor + " " + publication_year # desired space bt vendor and pub yr in case vendor name has multiple parts
 
 	if colors != "n/a":
 		tags += ", " + color_tags
