@@ -1,7 +1,7 @@
 # generator.py
 # functions for a generator
 
-import reader, re, datetime, math
+import reader, re, datetime, math, random
 import numpy as np
 
 # order of detail fields
@@ -844,18 +844,77 @@ def isolate_product_strings(all_imports, import_type):
 	#print("Products: " + str(products) + "\n")
 	return products
 
+# originally based on capitalizing sentences for an intro paragraph
 def capitalize_sentences(intro):
-	final_intro = ''
+
+	print("\n===Capitalize Sentences===\n")
+
+	final_sentences = ''
 
 	intro_sentences = intro.split('.')
 	#print("intro_sentences: " + str(intro_sentences))
 	for sentence in intro_sentences:
-		if sentence != '':
-			#print("sentence: " + sentence)
-			sentence = sentence.strip().capitalize() + '. '
-			final_intro += sentence
+		if len(sentence) > 1: # if space after last sentence then there will be a blank last element which should not be taken
+			
+			sentence = sentence.strip()
+			print("sentence: \'" + sentence + '\'')
 
-	return final_intro
+			# if sentence starts with numerals or special characters, get idx of first letter
+			first_letter_idx = 0
+
+			first_letter_idx = re.search('\w', sentence).start()
+			print("first_letter_idx: " + str(first_letter_idx))
+			if first_letter_idx == 0:
+				sentence = sentence[first_letter_idx].upper() + sentence[first_letter_idx+1:] + '. '
+			else:
+				sentence = sentence[:first_letter_idx] + sentence[first_letter_idx].upper() + sentence[first_letter_idx+1:] + '. ' #sentence = sentence.strip().capitalize() + '. '
+			final_sentences += sentence
+
+	print("final_sentences: " + final_sentences)
+	return final_sentences
+
+def generate_intro(item_details):
+	intro = ''
+
+	# intro variables based on item details
+	product_type = generate_product_type(item_details)
+
+	room_type = 'room'
+	product_name = str.capitalize(item_details[collection_idx]) #'this product'
+	room_activity = 'living'
+
+	# parts of speech change based on product type
+	pronoun = 'your'
+
+	# make map matching product type to room type
+	if product_type == 'sofas':
+		room_type = 'living room'
+
+	if room_type == 'room':
+		pronoun = 'its'
+
+	product_type = product_type.lower() # make lowercase unless start of sentence bc source uses uppercase as it is a grouping by Type
+	product_type_singular = product_type
+	if product_type == '':
+		product_type = product_type_singular = 'pieces'
+
+	elif product_type[-1] == 's':
+		product_type_singular = product_type[:-1]
+
+
+	intro1 = 'This exceptional ' + product_type_singular + ' will make ' + pronoun + ' ' + room_type + ' the most delightful room in your home'
+
+	intro2 = str.capitalize(product_name) + ' is here to help with your design problem. Available in our most popular materials for speedier delivery, this distinguished ' + product_type_singular + ' is elegant, traditional, and crafted by hand, just the way you would expect our preeminent ' + product_type + ' to be'
+
+	intro3 = 'Elegant ' + room_activity + ' is ' + product_name + '\'s speciality—so much so that you\'ll want to keep it forever. From all sides, you see a graceful shape that is perfectly balanced and sturdy, while remaining lightweight for convenience'
+
+	intro_templates = [intro1, intro2, intro3]
+
+	intro = random.choice(intro_templates)
+
+	print(intro)
+
+	return intro
 
 def generate_intro_fmla(product):
 	intro_fmla = "\"\""
@@ -868,7 +927,10 @@ def generate_intro_fmla(product):
 			handle = variant[1].strip().lower()
 			#print("Handle: " + handle)
 			intro = variant[3].strip().lower()
-			#print("Intro: " + intro)
+			print("Intro: " + intro)
+			# if no intro given then generate one
+			if intro == '' or intro == 'intro':
+				intro = generate_intro(variant)
 
 		if intro != '' and intro != 'n/a':
 			intro = capitalize_sentences(intro)
@@ -1484,6 +1546,16 @@ def generate_dimensions_fmla(product, init_product):
 
 	return dimensions_fmla
 
+def generate_features(item_details):
+	print("\n===Generate Features===\n")
+	
+	# bullet point indicates new line in features fmla so use bullet point for new line
+	features = '• Perfectly balanced and sturdy • Lightweight and easy to carry for convenience. • Durable construction, built to last. '
+
+	print("Features: " + features)
+	return features
+
+
 def generate_features_fmla(product):
 	features_fmla = "\"\""
 
@@ -1495,22 +1567,35 @@ def generate_features_fmla(product):
 			handle = variant[1].strip().lower()
 			#print("Handle: " + handle)
 			features = variant[11].strip()
-			#print("Features: " + features)
+			print("Features: " + features)
+			# if no intro given then generate one
+			if features == '' or str.lower(features) == 'features':
+				features = generate_features(variant)
 
 		if features != '' and features != 'n/a':
 			# need better way to check if there are no proper nouns that should stay capitalized, b/c too blunt to lowercase everything
 			features = features.lower()
-			features = capitalize_sentences(features).strip()
 
-			features = re.sub('\"','\",CHAR(34),\"', features) # if quotes found in features, such as for dimensions, then fmla will incorrectly interpret that as closing string
-			features = re.sub(' •','. •', features) # add periods at end of lines
+			# add periods before bullets
+			# make sure no extra periods added so no double periods if sentence already has period at end
+			features = re.sub(r"([^\.])\s•",r"\1. •", features) 
 			if features[-1] != '.':
 				#print("Last character: " + features[-1])
 				features += '. '
+
+			features = capitalize_sentences(features).strip()
+
+			features = re.sub('\"','\",CHAR(34),\"', features) # if quotes found in features, such as for dimensions, then fmla will incorrectly interpret that as closing string
+			
+			
+
 			features = re.sub('•','\",CHAR(10),\"• \",\"', features) # bullet point indicates new line
 			features = re.sub('    ','\",CHAR(10),\"• \",\"', features) # 4 spaces indicates new line
 			features = re.sub('ï|Ï','\",CHAR(10),\"• \",\"', features) # ï character indicates new line (for Coaster)
 			features_fmla = "\"" + features + "\""
+
+			
+
 		#print("Features Formula: " + features_fmla)
 
 	return features_fmla
