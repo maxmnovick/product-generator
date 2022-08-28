@@ -1739,7 +1739,7 @@ def generate_dimensions_html(product, init_product):
 
 	dimensions_html = "" # init fmla for this part of the description
 	if determine_given_dimensions(product): # if we are NOT given dimensions we do not include dimensions in the description
-		dimensions_html = "<table><tr><td>Dimensions (in): </td><td>" # only if at least 1 of the variants has dimensions
+		dimensions_html = "<table><tr><td>Dimensions (in.): </td><td>" # only if at least 1 of the variants has dimensions
 
 		#sizes = set_option_values(product, 'Size')
 		opt_name = 'Size' # choose what option we want to show
