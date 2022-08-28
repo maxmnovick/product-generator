@@ -461,26 +461,52 @@ def generate_all_options(all_details, init_all_details):
 def generate_description(product, init_product):
 	descrip_instances = []
 
-	intro_fmla = generate_intro_fmla(product)
+	body_html = ""
 
-	colors_fmla = generate_colors_fmla(product,init_product)
+	html_descrip = True # user input based on spreadsheet tool. we want to use html bc we need to make a table format for data. 
+	
+	if html_descrip == True:
+		
+		intro_html = generate_intro_html(product)
 
-	materials_fmla = generate_materials_fmla(product)
+		colors_html = generate_colors_html(product,init_product)
 
-	finishes_fmla = generate_finishes_fmla(product)
+		materials_html = generate_materials_html(product)
 
-	dimensions_fmla = generate_dimensions_fmla(product,init_product)
+		finishes_html = generate_finishes_html(product)
 
-	features_fmla = generate_features_fmla(product)
+		dimensions_html = generate_dimensions_html(product,init_product)
 
-	#arrival_fmla = generate_arrival_fmla(product) # arrival time, such as Arrives: 3-4 weeks from Date of Purchase (eventually update dynamically based on date of purchase)
+		features_html = generate_features_html(product)
 
-	descrip_fmla = "=CONCATENATE(" + intro_fmla  + ",CHAR(10)," + colors_fmla  + ",CHAR(10)," + materials_fmla  + ",CHAR(10)," + finishes_fmla  + ",CHAR(10)," + dimensions_fmla + ",CHAR(10)," + features_fmla + ")"
+		#arrival_html = generate_arrival_html(product) # arrival time, such as Arrives: 3-4 weeks from Date of Purchase (eventually update dynamically based on date of purchase)
+
+		descrip_html = intro_html + colors_html + materials_html + finishes_html + dimensions_html + features_html
+		body_html = descrip_html
+
+	elif html_descrip == False:
+
+		intro_fmla = generate_intro_fmla(product)
+
+		colors_fmla = generate_colors_fmla(product,init_product)
+
+		materials_fmla = generate_materials_fmla(product)
+
+		finishes_fmla = generate_finishes_fmla(product)
+
+		dimensions_fmla = generate_dimensions_fmla(product,init_product)
+
+		features_fmla = generate_features_fmla(product)
+
+		#arrival_fmla = generate_arrival_fmla(product) # arrival time, such as Arrives: 3-4 weeks from Date of Purchase (eventually update dynamically based on date of purchase)
+
+		descrip_fmla = "=CONCATENATE(" + intro_fmla  + ",CHAR(10)," + colors_fmla  + ",CHAR(10)," + materials_fmla  + ",CHAR(10)," + finishes_fmla  + ",CHAR(10)," + dimensions_fmla + ",CHAR(10)," + features_fmla + ")"
+		body_html = descrip_fmla
 
 	# all variants of the product get the same description
 	# the variants must be ordered by options, based on knowledge of desired option order and available options
 	for variant in product:
-		descrip_instances.append(descrip_fmla)
+		descrip_instances.append(body_html)
 
 	return descrip_instances
 
@@ -940,6 +966,30 @@ def generate_intro_fmla(product):
 
 	return intro_fmla
 
+def generate_intro_html(product):
+	intro_html = ""
+
+	for variant in product:
+
+		intro = ''
+
+		if len(variant) > 3:
+			handle = variant[1].strip().lower()
+			#print("Handle: " + handle)
+			intro = variant[3].strip().lower()
+			print("Intro: " + intro)
+			# if no intro given then generate one
+			if intro == '' or intro == 'intro':
+				intro = generate_intro(variant)
+
+		if intro != '' and intro != 'n/a':
+			intro = capitalize_sentences(intro)
+			#intro = re.sub('\"','\",CHAR(34),\"', intro) # if quotes found in intro, such as for dimensions, then fmla will incorrectly interpret that as closing string
+			intro_html = "<p>" + intro + "</p>"
+		#print("Intro HTML: " + intro_html)
+
+	return intro_html
+
 def determine_given_colors(product_details):
 	given_colors = True
 
@@ -1044,6 +1094,92 @@ def generate_colors_fmla(product, init_product):
 
 	return final_colors_fmla
 
+def generate_colors_html(product, init_product):
+
+	final_colors_html = "" # init fmla for this part of the description
+	if determine_given_colors(product): # if we are NOT given colors we do not include colors in the description
+		final_colors_html = "<table><tr><td>Colors: " # only if at least 1 of the variants has colors
+
+		opt_name = 'Color' # choose what option we want to show
+		standard_type = opt_name.lower() + "s" # standards are defined in the data/standards folder
+		options = reader.read_standards(standard_type) # get dict of options
+		color_options = options[opt_name]
+		#print("Color Options: " + str(color_options))
+
+		valid_opt = False
+
+		for vrnt_idx in range(len(product)):
+			variant = product[vrnt_idx]
+			init_variant = init_product[vrnt_idx]
+
+			valid_opt = False
+
+			colors = ''
+
+			if len(variant) > 4:
+				handle = variant[1].strip().lower()
+				#print("Handle: " + handle)
+				colors = variant[4].strip().lower()
+				#print("Colors: " + colors)
+
+			colors_html = '' # init option fmla so if no value given it is empty quotes
+			if colors != '' and colors != 'n/a':
+				#colors = re.sub('\"','\",CHAR(34),\"', colors) # if something like "red" brown is given as colors, then fmla will incorrectly interpret that as closing string
+				colors_html = "</td><td>" + colors.title()
+			#print("Colors Formula: " + colors_fmla)
+
+			option_data = generate_options(variant, init_variant)
+
+			if len(option_data) > 0:
+				option_names = option_data[0]
+				#print("Option Names: " + str(option_names))
+				option_values = option_data[1]
+				#print("Option Values: " + str(option_values))
+
+			# get the value of the size option, if there is one
+			opt_idx = 0
+			for current_opt_name in option_names:
+				if current_opt_name == opt_name:
+					#print("Valid Opt: " + opt_name)
+					valid_opt = True
+					break
+				opt_idx += 1
+
+
+			#print("Opt Idx: " + str(opt_idx))
+			if valid_opt:
+				opt_value = option_values[opt_idx]
+				#print("Option Value: " + opt_value)
+
+				opt_html = colors_html
+
+				color_options[opt_value] = opt_html
+
+		#print("Populated Option Values: " + opt_name + ": " + str(color_options))
+
+		# now we have populated all color values for this product
+		# so create color fmla by looping through colors and printing those with valid values
+		if valid_opt:
+			#print("Colors: ")
+			opt_idx = 0
+			for color_name, color_value in color_options.items():
+				if color_value != '':
+					variant_color_html = color_value
+					#print(variant_color_html)
+					if opt_idx == 0:
+						final_colors_html += variant_color_html
+					else:
+						final_colors_html += ", or " + variant_color_html
+					opt_idx += 1
+			#print()
+			final_colors_html += ". </td></tr>"
+		else:
+			final_colors_html += colors_html + ". </td></tr>"
+
+	#print("Colors HTML: " + final_colors_html + "\n")
+
+	return final_colors_html
+
 def determine_given_materials(product_details):
 	given_materials = True
 
@@ -1088,6 +1224,33 @@ def generate_materials_fmla(product):
 
 	return final_materials_fmla
 
+def generate_materials_html(product):
+
+	final_materials_html = "<tr>" # init fmla for this part of the description
+	if determine_given_materials(product): # if we are NOT given materials we do not include materials in the description
+		print("\n===GIVEN MATERIALS===\n")
+		final_materials_html = "<tr><td>Materials: </td>" # only if at least 1 of the variants has materials
+		print("final_materials_html: " + final_materials_html)
+		# for now, only handle cases where all variants have same material
+		variant1 = product[0]
+
+		materials = ''
+
+		if len(variant1) > 5:
+			handle = variant1[1].strip().lower()
+			materials = variant1[5].strip().lower()
+
+		materials_html = '' # init option fmla so if no value given it is empty quotes
+		if materials != '' and materials != 'n/a':
+			# format materials string by correcting typos and replacing invalid characters
+			#materials = re.sub('\"','\'', materials) # if something like "s" spring is given as material, then fmla will incorrectly interpret that as closing string
+
+			materials_html = "<td>" + materials.title() + ". </td></tr>"
+
+		final_materials_html += materials_html
+
+	return final_materials_html
+
 def determine_given_finishes(product_details):
 	given_finishes = True
 
@@ -1128,6 +1291,32 @@ def generate_finishes_fmla(product):
 		final_finishes_fmla += "," + finishes_fmla + ",\". \""
 
 	return final_finishes_fmla
+
+def generate_finishes_html(product):
+
+	final_finishes_html = "" # init fmla for this part of the description
+	if determine_given_finishes(product): # if we are NOT given finishes we do not include finishes in the description
+		final_finishes_html = "<tr><td>Finishes: </td>" # only if at least 1 of the variants has finishes
+
+		# for now, only handle cases where all variants have same material
+		variant1 = product[0]
+
+		finishes = ''
+
+		if len(variant1) > 6:
+			handle = variant1[1].strip().lower()
+			finishes = variant1[6].strip().lower()
+
+		finishes_html = '' # init option fmla so if no value given it is empty quotes
+		if finishes != '' and finishes != 'n/a':
+			finishes_html = "<td>" + finishes.title() + ". </td></tr>"
+
+		final_finishes_html += finishes_html + "</table>"
+	else:
+		# close the description data table
+		final_finishes_html = "</table>"
+
+	return final_finishes_html
 
 def determine_given_dimensions(product_details):
 	given_dims = True
@@ -1546,6 +1735,135 @@ def generate_dimensions_fmla(product, init_product):
 
 	return dimensions_fmla
 
+def generate_dimensions_html(product, init_product):
+
+	dimensions_html = "" # init fmla for this part of the description
+	if determine_given_dimensions(product): # if we are NOT given dimensions we do not include dimensions in the description
+		dimensions_html = "<table><tr><td>Dimensions (in): </td><td>" # only if at least 1 of the variants has dimensions
+
+		#sizes = set_option_values(product, 'Size')
+		opt_name = 'Size' # choose what option we want to show
+		standard_type = opt_name.lower() + "s" # standards are defined in the data/standards folder
+		options = reader.read_standards(standard_type) # get dict of options
+		size_options = options[opt_name]
+		#print("Size Options: " + str(size_options))
+
+		valid_opt = False
+
+		# sort variants
+		#print("Sort Init Variants")
+		init_sorted_variants = sort_variants_by_size(init_product)
+		#print("Sort Variants")
+		sorted_variants = sort_variants_by_size(product)
+
+		type = ''
+
+		for vrnt_idx in range(len(sorted_variants)):
+			variant = sorted_variants[vrnt_idx]
+			init_variant = init_sorted_variants[vrnt_idx]
+
+			valid_opt = False
+
+			type = generate_product_type(variant)
+
+			width = depth = height = ''
+
+			if len(variant) > 7:
+				handle = variant[1].strip().lower()
+				#print("Handle: " + handle)
+				width = variant[7].strip()
+
+				if len(variant) > 8:
+					depth = variant[8].strip()
+
+					if len(variant) > 9:
+						height = variant[9].strip()
+
+			blank_width = blank_depth = blank_height = True
+			if width != '' and width != 'n/a':
+				blank_width = False
+			if depth != '' and depth != 'n/a':
+				blank_depth = False
+			if height != '' and height != 'n/a':
+				blank_height = False
+
+			dim_html = ''
+			width_html = depth_html = height_html = '' # init option fmla so if no value given it is empty quotes
+			if not blank_width:
+				width_html = width + "\" W"
+				dim_html = width_html
+			if not blank_depth:
+				depth_html = depth + "\" D"
+				if blank_width:
+					dim_html = depth_html
+				else:
+					dim_html += " x " + depth_html
+			if not blank_height:
+				height_html = height + "\" H"
+				if blank_width and blank_height:
+					dim_html = height_html
+				else:
+					dim_html += " x " + height_html
+
+			dim_html += ". </td></tr>"
+
+			option_data = generate_options(variant, init_variant)
+			#print("Option Data: " + str(option_data))
+			option_names = []
+			option_values = []
+			if len(option_data) > 0:
+				option_names = option_data[0]
+				option_values = option_data[1]
+
+			# order option values from large to small, and correspond with dim_fmla
+
+			# get the value of the size option, if there is one
+			opt_idx = 0
+			for current_opt_name in option_names:
+				if current_opt_name == opt_name:
+					valid_opt = True
+					break
+				opt_idx += 1
+
+			if valid_opt:
+				opt_value = option_values[opt_idx] # option value is dictionary key
+
+				opt_fmla = dim_html
+
+				# before assigning to options dict, could sort dims but could also sort after by checking if custom dims and storing in separate array to sort
+				size_options[opt_value] = opt_fmla
+
+		#print(opt_name + ": " + str(size_options))
+
+		# now we have populated all size values for this product
+		# so create dim fmla by looping through sizes and printing those with valid values
+		if valid_opt:
+			#print("Dimensions: ")
+
+			# reorder custom dims from large to small
+
+			for size, dims in size_options.items():
+				if dims != '':
+					#print("Dims: " + dims)
+					if type == 'rugs':
+						variant_dim_html = dims # do not add quote-comma to dims b/c already there
+						#print("variant_dim_fmla: " + variant_dim_fmla)
+						dimensions_html += variant_dim_html
+					else:
+						size_html = size + ": "
+						#print("size_html: " + size_html)
+						variant_dim_html = size_html + dims
+						#print(variant_dim_fmla)
+						dimensions_html += variant_dim_html
+
+			#print()
+		else:
+			dimensions_html += dim_html + "</table>"
+
+	#print("Dimensions HTML: " + dimensions_html + "\n")
+
+	return dimensions_html
+
 def generate_features(item_details):
 	print("\n===Generate Features===\n")
 	
@@ -1599,6 +1917,55 @@ def generate_features_fmla(product):
 		#print("Features Formula: " + features_fmla)
 
 	return features_fmla
+
+def generate_features_html(product):
+	features_html = "\"\""
+
+	for variant in product:
+
+		features = ''
+
+		if len(variant) > 11:
+			handle = variant[1].strip().lower()
+			#print("Handle: " + handle)
+			features = variant[11].strip()
+			print("Features: " + features)
+			# if no intro given then generate one
+			if features == '' or str.lower(features) == 'features':
+				features = generate_features(variant)
+
+		if features != '' and features != 'n/a':
+			# need better way to check if there are no proper nouns that should stay capitalized, b/c too blunt to lowercase everything
+			features = features.lower()
+
+			# add periods before bullets
+			# make sure no extra periods added so no double periods if sentence already has period at end
+			features = re.sub(r"([^\.])\s•",r"\1. •", features) 
+			if features[-1] != '.':
+				#print("Last character: " + features[-1])
+				features += '. '
+
+			features = capitalize_sentences(features).strip()
+
+			#features = re.sub('\"','\",CHAR(34),\"', features) # if quotes found in features, such as for dimensions, then fmla will incorrectly interpret that as closing string
+			
+			if re.search('•',features) or re.search('    ',features) or re.search('ï|Ï',features):
+				features_list = "<ul>"
+				print("\nFEATURES: " + features)
+
+				features_list += re.sub(r'•([^\.]+)\.',r'<li>\1. </li>', features) # bullet point indicates new line
+				features_list = re.sub(r'    ([^\.]+)\.',r'<li>\1. </li>', features_list) # 4 spaces indicates new line
+				features_list = re.sub(r'ï|Ï([^\.]+)\.',r'<li>\1. </li>', features_list) # ï character indicates new line (for Coaster)
+				
+				features_list += "</ul>"
+
+				features_html = features_list
+			else:
+				features_html = features
+
+		#print("Features HTML: " + features_html)
+
+	return features_html
 
 # helper functions
 def roundup(x):
