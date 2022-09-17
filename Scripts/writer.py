@@ -52,6 +52,19 @@ def display_zoho_item_headers():
 			product_headers += ";" + name
 	print(product_headers)
 
+def display_catalog_headers():
+
+	product_variable_names = ["SKU", "Collection", "Type", "Intro", "Colors", "Materials", "Finish", "Width", "Depth", "Height", "Weight (lb)", "Features", "Cost", "Image Link", "Barcode"]
+	
+	product_headers = ''
+	for name_idx in range(len(product_variable_names)):
+		name = product_variable_names[name_idx]
+		if name_idx == 0:
+			product_headers += name
+		else:
+			product_headers += ";" + name
+	print(product_headers)
+
 # replace commas with semicolons for shopify import and add commas if needed to allow space for 3 options
 def format_option_string(init_option_string):
 	option_string = ''

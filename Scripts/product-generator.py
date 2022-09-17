@@ -222,20 +222,23 @@ def compute_vrnt_price(cost, type):
 		rug_deliv_price = 70
 		mattress_multiplier = 3
 		common_deliv_rate = 1.15
+		online_only_rate = 1
 		if seller == 'JF':
 			common_multiplier = 2.4
 		elif seller == 'HFF':
-			common_multiplier = 2.0
+			common_multiplier = 1.8
+			online_only_rate = 1.1
+			common_deliv_rate = 1.2
 		else:
 			common_multiplier = 2.0
 
 		if type == 'rugs':
-			vrnt_price = cost_value * common_multiplier + rug_deliv_price
+			vrnt_price = cost_value * online_only_rate * common_multiplier + rug_deliv_price
 			#print("vrnt_price = " + str(cost_value) + " * " + str(common_multiplier) + " + " + str(rug_deliv_price) + " = " + str(vrnt_price))
 		elif type == 'mattresses' or type == 'box springs':
-			vrnt_price = cost_value * mattress_multiplier
+			vrnt_price = cost_value * online_only_rate * mattress_multiplier
 		else:
-			vrnt_price = cost_value * common_deliv_rate * common_multiplier
+			vrnt_price = cost_value * online_only_rate * common_deliv_rate * common_multiplier
 		#print("Variant Price Before Rounding: " + str(vrnt_price))
 
 		# round price
@@ -487,7 +490,7 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 
 	return sorted_final_item_info
 
-all_final_item_info = display_shopify_variants()
+all_final_item_info = display_shopify_variants() # currently uses all global variables
 
 generator.write_data(all_final_item_info, vendor, output, extension)
 

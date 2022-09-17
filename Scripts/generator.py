@@ -34,7 +34,7 @@ import_opt3_val_idx = 11
 # order of zoho import fields
 item_name_idx = 1
 
-# get data from a file and format into a list
+# get data from a file and format into a list, for specific vendors with different formats (same as reader version of this fcn but more specific)
 def extract_data(vendor, input, extension):
 	catalog_filename = ''
 	if input == "name":
@@ -932,7 +932,7 @@ def generate_intro(item_details):
 
 	intro2 = str.capitalize(product_name) + ' is here to help with your design problem. Available in our most popular materials for speedier delivery, this distinguished ' + product_type_singular + ' is elegant, traditional, and crafted by hand, just the way you would expect our preeminent ' + product_type + ' to be'
 
-	intro3 = 'Elegant ' + room_activity + ' is ' + product_name + '\'s speciality—so much so that you\'ll want to keep it forever. From all sides, you see a graceful shape that is perfectly balanced and sturdy, while remaining lightweight for convenience'
+	intro3 = 'Elegant ' + room_activity + ' is ' + product_name + '\'s speciality—so much so that you\'ll want to keep it forever. From all sides, you see a graceful shape that is perfectly balanced and sturdy, while being exceptionally refined'
 
 	intro_templates = [intro1, intro2, intro3]
 

@@ -8,10 +8,12 @@ class Measurement:
 		self.meas_value = meas_value
 		self.meas_type = meas_type
 
-def extract_data(input, extension):
+# get data from a file and format into a list (same as generator version of this fcn but more general)
+def extract_data(input, extension, data_type="details"):
 	input = re.sub(' ','-',input)
+	data_type = re.sub(' ','-',data_type)
 	#catalog_filename = "../Data/" + input + "-init-data." + extension
-	catalog_filename = "../Data/" + input + "-details." + extension
+	catalog_filename = "../Data/" + input + "-" + data_type + "." + extension
 	#catalog_filename = "../Data/" + vendor + "-" + input + "-details." + extension
 
 	lines = []
