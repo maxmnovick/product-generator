@@ -47,22 +47,25 @@ img_sheet_links_idx = 1
 
 vendor = "acme"
 ext = "tsv"
-data_type = "price sheet"
 
-# remove leading zeros from sku in price list to match sku in spec sheet
-price_sheet = reader.extract_data(vendor, ext, data_type)
-#price_sheet = sample_price_sheet
+
+
 
 
 # General Info from price table
 print("\n====== Read Price Sheet ======\n")
+data_type = "price sheet test"
+# remove leading zeros from sku in price list to match sku in spec sheet
+price_sheet = reader.extract_data(vendor, ext, data_type)
+#price_sheet = sample_price_sheet
+
 all_price_sheet_skus = []
 all_price_sheet_prices = []
 for price_sheet_item in price_sheet: 
     
     sku = price_sheet_item[price_sheet_sku_idx].strip().lstrip("0")
     print("sku: " + sku)
-    price = price_sheet_item[price_sheet_price_idx].strip().lstrip("$").strip() # double strip bc comes in format with space bt dollar sign and number
+    price = price_sheet_item[price_sheet_price_idx].replace("$","").replace(",","").strip() # double strip bc comes in format with space bt dollar sign and number
     print("price: " + price)
 
     all_price_sheet_skus.append(sku)
@@ -71,7 +74,7 @@ for price_sheet_item in price_sheet:
 
 # look for file in Data folder called acme-spec-sheet.tsv
 print("\n====== Read Spec Sheet ======\n")
-data_type = "spec sheet"
+data_type = "spec sheet test"
 spec_sheet = reader.extract_data(vendor, ext, data_type)
 #sample_spec_sheet = [name, sku, product_weight, product_length, product_width, product_height, package_length, package_width, package_height, package_weight, ship_type, package_type, collection_name, catalog, product_type, description, short_description, catalog_finish, material_detail, fl_qty, ga_qty, nj_qty, ny_qty, tx_qty, la_qty, sf_qty, msrp, eta_la_warehouse, group, video] # acme provides values with these keynames so look for these words or just assume they come in this order but that may cause future errors
 #spec_sheet = sample_spec_sheet
@@ -116,7 +119,7 @@ for spec_sheet_item in spec_sheet:
 
 # look for file in Data folder called acme-image-links.tsv
 print("\n====== Read Image Sheet ======\n")
-data_type = "image links"
+data_type = "image links test"
 img_sheet = reader.extract_data(vendor, ext, data_type)
 #sample_spec_sheet = [name, sku, product_weight, product_length, product_width, product_height, package_length, package_width, package_height, package_weight, ship_type, package_type, collection_name, catalog, product_type, description, short_description, catalog_finish, material_detail, fl_qty, ga_qty, nj_qty, ny_qty, tx_qty, la_qty, sf_qty, msrp, eta_la_warehouse, group, video] # acme provides values with these keynames so look for these words or just assume they come in this order but that may cause future errors
 #spec_sheet = sample_spec_sheet
