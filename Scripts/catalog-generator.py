@@ -148,7 +148,7 @@ all_spec_sheet_lengths = []
 all_spec_sheet_widths = []
 all_spec_sheet_heights = []
 all_spec_sheet_coll_names = []
-all_spec_sheet_product_types = []
+all_spec_sheet_types = []
 all_spec_sheet_features = []
 all_spec_sheet_descrips = []
 all_spec_sheet_finishes = []
@@ -174,7 +174,7 @@ for spec_sheet_item in spec_sheet:
     all_spec_sheet_widths.append(width)
     all_spec_sheet_heights.append(height)
     all_spec_sheet_coll_names.append(coll_name)
-    all_spec_sheet_product_types.append(product_type)
+    all_spec_sheet_types.append(product_type)
     all_spec_sheet_features.append(features)
     all_spec_sheet_descrips.append(descrip)
     all_spec_sheet_finishes.append(finish)

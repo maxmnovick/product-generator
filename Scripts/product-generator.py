@@ -33,12 +33,16 @@ barcode_idx = 14
 # set the seller for different cost to price conversions and other requirements such as if inventory tracking capable
 seller = 'HFF' # examples: JF, HFF
 
-vendor = "Furniture World"
+vendor = "acme"
+
 input = "new" # example inputs: details, options, names, new, all, raw
 output = "product"
 extension = "tsv"
 
-all_details = generator.extract_data(vendor, input, extension)
+if vendor == 'acme': # acme gives 3 separate sheets so combine to make catalog
+	all_details = generator.generate_catalog(vendor)
+else:
+	all_details = generator.extract_data(vendor, input, extension)
 # store init item details untouched so we can detect measurement type based on input format of dimensions
 init_all_details = copy.deepcopy(all_details)
 #writer.display_all_item_details(init_all_details)
@@ -116,17 +120,32 @@ for item_details in all_details:
 	all_heights.append(height)
 
 all_weights = []
+#print("\n===Get All Weights===\n")
 for item_details in all_details:
+	
+	#print("item_details: " + str(item_details))
 	handle = item_details[handle_idx]
-	weight = reader.format_dimension(item_details[weight_idx], handle)
+	weight = ''
+	if handle == '':
+		print("WARNING: Blank handle while getting weights!")
+	else:
+		weight = reader.format_dimension(item_details[weight_idx], handle)
 	item_details[weight_idx] = weight
 	all_weights.append(weight)
 
 all_weights_in_grams = [] # shopify requires grams
-for item_weight in all_weights:
+#print("\n===Convert Weights to Grams===\n")
+for item_idx in range(len(all_weights)):
+	item_details = all_details[item_idx]
+	#print("item_details: " + str(item_details))
+	item_weight = all_weights[item_idx]
 	#print("item_weight: " + item_weight)
-	weight_in_grams = int(item_weight) * 453.59237
-	all_weights_in_grams.append(str(weight_in_grams))
+	if item_weight == '' or item_weight == 'n/a':
+		weight_in_grams = ''
+	else:
+		weight_in_grams = str(float(item_weight) * 453.59237)
+
+	all_weights_in_grams.append(weight_in_grams)
 
 # use from details table for shopify import
 all_handles = []
@@ -307,17 +326,17 @@ def isolate_unique_variants(all_sorted_products, import_type):
 
 # sort from small to large so price user sees in grid view is first price shown on product page
 def sort_items_by_size(all_item_info, import_type):
-	#print("\n=== Sort Items by Size ===\n")
+	print("\n=== Sort Items by Size ===\n")
 	all_sorted_items = all_item_info # list of strings in shopify import format
 
 	# isolate products in unsorted import table
 	isolated_product_imports = generator.isolate_product_strings(all_item_info, import_type)
-	#print("Unsorted Product Imports: " + str(isolated_product_imports) + "\n")
+	#print("\n===Unsorted Product Imports===\n" + str(isolated_product_imports) + "\n")
 	num_product_imports = len(isolated_product_imports)
 	#print("Num Unsorted Product Imports: " + str(num_product_imports) + "\n")
 
 	isolated_product_details = generator.isolate_products(all_details)
-	#print("Unsorted Product Details: " + str(isolated_product_details) + "\n")
+	#print("\n===Unsorted Product Details===\n" + str(isolated_product_details) + "\n")
 	num_product_details = len(isolated_product_details)
 	#print("Num Unsorted Product Details: " + str(num_product_details) + "\n")
 
@@ -330,7 +349,9 @@ def sort_items_by_size(all_item_info, import_type):
 
 		for product_idx in range(num_isolated_products):
 			product_details = isolated_product_details[product_idx] # list of data
+			#print("product_details: " + str(product_details))
 			product_imports = isolated_product_imports[product_idx] # string of data
+			#print("product_imports: " + str(product_imports))
 
 			sorted_indices = generator.get_sorted_indices(product_details)
 			num_sorted_indices = sorted_indices.size
@@ -342,6 +363,7 @@ def sort_items_by_size(all_item_info, import_type):
 			sorted_variants = product_details # init as unsorted variants
 			# only sort variants if we have valid values for sorting
 			if num_variants == num_sorted_indices:
+				#print('num_variants == num_sorted_indices')
 				sorted_variants = [] # How can we be sure there are valid dimensions given?
 				for idx in range(num_variants):
 					#print("Index: " + str(idx))
@@ -352,12 +374,87 @@ def sort_items_by_size(all_item_info, import_type):
 			else:
 				print("Warning: Num Variants != Num Sorted Indices while sorting items!")
 
+			#print("sorted_variants: " + str(sorted_variants))
+
 			all_sorted_products.append(sorted_variants)
+			#print("all_sorted_products: " + str(all_sorted_products))
 
 		all_sorted_items = isolate_unique_variants(all_sorted_products, import_type)
-
+		#print("all_sorted_items: " + str(all_sorted_items))
 	else:
 		print("Warning: Num Product Imports != Num Product Details (" + str(num_product_imports) + " != " + str(num_product_details) + ") while sorting items!\n")
+
+	return all_sorted_items
+
+def split_variants_by_img(all_import_strings):
+	print("\n===Split Variants by Image===\n")
+
+	#print("all_import_strings: " + str(all_import_strings))
+	all_split_variants_by_img = []
+
+	all_import_data = []
+	for item in all_import_strings:
+		#print("item: " + str(item))
+		# split by semicolon
+		item_data = item.split(';')
+		all_import_data.append(item_data)
+	#print("all_import_data: " + str(all_import_data))
+
+	for item_import_data in all_import_data:
+		#print("item_import_data: " + str(item_import_data))
+		import_img_src_idx = 25
+		images_string = item_import_data[import_img_src_idx]
+		#print("images_string: " + str(images_string))
+		images_list = images_string.split(',')
+		#print("images_list: " + str(images_list))
+		items_with_single_img = []
+		for img_idx in range(len(images_list)):
+			img = images_list[img_idx]
+			#print("img: " + str(img))
+			# if not first img then we only want handle and image in row, blanking out all others so it does not cause conflict during import
+			if img_idx != 0:
+				for value_idx in range(len(item_import_data)):
+					value = item_import_data[value_idx]
+					if value_idx != 0: # keep handle
+						value = ''
+						item_import_data[value_idx] = value
+			item_import_data[import_img_src_idx] = img
+
+			#convert to string with semicolon delimiter
+			value_string = ''
+			for value_idx in range(len(item_import_data)):
+				value = item_import_data[value_idx]
+				if value_idx == 0:
+					value_string = value
+				else:
+					value_string += ';' + value
+			all_split_variants_by_img.append(value_string)
+		#print("all_split_variants_by_img: " + str(all_split_variants_by_img))
+
+	#split images into separate rows for import formatting
+	# split_variants_by_img = []
+	# for variant_idx in range(len(sorted_variants)):
+	# 	variant = sorted_variants[variant_idx]
+
+	# 	if variant_idx == 0:
+	# 		images_string = variant[img_src_idx]
+	# 		print("images_string: " + str(images_string))
+	# 		images_list = images_string.split(',')
+	# 		print("images_list: " + str(images_list))
+	# 		num_images = len(images_list)
+	# 		# only 1 variant needs to be split by images and the others can follow after with no images, unless variant img known
+	# 		for img in images_list:
+	# 			split_variant = variant # start with reset same as current variant and only change img src
+	# 			split_variant[img_src_idx] = img
+	# 			split_variants_by_img.append(split_variant)
+	# 	else:
+	# 		split_variant = variant # start with reset same as current variant and only change img src
+	# 		split_variant[img_src_idx] = '' # leave blank bc we already have img src in first variant but we could add variant img separately
+	# 		split_variants_by_img.append(split_variant)
+
+	# print("split_variants_by_img: " + str(split_variants_by_img))
+
+	return all_split_variants_by_img
 
 # 	all_sorted_products = []
 #
@@ -470,19 +567,41 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 			vrnt_tax_code = ''
 			product_status = 'active'
 
-			print("product_type: " + product_type)
+			#print("product_type: " + product_type)
 
-			vrnt_img = product_img_src # still need to account for multiple img srcs given
+			vrnt_img = '' # still need to account for multiple img srcs given
 
-			final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+			# each image needs a new row, but deal with that after sorted by size bc that function needs to isolate products and sort indices
+			# product_imgs = product_img_src.split(",")
+			# #print("product_imgs: " + str(product_imgs))
+			# if len(product_imgs) > 0:
+			# 	for img in product_imgs:
+			# 		#print("img: " + str(img))
+			# 		final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + img + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+			# 		#print(final_item_info)
+			# 		all_final_item_info.append(final_item_info)
+			# else:
+			# 	final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+			# 	#print(final_item_info)
+			# 	all_final_item_info.append(final_item_info)
+
+			final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+			#print(final_item_info)
+			all_final_item_info.append(final_item_info)
 		elif import_tool == 'excelify':
 			final_item_info = sku + ";" + product_handle + ";" + item_weight + ";" + item_cost + ";" + barcode + ";=" + body_html + ";" + product_option_string + ";" + product_tag_string + ";" + product_img_src + ";" + product_type + ";" + product_title + ";" + published + ";" + published_scope + ";" + vrnt_inv_tracker + ";" + vrnt_inv_policy + ";" + vrnt_weight_unit + ";" + cmd + ";" + vendor + ";" + vrnt_price + ";" + vrnt_compare_price
 
-		#print(final_item_info)
-		all_final_item_info.append(final_item_info)
+			#print(final_item_info)
+			all_final_item_info.append(final_item_info)
 
-	sorted_final_item_info = sort_items_by_size(all_final_item_info, "shopify")
+	print("\n===ALL FINAL ITEM INFO===\n" + str(all_final_item_info))
+
+	sorted_final_item_info = sort_items_by_size(all_final_item_info, "shopify") # we do not want to remove lines with same handles if they have different images
 	#sorted_final_item_info = all_final_item_info
+
+	# shopify import tool needs imgs on different lines
+	if import_tool == 'shopify':
+		sorted_final_item_info = split_variants_by_img(sorted_final_item_info)
 
 	writer.display_shopify_variant_headers()
 	for item_info in sorted_final_item_info:

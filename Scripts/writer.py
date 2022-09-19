@@ -27,6 +27,7 @@ def display_field_values(values):
 	print()
 
 def display_shopify_variant_headers(import_tool='shopify'):
+	print("\n=== Shopify Variants == \n")
 	if import_tool == 'shopify':
 		product_variable_names = ["Handle", "Title", "Body (HTML)", "Vendor", "Standardized Product Type", "Custom Product Type", "Tags", "Published", "Option1 Name", "Option1 Value", "Option2 Name", "Option2 Value", "Option3 Name","Option3 Value", "Variant SKU", "Variant Grams", "Variant Inventory Tracker", "Variant Inventory Qty", "Variant Inventory Policy", "Variant Fulfillment Service", "Variant Price", "Variant Compare At Price", "Variant Requires Shipping", "Variant Taxable", "Variant Barcode", "Image Src", "Image Position", "Image Alt Text", "Variant Image", "Variant Weight Unit", "Variant Tax Code", "Cost per item", "Status"]
 	elif import_tool == 'excelify':

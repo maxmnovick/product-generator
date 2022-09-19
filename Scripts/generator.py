@@ -1,7 +1,7 @@
 # generator.py
 # functions for a generator
 
-import reader, re, datetime, math, random
+import reader, writer, re, datetime, math, random, pandas
 import numpy as np
 
 # order of detail fields
@@ -85,6 +85,8 @@ def write_data(arranged_data, vendor, output, extension):
 
 # generate handles based on descriptions or titles (see handle-generator.py)
 def generate_handle(item_details):
+	#print("\n===Generate Handle===\n")
+	item_sku = item_details[sku_idx]
 
 	# descrip of what type of furniture needed to make title
 	descrip = final_title_suffix = final_handle_suffix = final_handle = ''
@@ -113,12 +115,16 @@ def generate_handle(item_details):
 			if final_title_suffix != '':
 				break
 
+		# warn user if no matching keyword
+		if final_title_suffix == '':
+			print("WARNING: No matching keyword for product when generating handle " + item_sku)
+
 		# go from title format to handle format by adding dashes b/t words, b/c already lowercase
 		final_handle_suffix = re.sub(' ','-',final_title_suffix)
 		#print("Final Handle Suffix: " + final_handle_suffix)
 		collection_name = re.sub(' ','-',collection_name)
 
-		final_handle = collection_name + "-" + final_handle_suffix
+		final_handle = collection_name.lower() + "-" + final_handle_suffix
 	else:
 		print("Warning: No details for this item!")
 
@@ -151,7 +157,11 @@ def generate_title(item_details, handle=''):
 			#print("Handle Words: " + str(handle_words))
 
 			for word in handle_words:
-				word = word.capitalize()
+				roman_numerals = ['I','II','III','IV','V','VI','VII','VIII','IX','X']
+				if word.upper() in roman_numerals:
+					word = word.upper()
+				else:
+					word = word.capitalize()
 				title += word + ' '
 			title = title.rstrip()
 			#print(title)
@@ -217,7 +227,7 @@ def generate_tags(item_details, vendor):
 		color = color.rstrip(' -') # for Global but maybe also for others
 		color = color.rstrip(' w') # b/c splits on slash so abbrev w/ needs special handling
 		if color != '':
-			color_tags += "color-" + color + ", "
+			color_tags += "Color: " + color.title() + ", "
 	color_tags = color_tags.rstrip(', ')
 	#print("Color Tags: " + color_tags)
 	for material in material_data:
@@ -225,7 +235,7 @@ def generate_tags(item_details, vendor):
 		material = material.rstrip(' -') # for Global but maybe also for others
 		material = material.rstrip(' w') # b/c splits on slash so abbrev w/ needs special handling
 		if material != '':
-			material_tags += "material-" + material + ", "
+			material_tags += "Material: " + material.title() + ", "
 	material_tags = material_tags.rstrip(', ')
 	#print("Material Tags: " + material_tags)
 	for finish in finish_data:
@@ -233,12 +243,12 @@ def generate_tags(item_details, vendor):
 		finish = finish.rstrip(' -') # for Global but maybe also for others
 		finish = finish.rstrip(' w') # b/c splits on slash so abbrev w/ needs special handling
 		if finish != '':
-			finish_tags += "finish-" + finish + ", "
+			finish_tags += "Finish: " + finish.title() + ", "
 	finish_tags = finish_tags.rstrip(', ')
 	#print("Finish Tags: " + finish_tags)
 
 	
-	tags = vendor + " " + publication_year # desired space bt vendor and pub yr in case vendor name has multiple parts
+	tags = vendor.title() + " " + publication_year # desired space bt vendor and pub yr in case vendor name has multiple parts
 
 	if colors != "n/a":
 		tags += ", " + color_tags
@@ -292,7 +302,7 @@ def generate_product_type(item_details):
 	else:
 		print("Warning: No details for this item!")
 
-	return final_type.capitalize()
+	return final_type.title()
 
 def generate_all_product_types(all_details):
 	all_product_types = []
@@ -731,6 +741,7 @@ def determine_unique_variant(question_variant, sorted_product, import_type):
 
 	# we know that sku might actually be different (idx=0) but if the rest of the line is the same then it is a duplicate variant
 	# really we just need the option data but the whole string should be the same
+	# actually the option data may be the same but the image may be different bc we need one row per image
 	for vrnt_idx in range(len(sorted_product)):
 		variant = sorted_product[vrnt_idx]
 		vrnt_data = variant.split(';')
@@ -739,8 +750,9 @@ def determine_unique_variant(question_variant, sorted_product, import_type):
 		#print("Question Variant Data: " + str(q_vrnt_data[6:12]))
 		#print()
 
-		relevant_vrnt_data = vrnt_data[6:12]
-		relevant_q_vrnt_data = q_vrnt_data[6:12]
+		# should the whole line match or just the options? we need at least options and image to match to know it is duplicate but more robust would be whole line
+		relevant_vrnt_data = vrnt_data #vrnt_data[6:12]
+		relevant_q_vrnt_data = q_vrnt_data #q_vrnt_data[6:12]
 		if import_type == 'zoho':
 			item_name = vrnt_data[item_name_idx]
 			q_item_name = q_vrnt_data[item_name_idx]
@@ -803,7 +815,8 @@ def isolate_products(all_details):
 
 	field_title = "handle" # we know that all variants of the same product have the same handle
 
-	handles = np.array(isolate_detail_field(all_details, field_title))
+	#handles = np.array(isolate_detail_field(all_details, field_title))
+	handles = np.array(generate_all_handles(all_details))
 
 	_, idx, cnt = np.unique(handles, return_index=True, return_counts=True)
 
@@ -823,7 +836,7 @@ def isolate_products(all_details):
 
 		product_start_idx = product_stop_idx
 		if product_start_idx > len(all_details) - 1:
-			break;
+			break
 
 	#print("Products: " + str(products) + "\n")
 	return products
@@ -846,6 +859,7 @@ def isolate_product_strings(all_imports, import_type):
 		all_import_data.append(import_data)
 
 	handles = np.array(isolate_detail_field(all_import_data, field_title))
+	#handles = np.array(generate_all_handles(all_details))
 
 	_, idx, cnt = np.unique(handles, return_index=True, return_counts=True)
 
@@ -873,30 +887,33 @@ def isolate_product_strings(all_imports, import_type):
 # originally based on capitalizing sentences for an intro paragraph
 def capitalize_sentences(intro):
 
-	print("\n===Capitalize Sentences===\n")
+	#===\n")
 
 	final_sentences = ''
 
 	intro_sentences = intro.split('.')
 	#print("intro_sentences: " + str(intro_sentences))
 	for sentence in intro_sentences:
+		#print("sentence: " + sentence)
 		if len(sentence) > 1: # if space after last sentence then there will be a blank last element which should not be taken
 			
 			sentence = sentence.strip()
-			print("sentence: \'" + sentence + '\'')
+			#print("sentence: \'" + sentence + '\'')
 
 			# if sentence starts with numerals or special characters, get idx of first letter
 			first_letter_idx = 0
 
-			first_letter_idx = re.search('\w', sentence).start()
-			print("first_letter_idx: " + str(first_letter_idx))
+			first_letter = re.search('\w', sentence)
+			if first_letter is not None:
+				first_letter_idx = first_letter.start()
+			#print("first_letter_idx: " + str(first_letter_idx))
 			if first_letter_idx == 0:
 				sentence = sentence[first_letter_idx].upper() + sentence[first_letter_idx+1:] + '. '
 			else:
 				sentence = sentence[:first_letter_idx] + sentence[first_letter_idx].upper() + sentence[first_letter_idx+1:] + '. ' #sentence = sentence.strip().capitalize() + '. '
 			final_sentences += sentence
 
-	print("final_sentences: " + final_sentences)
+	#print("final_sentences: " + final_sentences)
 	return final_sentences
 
 def generate_intro(item_details):
@@ -967,6 +984,7 @@ def generate_intro_fmla(product):
 	return intro_fmla
 
 def generate_intro_html(product):
+	print("\n===Generate Intro HTML===\n")
 	intro_html = ""
 
 	for variant in product:
@@ -979,9 +997,10 @@ def generate_intro_html(product):
 			intro = variant[3].strip().lower()
 			print("Intro: " + intro)
 			# if no intro given then generate one
-			if intro == '' or intro == 'intro':
+			if intro == '' or intro == 'intro' or intro == 'n/a':
 				intro = generate_intro(variant)
 
+		# check if intro blank
 		if intro != '' and intro != 'n/a':
 			intro = capitalize_sentences(intro)
 			#intro = re.sub('\"','\",CHAR(34),\"', intro) # if quotes found in intro, such as for dimensions, then fmla will incorrectly interpret that as closing string
@@ -1228,9 +1247,9 @@ def generate_materials_html(product):
 
 	final_materials_html = "<tr>" # init fmla for this part of the description
 	if determine_given_materials(product): # if we are NOT given materials we do not include materials in the description
-		print("\n===GIVEN MATERIALS===\n")
+		#print("\n===GIVEN MATERIALS===\n")
 		final_materials_html = "<tr><td>Materials: </td>" # only if at least 1 of the variants has materials
-		print("final_materials_html: " + final_materials_html)
+		#print("final_materials_html: " + final_materials_html)
 		# for now, only handle cases where all variants have same material
 		variant1 = product[0]
 
@@ -1966,6 +1985,214 @@ def generate_features_html(product):
 		#print("Features HTML: " + features_html)
 
 	return features_html
+
+def generate_catalog(vendor):
+
+	catalog = []
+
+
+
+	ext = 'tsv'
+
+	# header names given by vendor, rather than determining index
+	# these below headers are for acme but should be generalized for all vendors
+	price_sheet_sku_name = "sku"
+	price_sheet_price_name = "price"
+	spec_sheet_title_name = "title"
+	spec_sheet_sku_name = "sku"
+	spec_sheet_weight_name = 'weight'
+	spec_sheet_length_name = 'length'
+	spec_sheet_width_name = 'width'
+	spec_sheet_height_name = 'height'
+	spec_sheet_coll_name = 'collection name'
+	spec_sheet_type_name = 'type'
+	spec_sheet_features_name = 'features'
+	spec_sheet_descrip_name = 'description'
+	spec_sheet_finish_name = 'finish'
+	spec_sheet_material_name = 'material'
+	img_sheet_sku_name = "sku"
+	img_sheet_links_name = "image links"
+
+	if vendor == 'acme':
+		# price sheet, spec sheet, and img sheet separate
+		print("\n====== Read Price Sheet ======\n")
+		data_type = 'price sheet test'
+
+		# remove leading zeros from sku in price list to match sku in spec sheet
+		filepath = "../Data/" + vendor + "-" + data_type.replace(" ","-") + "." + ext
+		#print("filepath: " + filepath)
+		price_sheet_df = pandas.read_table(filepath).fillna('n/a')
+		#print("price_sheet_df:\n" + str(price_sheet_df))
+		price_sheet_df.columns = price_sheet_df.columns.str.strip() # remove excess spaces
+		#print(price_sheet_df.columns.values)
+
+		
+		price_sheet_sku_name = 'Item#'
+		price_sheet_price_name = '2022   EAST PETE PRICE'
+
+		all_price_sheet_skus = price_sheet_df[price_sheet_sku_name].astype('string').str.strip().str.lstrip("0").tolist()
+		#print("all_price_sheet_skus: " + str(all_price_sheet_skus))
+		all_price_sheet_prices = price_sheet_df[price_sheet_price_name].astype('string').str.replace("$","").str.replace(",","").str.strip().tolist()
+		#print("all_price_sheet_prices: " + str(all_price_sheet_prices))
+
+
+		# look for file in Data folder called acme-spec-sheet.tsv
+		print("\n====== Read Spec Sheet ======\n")
+		data_type = "spec sheet test"
+		filepath = "../Data/" + vendor + "-" + data_type.replace(" ","-") + "." + ext
+		#print("filepath: " + filepath)
+		spec_sheet_df = pandas.read_table(filepath).fillna('n/a')
+		#print("spec_sheet_df:\n" + str(spec_sheet_df))
+		spec_sheet_df.columns = spec_sheet_df.columns.str.strip() # remove excess spaces
+		#print(spec_sheet_df.columns.values)
+
+		spec_sheet_title_name = 'acme.name'
+		spec_sheet_sku_name = 'acme.sku'
+		spec_sheet_weight_name = 'acme.product_weight'
+		spec_sheet_length_name = 'acme.product_length'
+		spec_sheet_width_name = 'acme.product_width'
+		spec_sheet_height_name = 'acme.product_height'
+		spec_sheet_coll_name = 'acme.collection_name'
+		spec_sheet_type_name = 'acme.product_type'
+		spec_sheet_features_name = 'acme.description'
+		spec_sheet_descrip_name = 'acme.short_description'
+		spec_sheet_finish_name = 'acme.catalog_finish'
+		spec_sheet_material_name = 'acme.material_detail'
+
+		all_spec_sheet_titles = spec_sheet_df[spec_sheet_title_name].astype('string').str.strip().tolist()
+		#print("all_spec_sheet_titles: " + str(all_spec_sheet_titles))
+		all_spec_sheet_skus = spec_sheet_df[spec_sheet_sku_name].astype('string').str.strip().str.lstrip("0").tolist()
+		#print("all_spec_sheet_skus: " + str(all_spec_sheet_skus))
+		all_spec_sheet_weights = spec_sheet_df[spec_sheet_weight_name].astype('string').str.strip().tolist()
+		#print("all_spec_sheet_weights: " + str(all_spec_sheet_weights))
+		all_spec_sheet_lengths = spec_sheet_df[spec_sheet_length_name].astype('string').str.strip().tolist()
+		#print("all_spec_sheet_lengths: " + str(all_spec_sheet_lengths))
+		all_spec_sheet_widths = spec_sheet_df[spec_sheet_width_name].astype('string').str.strip().tolist()
+		#print("all_spec_sheet_widths: " + str(all_spec_sheet_widths))
+		all_spec_sheet_heights = spec_sheet_df[spec_sheet_height_name].astype('string').str.strip().tolist()
+		#print("all_spec_sheet_heights: " + str(all_spec_sheet_heights))
+		all_spec_sheet_coll_names = spec_sheet_df[spec_sheet_coll_name].astype('string').str.strip().tolist()
+		#print("all_spec_sheet_coll_names: " + str(all_spec_sheet_coll_names))
+		all_spec_sheet_types = spec_sheet_df[spec_sheet_type_name].astype('string').str.strip().tolist()
+		#print("all_spec_sheet_types: " + str(all_spec_sheet_types))
+		all_spec_sheet_features = spec_sheet_df[spec_sheet_features_name].astype('string').str.strip().str.replace(";","-").tolist()
+		#print("all_spec_sheet_features: " + str(all_spec_sheet_features))
+		all_spec_sheet_descrips = spec_sheet_df[spec_sheet_descrip_name].astype('string').str.strip().str.replace(";","-").tolist()
+		#print("all_spec_sheet_descrips: " + str(all_spec_sheet_descrips))
+		all_spec_sheet_finishes = spec_sheet_df[spec_sheet_finish_name].astype('string').str.strip().tolist()
+		#print("all_spec_sheet_finishes: " + str(all_spec_sheet_finishes))
+		all_spec_sheet_materials = spec_sheet_df[spec_sheet_material_name].astype('string').str.strip().tolist()
+		#print("all_spec_sheet_materials: " + str(all_spec_sheet_materials))
+
+		# look for file in Data folder called acme-image-links.tsv
+		print("\n====== Read Image Sheet ======\n")
+		data_type = "image links test"
+		filepath = "../Data/" + vendor + "-" + data_type.replace(" ","-") + "." + ext
+		#print("filepath: " + filepath)
+		img_sheet_df = pandas.read_table(filepath).fillna('n/a')
+		#print("img_sheet_df:\n" + str(img_sheet_df))
+		img_sheet_df.columns = img_sheet_df.columns.str.strip() # remove excess spaces
+		#print(img_sheet_df.columns.values)
+
+		img_sheet_sku_name = 'acme.sku'
+		img_sheet_links_name = 'Image Array'
+
+		all_img_sheet_skus = img_sheet_df[img_sheet_sku_name].astype('string').str.strip().str.lstrip("0").tolist()
+		#print("all_img_sheet_skus: " + str(all_img_sheet_skus))
+		all_img_sheet_links = img_sheet_df[img_sheet_links_name].astype('string').str.strip().str.lstrip("[").str.rstrip("]").tolist()
+		#print("all_img_sheet_links: " + str(all_img_sheet_links))
+
+		print("\n === Display Catalog Info === \n")
+
+		catalog = []
+
+		for product_idx in range(len(all_price_sheet_skus)):
+
+			price_sheet_sku = all_price_sheet_skus[product_idx] # use this to match with spec and image sheets
+			cost = all_price_sheet_prices[product_idx]
+
+			# init vars from spec sheet 
+			coll_name = ""
+			product_type = ""
+			intro = ""
+			color = ""
+			material = ""
+			finish = "" 
+			length = ""
+			width = ""
+			height = ""
+			weight = ""
+			features = ""
+			barcode = ""
+			# and img sheet
+			img_links = ""
+
+			specs_given = False
+			for spec_sheet_item_idx in range(len(all_spec_sheet_skus)):
+				spec_sheet_sku = all_spec_sheet_skus[spec_sheet_item_idx]
+				#print("spec_sheet_sku: " + spec_sheet_sku)
+
+				if price_sheet_sku == spec_sheet_sku:
+					specs_given = True
+					# get specs for this product
+					coll_name = all_spec_sheet_coll_names[spec_sheet_item_idx]
+					#print("coll_name: " + coll_name)
+					product_type = all_spec_sheet_types[spec_sheet_item_idx]
+					if product_type == '' or product_type == 'n/a':
+						print("Product Type is Blank for " + spec_sheet_sku)
+						# use spec sheet name/title
+						product_type = all_spec_sheet_titles[spec_sheet_item_idx].replace(coll_name,'').strip()
+					#print("product_type: " + product_type)
+					intro = all_spec_sheet_descrips[spec_sheet_item_idx]
+					#print("intro: " + intro)
+					color = all_spec_sheet_finishes[spec_sheet_item_idx] 
+					#print("color: " + color)
+					material = all_spec_sheet_materials[spec_sheet_item_idx] 
+					#print("material: " + material)
+					finish = "" # todo: acme gives finish and color together so separate them
+					length = all_spec_sheet_lengths[spec_sheet_item_idx] 
+					#print("length: " + length)
+					width = all_spec_sheet_widths[spec_sheet_item_idx]
+					#print("width: " + width)
+					height = all_spec_sheet_heights[spec_sheet_item_idx]
+					#print("height: " + height)
+					weight = all_spec_sheet_weights[spec_sheet_item_idx]
+					#print("weight: " + weight)
+					features = all_spec_sheet_features[spec_sheet_item_idx] 
+					#print("features: " + features)
+					barcode = ""
+
+					break
+
+			if specs_given: # only proceed to img if specs given
+				image_given = False
+				for img_sheet_item_idx in range(len(all_img_sheet_skus)):
+					img_sheet_sku = all_img_sheet_skus[img_sheet_item_idx]
+
+					if price_sheet_sku == img_sheet_sku:
+						# get imgs for this product
+						img_links = all_img_sheet_links[img_sheet_item_idx]
+						#print("img_links: " + img_links)
+						if img_links != '' and img_links.lower() != 'n/a':
+							image_given = True
+						break
+
+				# only add product with image
+				if image_given:
+
+					# when copied to spreadsheet, separate by semicolons
+					#catalog_info = price_sheet_sku + ";" + coll_name + ";" + product_type + ";" + intro + ";" + color + ";" + material + ";" + finish + ";" + length + ";" + width + ";" + height + ";" + weight + ";" + features + ";" + cost + ";" + img_links + ";" + barcode
+					# when used for input to product generator, use list
+					catalog_info = [price_sheet_sku, coll_name, product_type, intro, color, material, finish, length, width, height, weight, features, cost, img_links, barcode]
+
+					catalog.append(catalog_info)
+
+				else:
+					print("Warning: No image given for SKU " + price_sheet_sku + ", so product not uploaded!")
+			else:
+				print("Warning: No specs given for SKU " + price_sheet_sku + ", so product not uploaded!")
+
+	return catalog
 
 # helper functions
 def roundup(x):
