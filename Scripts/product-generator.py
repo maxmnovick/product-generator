@@ -215,16 +215,19 @@ product_types = generator.generate_all_product_types(all_details)
 
 # generate product img srcs
 product_img_srcs = generator.generate_all_product_img_srcs(all_details)
-writer.display_field_values(product_img_srcs)
+#writer.display_field_values(product_img_srcs)
 
 # generate options
 product_options = generator.generate_all_options(all_details, init_all_details) # we need init details to detect measurement type
 #writer.display_field_values(product_options)
 #writer.display_all_item_details(init_all_details)
 
-# generate descriptions
+# generate descriptions by list of instances
 product_descriptions = generator.generate_all_descriptions(all_details, init_all_details)
 #writer.display_field_values(product_descriptions)
+# generate descriptions with dictionary
+product_descrip_dict = generator.generate_descrip_dict(all_details, init_all_details)
+#writer.display_field_values(product_descrip_dict)
 
 def compute_vrnt_price(cost, type):
 
@@ -532,7 +535,8 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 
 		product_option_string = writer.format_option_string(product_options[item_idx])
 
-		body_html = product_descriptions[item_idx]
+		#body_html = product_descriptions[item_idx]
+		body_html = product_descrip_dict[product_handle]
 		vrnt_inv_tracker = '' # leave blank unless inv track capable
 		vrnt_inv_policy = ''
 		if import_tool == 'excelify':
@@ -594,7 +598,7 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 			#print(final_item_info)
 			all_final_item_info.append(final_item_info)
 
-	print("\n===ALL FINAL ITEM INFO===\n" + str(all_final_item_info))
+	#print("\n===ALL FINAL ITEM INFO===\n" + str(all_final_item_info))
 
 	sorted_final_item_info = sort_items_by_size(all_final_item_info, "shopify") # we do not want to remove lines with same handles if they have different images
 	#sorted_final_item_info = all_final_item_info
@@ -611,7 +615,7 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 
 all_final_item_info = display_shopify_variants() # currently uses all global variables
 
-generator.write_data(all_final_item_info, vendor, output, extension)
+#generator.write_data(all_final_item_info, vendor, output, extension)
 
 # ====== Zoho Inventory ======
 

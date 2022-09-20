@@ -468,7 +468,9 @@ def generate_all_options(all_details, init_all_details):
 
 	return all_options
 
-def generate_description(product, init_product):
+def generate_description_instances(product, init_product):
+	print("\n===Generate Description Instances===\n")
+
 	descrip_instances = []
 
 	body_html = ""
@@ -518,22 +520,109 @@ def generate_description(product, init_product):
 	for variant in product:
 		descrip_instances.append(body_html)
 
+	# instead of saving description instances and relying on them to align with product variants, 
+	# make dictionary matching description to product handle
+	# and then when setting the description, use the product handle as the key
+	#descrip_dict[handle] = body_html
+	# see generate_descrip_dict()
+
 	return descrip_instances
 
 def generate_all_descriptions(all_details, init_all_details):
+	print("\n===Generate All Descriptions===\n")
 	all_descriptions = []
 
 	init_products = isolate_products(init_all_details)
-	products = isolate_products(all_details)
+	products = isolate_products(all_details) # why isolate products and not go line by line in all details?
 
 	for product_idx in range(len(products)):
 		product = products[product_idx]
 		init_product = init_products[product_idx]
-		descrip_instances = generate_description(product, init_product)
+		descrip_instances = generate_description_instances(product, init_product)
 		for descrip_instance in descrip_instances:
 			all_descriptions.append(descrip_instance)
 
 	return all_descriptions
+
+# instead of saving description instances and relying on them to align with product variants, 
+# make dictionary matching description to product handle
+# and then when setting the description, use the product handle as the key
+def generate_description(product, init_product):
+	print("\n===Generate Description===\n")
+
+	descrip_instances = []
+
+	body_html = ""
+
+	html_descrip = True # user input based on spreadsheet tool. we want to use html bc we need to make a table format for data. 
+	
+	if html_descrip == True:
+		
+		intro_html = generate_intro_html(product)
+
+		colors_html = generate_colors_html(product,init_product)
+
+		materials_html = generate_materials_html(product)
+
+		finishes_html = generate_finishes_html(product)
+
+		dimensions_html = generate_dimensions_html(product,init_product)
+
+		features_html = generate_features_html(product)
+
+		#arrival_html = generate_arrival_html(product) # arrival time, such as Arrives: 3-4 weeks from Date of Purchase (eventually update dynamically based on date of purchase)
+
+		descrip_html = intro_html + colors_html + materials_html + finishes_html + dimensions_html + features_html
+		body_html = descrip_html
+
+	elif html_descrip == False:
+
+		intro_fmla = generate_intro_fmla(product)
+
+		colors_fmla = generate_colors_fmla(product,init_product)
+
+		materials_fmla = generate_materials_fmla(product)
+
+		finishes_fmla = generate_finishes_fmla(product)
+
+		dimensions_fmla = generate_dimensions_fmla(product,init_product)
+
+		features_fmla = generate_features_fmla(product)
+
+		#arrival_fmla = generate_arrival_fmla(product) # arrival time, such as Arrives: 3-4 weeks from Date of Purchase (eventually update dynamically based on date of purchase)
+
+		descrip_fmla = "=CONCATENATE(" + intro_fmla  + ",CHAR(10)," + colors_fmla  + ",CHAR(10)," + materials_fmla  + ",CHAR(10)," + finishes_fmla  + ",CHAR(10)," + dimensions_fmla + ",CHAR(10)," + features_fmla + ")"
+		body_html = descrip_fmla
+
+	
+
+	return body_html
+
+# products = { "<sku>": { "handle":"<handle>", "description":"<description>"  } }
+# dict = { <handle>:<description> }
+def generate_descrip_dict(all_details, init_all_details):
+	print("\n===Generate Description Dictionary===\n")
+	# instead of saving description instances and relying on them to align with product variants, 
+	# make dictionary matching description to product handle
+	# and then when setting the description, use the product handle as the key
+	descrip_dict = {}
+	
+
+	init_products = isolate_products(init_all_details)
+	products = isolate_products(all_details) # why isolate products and not go line by line in all details?
+
+	for product_idx in range(len(products)):
+		product = products[product_idx]
+		item_details = product[0]
+		handle = generate_handle(item_details)
+		print("handle: " + handle)
+		init_product = init_products[product_idx]
+		descrip = generate_description(product, init_product)
+
+		descrip_dict[handle] = descrip
+
+	print("descrip_dict: " + str(descrip_dict))
+	return descrip_dict
 
 def generate_item_name(item_details, init_item_details):
 	final_name = ''
@@ -985,19 +1074,22 @@ def generate_intro_fmla(product):
 
 def generate_intro_html(product):
 	print("\n===Generate Intro HTML===\n")
-	intro_html = ""
+	intro_html = ''
 
 	for variant in product:
 
 		intro = ''
 
-		if len(variant) > 3:
-			handle = variant[1].strip().lower()
+		if len(variant) > 3: # if variant contains intro data. todo: make it check for intro keyord instead of index.
+			handle = generate_handle(variant) #variant[1].strip().lower()
+			print("Handle: " + handle)
 			#print("Handle: " + handle)
 			intro = variant[3].strip().lower()
-			print("Intro: " + intro)
+			print("Initial Intro: " + intro)
 			# if no intro given then generate one
-			if intro == '' or intro == 'intro' or intro == 'n/a':
+			# if only word given, assume error bc intro cannot be one word
+			# for example some of Acme intros are '<span>' for unknown reason
+			if intro == '' or intro == 'intro' or intro == 'n/a' or not re.search('\s',intro):
 				intro = generate_intro(variant)
 
 		# check if intro blank
@@ -1005,6 +1097,7 @@ def generate_intro_html(product):
 			intro = capitalize_sentences(intro)
 			#intro = re.sub('\"','\",CHAR(34),\"', intro) # if quotes found in intro, such as for dimensions, then fmla will incorrectly interpret that as closing string
 			intro_html = "<p>" + intro + "</p>"
+			break # once we make an intro for the product we dont need to loop thru any more variants because they all get the same intro
 		#print("Intro HTML: " + intro_html)
 
 	return intro_html
@@ -1982,6 +2075,8 @@ def generate_features_html(product):
 			else:
 				features_html = features
 
+			break # for now, once we make features list for variant skip the rest of the variants for now bc it is more complex to organize all variant features in descrip
+
 		#print("Features HTML: " + features_html)
 
 	return features_html
@@ -2073,15 +2168,15 @@ def generate_catalog(vendor):
 		#print("all_spec_sheet_heights: " + str(all_spec_sheet_heights))
 		all_spec_sheet_coll_names = spec_sheet_df[spec_sheet_coll_name].astype('string').str.strip().tolist()
 		#print("all_spec_sheet_coll_names: " + str(all_spec_sheet_coll_names))
-		all_spec_sheet_types = spec_sheet_df[spec_sheet_type_name].astype('string').str.strip().tolist()
+		all_spec_sheet_types = spec_sheet_df[spec_sheet_type_name].astype('string').str.strip().str.replace(";","-").tolist()
 		#print("all_spec_sheet_types: " + str(all_spec_sheet_types))
 		all_spec_sheet_features = spec_sheet_df[spec_sheet_features_name].astype('string').str.strip().str.replace(";","-").tolist()
 		#print("all_spec_sheet_features: " + str(all_spec_sheet_features))
 		all_spec_sheet_descrips = spec_sheet_df[spec_sheet_descrip_name].astype('string').str.strip().str.replace(";","-").tolist()
 		#print("all_spec_sheet_descrips: " + str(all_spec_sheet_descrips))
-		all_spec_sheet_finishes = spec_sheet_df[spec_sheet_finish_name].astype('string').str.strip().tolist()
+		all_spec_sheet_finishes = spec_sheet_df[spec_sheet_finish_name].astype('string').str.strip().str.replace(";","-").tolist()
 		#print("all_spec_sheet_finishes: " + str(all_spec_sheet_finishes))
-		all_spec_sheet_materials = spec_sheet_df[spec_sheet_material_name].astype('string').str.strip().tolist()
+		all_spec_sheet_materials = spec_sheet_df[spec_sheet_material_name].astype('string').str.strip().str.replace(";","-").tolist()
 		#print("all_spec_sheet_materials: " + str(all_spec_sheet_materials))
 
 		# look for file in Data folder called acme-image-links.tsv
