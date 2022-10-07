@@ -100,8 +100,12 @@ def generate_handle(item_details):
 		descrip = item_details[title_idx]
 		collection_name = item_details[collection_idx]
 
+		# get features to check if a table is round bc not always differentiated bt round and rect tables in same collection
+		features = item_details[features_idx]
+
 		# keywords in form without dashes so remove excess from descrip to compare to keywords
 		plain_descrip = descrip.lower().strip()
+		plain_features = features.lower().strip()
 
 		for title_suffix, title_keywords in all_keywords.items():
 			#print("Title Suffix: " + title_suffix)
@@ -114,6 +118,14 @@ def generate_handle(item_details):
 
 			if final_title_suffix != '':
 				break
+
+		# replace "table" with "round table" if "round" mentioned in features of table but not in title/type/descrip (3 different names for the same field is confusing!)
+		if re.search("table", final_title_suffix) and not re.search("round", final_title_suffix):
+			#print("\n\nfound table in title but not round, so check if it is round!!!\n\n")
+			#print("final_title_suffix before: " + final_title_suffix)
+			if re.search("round", plain_features):
+				final_title_suffix = re.sub(r"(.*\s)table", r"round \1table", final_title_suffix)
+		#print("final_title_suffix after: " + final_title_suffix)
 
 		# warn user if no matching keyword
 		if final_title_suffix == '':

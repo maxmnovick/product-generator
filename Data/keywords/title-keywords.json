@@ -114,5 +114,7 @@
 	"side pier":["side\\s*pier"],
 	"storage unit":["storage"],
 	"hall tree":["tree"],
-	"pedestal stand":["pedestal"]
+	"pedestal stand":["pedestal"],
+	"wall art":["wall\\s*art","wall\\s*decor"],
+	"clock":["clock"]
 }

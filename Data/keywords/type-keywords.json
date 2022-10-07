@@ -94,5 +94,7 @@
 	"piers":["pier"],
 	"storage units":["storage"],
 	"hall trees":["tree"],
-	"pedestal stands":["pedestal"]
+	"pedestal stands":["pedestal"],
+	"wall art":["wall\\s*art","wall\\s*decor"],
+	"clocks":["clock"]
 }
