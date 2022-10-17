@@ -39,10 +39,15 @@ input = "new" # example inputs: details, options, names, new, all, raw
 output = "product"
 extension = "tsv"
 
-if vendor == 'acme': # acme gives 3 separate sheets so combine to make catalog
-	all_details = generator.generate_catalog(vendor)
+arg = ''
+
+if arg == 'js':
+	all_details = []
 else:
-	all_details = generator.extract_data(vendor, input, extension)
+	if vendor == 'acme': # acme gives 3 separate sheets so combine to make catalog
+		all_details = generator.generate_catalog_auto(vendor)
+	else:
+		all_details = generator.extract_data(vendor, input, extension)
 # store init item details untouched so we can detect measurement type based on input format of dimensions
 init_all_details = copy.deepcopy(all_details)
 #writer.display_all_item_details(init_all_details)
@@ -148,10 +153,11 @@ for item_idx in range(len(all_weights)):
 	all_weights_in_grams.append(weight_in_grams)
 
 # use from details table for shopify import
-all_handles = []
-for item_details in all_details:
-	handle = item_details[handle_idx]
-	all_handles.append(handle)
+# formerly copied directly from catalog table but now made automatically from raw data descrip and collection name (if col name not given by vendor then look in product names table)
+# all_handles = []
+# for item_details in all_details:
+# 	handle = item_details[handle_idx]
+# 	all_handles.append(handle)
 	
 all_costs = []
 for item_details in all_details:
@@ -162,6 +168,7 @@ for item_details in all_details:
 		all_costs.append('')
 	else:
 		all_costs.append(cost)
+
 all_barcodes = []
 for item_details in all_details:
 	barcode = ''
@@ -177,7 +184,7 @@ for item_details in all_details:
 	img_src = ''
 	if len(item_details) > img_src_idx:
 		img_src = item_details[img_src_idx]
-		img_src = re.sub(";",",",img_src)
+		img_src = re.sub(";",",",img_src) # semicolons will be interpreted as column delimeters later so they are reserved, and we want all img srcs in same column for import
 	if img_src.lower() == 'n/a':
 		all_img_srcs.append('')
 	else:
