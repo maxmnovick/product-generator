@@ -39,10 +39,13 @@ input = "new" # example inputs: details, options, names, new, all, raw
 output = "product"
 extension = "tsv"
 
-arg = ''
+arg = 'json'
 
 if arg == 'js':
 	all_details = []
+elif arg == 'json':
+	all_items_json = [[{'sku':'sku1','collection':'col1'}]]
+	all_details = generator.generate_catalog_from_json(all_items_json)
 else:
 	if vendor == 'acme': # acme gives 3 separate sheets so combine to make catalog
 		all_details = generator.generate_catalog_auto(vendor)

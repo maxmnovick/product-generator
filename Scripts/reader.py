@@ -1,7 +1,8 @@
 # reader.py
 # functions for a reader
 
-import json, re
+import json, re, pandas
+import determiner # custom
 
 class Measurement:
 	def __init__(self, meas_value, meas_type):
@@ -256,3 +257,51 @@ def format_dimension(measurement, handle):
 
 	#print("Total Measurement (in): " + total_meas)
 	return total_meas
+
+def read_raw_vendor_product_data(vendor, data_files):
+
+	ext = 'tsv'
+
+	desired_field_names = ['sku', 'collection', 'type', 'intro', 'color', 'material', 'finish', 'width', 'depth', 'height', 'weight', 'features', 'cost', 'images', 'barcode'] #corresponding to keys in dict. determine by type of generator. bc this is product generator we are look for product fields to form catalog, before it is converted to import
+	current_sheet_field_name = '' # loop thru each sheet and each field in each sheet
+
+	all_sheet_all_field_values = [] # only relevant fields?
+	for data_type in data_files:
+		current_sheet_all_field_values = {} # could init to have desired fields so when we loop thru later we can check if they are blank, otherwise it will return undefined for that key. or just check if key exists
+		print("\n====== Read Sheet: " + data_type + " ======\n")
+		# remove leading zeros from sku in price list to match sku in spec sheet
+		filepath = "../Data/" + vendor + "-" + data_type.replace(" ","-") + "." + ext
+
+		current_sheet_df = pandas.read_table(filepath).fillna('n/a')
+		current_sheet_df.columns = current_sheet_df.columns.str.strip() # remove excess spaces
+		current_sheet_headers = current_sheet_df.columns.values
+		print("current_sheet_headers: " + str(current_sheet_headers))
+		# first check if any desired fields
+		# format data. standardize keys. remove extra characters from values.
+		for desired_field_name in desired_field_names:
+
+			current_sheet_field_name = determiner.determine_field_name(desired_field_name, current_sheet_df) # actual name in raw data sheet
+			if current_sheet_field_name != '':
+				all_current_sheet_field_values = []
+				text_fields = ['type','features','intro','finish','material'] # plain text is interpreted specifically
+				if desired_field_name == 'sku':
+					all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().str.lstrip("0").tolist()
+				elif desired_field_name == 'cost':
+					all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.replace("$","").str.replace(",","").str.strip().tolist()
+				elif desired_field_name == 'images':
+					all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().str.lstrip("[").str.rstrip("]").tolist()
+				elif desired_field_name in text_fields:
+					all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().str.replace(";","-").tolist()
+				else:
+					all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().tolist()
+				print("all_current_sheet_field_values: " + desired_field_name + " " + str(all_current_sheet_field_values))
+				current_sheet_all_field_values[desired_field_name] = all_current_sheet_field_values
+			# for header in current_sheet_headers:
+			# 	if determiner.determine_matching_field(field_name, header):
+			# 		print("field_name matches header: " + field_name + ", " + header)
+
+		#all_current_sheet_field_values = current_sheet_df[current_sheet_field_name]
+		all_sheet_all_field_values.append(current_sheet_all_field_values)
+
+	return all_sheet_all_field_values
+

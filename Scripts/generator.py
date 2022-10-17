@@ -2112,6 +2112,219 @@ def generate_catalog_from_tables(list_of_tables):
 						# found header matching keyword
 						sku_key = header
 
+# convert from all_items_json = [[{'sku':'sku1','collection':'col1'}]]
+# to [{'sku':['sku1'],'collection':['col1']}]
+def convert_list_of_items_to_fields(all_items_json):
+
+	list_of_fields = []
+	all_fields_dict = {}
+	
+	for sheet in all_items_json:
+		print("sheet: " + str(sheet))
+		# all_skus = []
+		# all_collections = []
+		# all_values = []
+		for item_json in sheet:
+			print("item_json: " + str(item_json))
+			# all_skus.append(item_json['sku'])
+			# all_collections.append(item_json['collection'])
+			for key in item_json:
+				if key in all_fields_dict.keys():
+					all_fields_dict[key].append(item_json[key])
+				else:
+					all_fields_dict[key] = [item_json[key]]
+		# all_fields_dict['sku'] = all_skus
+		# all_fields_dict['collection'] = all_collections
+		print("all_fields_dict: " + str(all_fields_dict))
+			
+		list_of_fields.append(all_fields_dict)
+
+	print("all_fields_dict: " + str(all_fields_dict))
+	return list_of_fields
+
+
+def generate_catalog_from_json(all_items_json):
+	print("\n===Auto Generate Catalog Given JSON===\n")
+	print("all_items_json: " + str(all_items_json))
+
+	catalog = []
+
+	ext = 'tsv'
+
+	# header names given by vendor, rather than determining index
+
+	#catalog_dict = {} # store lists based on desired field name key
+	desired_field_names = ['sku', 'collection', 'type', 'intro', 'color', 'material', 'finish', 'width', 'depth', 'height', 'weight', 'features', 'cost', 'images', 'barcode'] #corresponding to keys in dict. determine by type of generator. bc this is product generator we are look for product fields to form catalog, before it is converted to import
+	crucial_field_names = ['sku', 'cost', 'images'] # , cost, images]
+	current_sheet_field_name = '' # loop thru each sheet and each field in each sheet
+
+	# for unknown no. sheets with unknown contents
+	# for user input, we have their list of files to loop thru
+
+	all_sheet_all_field_values = convert_list_of_items_to_fields(all_items_json)
+	# format keys and values before sending to display
+
+	print("\n === Display Catalog Info === \n")
+
+	catalog = []
+
+	# take first sheet and loop thru following sheets to see if matching sku entry
+	sheet1 = all_sheet_all_field_values[0]
+	print("sheet1: " + str(sheet1))
+	# all keys
+	# sku_key = 'sku'
+	# # all fields/values
+	# all_sheet1_skus = []
+	# if sku_key in sheet1.keys():
+	# 	all_sheet1_skus = sheet1[sku_key]
+	# print("all_sheet1_skus init: " + str(all_sheet1_skus))
+	# all_sheet1_collections = []
+	#all_sheet1_prices = sheet1['prices']
+	all_sheet1_values = {}
+	for key in desired_field_names:
+		if key in sheet1.keys():
+		#if sheet1[key] != '':
+			all_sheet1_values[key] = sheet1[key]
+	print("all_sheet1_values init: " + str(all_sheet1_values))
+
+	# see if all fields given by seeing if left blank or key exists?
+	all_fields_given = True
+	print("sheet1.keys(): " + str(sheet1.keys()))
+	for key in desired_field_names:
+		
+		if key not in sheet1.keys():
+		#if sheet1[key] == '':
+			all_fields_given = False
+			break
+	print("all_fields_given in first sheet? " + str(all_fields_given)) # since we assume all sheets rely on each other for full info this does not happen until we upgrade to allowing sheets with full and partial info
+
+	all_sheet1_skus = all_sheet1_values['sku']
+	for product_idx in range(len(all_sheet1_skus)):
+		sheet1_all_field_values = {}
+		for key in all_sheet1_values:
+			print("key in all_sheet1_values: " + str(key))
+			sheet1_value = all_sheet1_values[key][product_idx]
+			print("sheet1_value: " + str(sheet1_value))
+			sheet1_all_field_values[key] = sheet1_value
+		sheet1_sku = all_sheet1_skus[product_idx]
+		# sheet1_collection = ''
+		# if len(all_sheet1_collections) > 0:
+		# 	sheet1_collection = all_sheet1_collections[product_idx]
+		# #sheet1_cost = all_sheet1_prices[product_idx]
+		# sheet_all_field_values = [sheet1_sku] # corresponding to desired field names
+		print("sheet1_all_field_values: " + str(sheet1_all_field_values))
+
+		# init blank and then we will check if spots blank to see if we should transfer data
+		product_catalog_dict = {
+			'sku':'',
+			'collection':'',
+			'type':'',
+			'intro':'',
+			'color':'',
+			'material':'',
+			'finish':'',
+			'width':'',
+			'depth':'',
+			'height':'',
+			'weight':'',
+			'features':'',
+			'cost':'',
+			'images':'',
+			'barcode':''
+		}
+
+		for key in desired_field_names:
+			if key in sheet1.keys():
+			#if sheet1[key] != '':
+				current_sheet_value = sheet1[key][product_idx]
+				print("current_sheet_" + key + ": " + str(current_sheet_value))
+				if current_sheet_value != '' and current_sheet_value != 'n/a':
+					product_catalog_dict[key] = current_sheet_value
+		print("product_catalog_dict after sheet1: " + str(product_catalog_dict))
+
+		if all_fields_given:
+			for field_idx in range(len(desired_field_names)):
+				desired_field_name = desired_field_names[field_idx]
+				sheet_field_value = sheet1_all_field_values[desired_field_name]
+				if sheet_field_value != '' and sheet_field_value != 'n/a':
+					product_catalog_dict[desired_field_name] = sheet_field_value
+			
+
+
+		# compare all subsequent sheets to first sheet
+		elif len(all_sheet_all_field_values) > 1 and not all_fields_given: # if we have more than 1 sheet and we need more fields. 
+			for current_sheet_idx in range(1,len(all_sheet_all_field_values)):
+				
+				current_sheet = all_sheet_all_field_values[current_sheet_idx] # current sheet
+				print("current_sheet: " + str(current_sheet))
+				# current_sheet_dict = {}
+				# for key in desired_field_names:
+				# 	if key in current_sheet_all_field_values.keys():
+				# 		all_current_sheet_current_field_values = current_sheet_all_field_values[key]
+				# 		current_sheet_dict[key] = all_current_sheet_current_field_values
+				
+				#for key in desired_field_names:
+					#if key in current_sheet_all_field_values.keys():
+				all_current_sheet_skus = current_sheet['sku']
+				
+				#all_current_sheet_collections = current_sheet_all_field_values['collections']
+				#all_current_sheet_prices = current_sheet_all_field_values['price']
+		
+
+				#match_in_sheet = False
+				for current_sheet_item_idx in range(len(all_current_sheet_skus)):
+					
+					sheet1_sku = sheet1_all_field_values['sku']
+					current_sheet_sku = all_current_sheet_skus[current_sheet_item_idx]
+					#current_sheet_collection = all_current_sheet_collections[current_sheet_item_idx]
+					
+					if sheet1_sku == current_sheet_sku:
+						print("sheet1_sku matches current_sheet_sku: " + sheet1_sku + ", " + current_sheet_sku)
+						#match_in_sheet = True
+
+						for key in desired_field_names:
+							if key in current_sheet.keys():
+							#if current_sheet[key] != '':
+								current_sheet_value = current_sheet[key][current_sheet_item_idx]
+								print("current_sheet_" + key + ": " + str(current_sheet_value))
+								if current_sheet_value != '' and current_sheet_value != 'n/a':
+									product_catalog_dict[key] = current_sheet_value
+						# product_catalog_dict['sku'] = sheet1_sku
+						# product_catalog_dict['collection'] = current_sheet_collection
+						# product_catalog_dict['type'] = current_sheet_type
+
+						#all_current_sheet_images = []
+						# key = 'images'
+						# if key in current_sheet_all_field_values.keys():
+						# 	all_current_sheet_images = current_sheet_all_field_values[key]
+						# 	current_sheet_values = all_current_sheet_images[current_sheet_item_idx]
+						# 	if current_sheet_values != '' and current_sheet_values != 'n/a':
+						# 		product_catalog_dict[key] = current_sheet_values
+
+						break
+
+		print("product_catalog_dict: " + str(product_catalog_dict))
+
+
+		# see if crucial fields given by seeing if left blank or key exists?
+		crucial_fields_given = True
+		for crucial_field in crucial_field_names:
+			#print("product_catalog_dict.keys(): " + str(product_catalog_dict.keys()))
+			#if crucial_field not in product_catalog_dict.keys():
+			if product_catalog_dict[crucial_field] == '':
+				crucial_fields_given = False
+				break
+
+		if crucial_fields_given: 
+			catalog_info = list(product_catalog_dict.values()) #[sheet1_sku] #, coll_name, product_type, intro, color, material, finish, length, width, height, weight, features, sheet1_cost, img_links, barcode]
+			print("catalog_info: " + str(catalog_info))
+			catalog.append(catalog_info)
+		else:
+			print("Warning: Missing fields for SKU " + sheet1_sku + ", so product not uploaded!")
+
+
+	return catalog
+
 def generate_catalog_auto(vendor):
 	print("\n===Auto Generate Catalog Given Vendor " + vendor.title() + " ===\n")
 
@@ -2120,23 +2333,6 @@ def generate_catalog_auto(vendor):
 	ext = 'tsv'
 
 	# header names given by vendor, rather than determining index
-	# these below headers are for acme but should be generalized for all vendors
-	price_sheet_sku_name = "sku"
-	price_sheet_price_name = "price"
-	spec_sheet_title_name = "title"
-	spec_sheet_sku_name = "sku"
-	spec_sheet_weight_name = 'weight'
-	spec_sheet_length_name = 'length'
-	spec_sheet_width_name = 'width'
-	spec_sheet_height_name = 'height'
-	spec_sheet_coll_name = 'collection name'
-	spec_sheet_type_name = 'type'
-	spec_sheet_features_name = 'features'
-	spec_sheet_descrip_name = 'description'
-	spec_sheet_finish_name = 'finish'
-	spec_sheet_material_name = 'material'
-	img_sheet_sku_name = "sku"
-	img_sheet_links_name = "image links"
 
 	#catalog_dict = {} # store lists based on desired field name key
 	desired_field_names = ['sku', 'collection', 'type', 'intro', 'color', 'material', 'finish', 'width', 'depth', 'height', 'weight', 'features', 'cost', 'images', 'barcode'] #corresponding to keys in dict. determine by type of generator. bc this is product generator we are look for product fields to form catalog, before it is converted to import
@@ -2148,43 +2344,7 @@ def generate_catalog_auto(vendor):
 		# for user input, we have their list of files to loop thru
 
 		data_files = ['price sheet test', 'spec sheet test', 'image sheet test'] # for acme, price sheet, spec sheet, and img sheet separate
-		all_sheet_all_field_values = [] # only relevant fields?
-		for data_type in data_files:
-			current_sheet_all_field_values = {} # could init to have desired fields so when we loop thru later we can check if they are blank, otherwise it will return undefined for that key. or just check if key exists
-			print("\n====== Read Sheet: " + data_type + " ======\n")
-			# remove leading zeros from sku in price list to match sku in spec sheet
-			filepath = "../Data/" + vendor + "-" + data_type.replace(" ","-") + "." + ext
-
-			current_sheet_df = pandas.read_table(filepath).fillna('n/a')
-			current_sheet_df.columns = current_sheet_df.columns.str.strip() # remove excess spaces
-			current_sheet_headers = current_sheet_df.columns.values
-			print("current_sheet_headers: " + str(current_sheet_headers))
-			# first check if any desired fields
-			for desired_field_name in desired_field_names:
-
-				current_sheet_field_name = determiner.determine_field_name(desired_field_name, current_sheet_df) # actual name in raw data sheet
-				if current_sheet_field_name != '':
-					all_current_sheet_field_values = []
-					text_fields = ['type','features','intro','finish','material'] # plain text is interpreted specifically
-					if desired_field_name == 'sku':
-						all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().str.lstrip("0").tolist()
-					elif desired_field_name == 'cost':
-						all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.replace("$","").str.replace(",","").str.strip().tolist()
-					elif desired_field_name == 'images':
-						all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().str.lstrip("[").str.rstrip("]").tolist()
-					elif desired_field_name in text_fields:
-						all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().str.replace(";","-").tolist()
-					else:
-						all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().tolist()
-					print("all_current_sheet_field_values: " + desired_field_name + " " + str(all_current_sheet_field_values))
-					current_sheet_all_field_values[desired_field_name] = all_current_sheet_field_values
-				# for header in current_sheet_headers:
-				# 	if determiner.determine_matching_field(field_name, header):
-				# 		print("field_name matches header: " + field_name + ", " + header)
-
-			#all_current_sheet_field_values = current_sheet_df[current_sheet_field_name]
-			all_sheet_all_field_values.append(current_sheet_all_field_values)
-
+		all_sheet_all_field_values = reader.read_raw_vendor_product_data(vendor, data_files)
 		
 		print("\n === Display Catalog Info === \n")
 
