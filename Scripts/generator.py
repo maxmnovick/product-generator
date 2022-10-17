@@ -2129,10 +2129,12 @@ def convert_list_of_items_to_fields(all_items_json):
 			# all_skus.append(item_json['sku'])
 			# all_collections.append(item_json['collection'])
 			for key in item_json:
+				standard_key = determiner.determine_standard_key(key)
+				formatted_input = reader.format_vendor_product_data(item_json[key], standard_key) # passing in a single value corresponding to key. also need key to determine format.
 				if key in all_fields_dict.keys():
-					all_fields_dict[key].append(item_json[key])
+					all_fields_dict[standard_key].append(formatted_input)
 				else:
-					all_fields_dict[key] = [item_json[key]]
+					all_fields_dict[standard_key] = [formatted_input]
 		# all_fields_dict['sku'] = all_skus
 		# all_fields_dict['collection'] = all_collections
 		print("all_fields_dict: " + str(all_fields_dict))
@@ -2163,6 +2165,8 @@ def generate_catalog_from_json(all_items_json):
 
 	all_sheet_all_field_values = convert_list_of_items_to_fields(all_items_json)
 	# format keys and values before sending to display
+	# all_sheet_all_field_values = determiner.determine_standard_keys(all_sheet_all_field_values)
+	# all_sheet_all_field_values = format
 
 	print("\n === Display Catalog Info === \n")
 
@@ -2216,21 +2220,21 @@ def generate_catalog_from_json(all_items_json):
 
 		# init blank and then we will check if spots blank to see if we should transfer data
 		product_catalog_dict = {
-			'sku':'',
-			'collection':'',
-			'type':'',
-			'intro':'',
-			'color':'',
-			'material':'',
-			'finish':'',
-			'width':'',
-			'depth':'',
-			'height':'',
-			'weight':'',
-			'features':'',
-			'cost':'',
-			'images':'',
-			'barcode':''
+			'sku':'n/a',
+			'collection':'n/a',
+			'type':'n/a',
+			'intro':'n/a',
+			'color':'n/a',
+			'material':'n/a',
+			'finish':'n/a',
+			'width':'n/a',
+			'depth':'n/a',
+			'height':'n/a',
+			'weight':'n/a',
+			'features':'n/a',
+			'cost':'n/a',
+			'images':'n/a',
+			'barcode':'n/a'
 		}
 
 		for key in desired_field_names:

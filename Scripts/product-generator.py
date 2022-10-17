@@ -44,7 +44,7 @@ arg = 'json'
 if arg == 'js':
 	all_details = []
 elif arg == 'json':
-	all_items_json = [[{'sku':'sku1','collection':'col1'}]]
+	all_items_json = [[{'item#':'sku1','collection':'col1'}]] # raw data field names unknwown so look for keywords in raw key/field name
 	all_details = generator.generate_catalog_from_json(all_items_json)
 else:
 	if vendor == 'acme': # acme gives 3 separate sheets so combine to make catalog
@@ -623,7 +623,32 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 
 	return sorted_final_item_info
 
+# convert from ['1;2;3','4,5,6']
+# to [{'1':'1','2':'2','3':'3'},{'1':'4','2':'5','3':'6'}]
+def convert_all_final_item_info_to_json(all_info):
+	print("\n===Convert All Final Item Info to JSON===\n")
+	all_json = []
+
+	desired_import_fields = ['handle','title','body_html','vendor','standard_product_type','product_type','product_tags','published','product_option_string', 'sku','item_weight_in_grams','vrnt_inv_tracker','vrnt_inv_qty','vrnt_inv_policy','vrnt_fulfill_service','vrnt_price','vrnt_compare_price','vrnt_req_ship','vrnt_taxable','barcode','product_img_src','img_position','img_alt','vrnt_img','vrnt_weight_unit','vrnt_tax_code','item_cost','product_status']
+
+	for item_info in all_info:
+		# 1;2;3
+		item_info_list = item_info.split(';') # this always comes in standard format corresponding to desired import fields
+		item_json = {}
+		for field_idx in range(len(desired_import_fields)):
+			field = desired_import_fields[field_idx]
+			value = item_info_list[field_idx]
+			# handle
+			item_json[field] = value
+
+		all_json.append(item_json)
+
+	print("all_json: " + str(all_json))
+
+	return all_json
+
 all_final_item_info = display_shopify_variants() # currently uses all global variables
+all_final_item_json = convert_all_final_item_info_to_json(all_final_item_info)
 
 #generator.write_data(all_final_item_info, vendor, output, extension)
 
