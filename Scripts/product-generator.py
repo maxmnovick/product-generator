@@ -44,7 +44,9 @@ arg = 'json'
 if arg == 'js':
 	all_details = []
 elif arg == 'json':
-	all_items_json = [[{'item#':'sku1','collection':'col1'}]] # raw data field names unknwown so look for keywords in raw key/field name
+	
+	#all_items_json = [[{'item#':'sku1','collection':'col1'}]] # raw data field names unknwown so look for keywords in raw key/field name
+	all_items_json = [[{'Catalog Year': 2022, 'Catalog Page': 1255, ' Item#': '00118', 'D E S C R I P T I O N': 'COMPUTER DESK', '2022\n  EAST PETE PRICE ': 77, '#PC/CTN': 1, 'Ctn GW\n(lbs)': 36, 'Carton CUFT': 3.48, 'Collection Name': 'Vincent'}]]
 	all_details = generator.generate_catalog_from_json(all_items_json)
 else:
 	if vendor == 'acme': # acme gives 3 separate sheets so combine to make catalog

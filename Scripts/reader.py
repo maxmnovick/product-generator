@@ -309,19 +309,19 @@ def format_vendor_product_data(raw_data, key):
 	print("\n===Format Vendor Product Data===\n")
 	print("raw_data: " + str(raw_data))
 
-	data = raw_data
+	data = str(raw_data) # should it be blank init so we can check it has been set easily?
 
 	text_fields = ['type','features','intro','finish','material'] # plain text is interpreted specifically
 	if key == 'sku':
-		data = raw_data.strip().lstrip("0")
+		data = str(raw_data).strip().lstrip("0")
 	elif key == 'cost':
-		data = raw_data.replace("$","").replace(",","").strip()
+		data = str(raw_data).replace("$","").replace(",","").strip()
 	elif key == 'images':
-		data = raw_data.strip().lstrip("[").rstrip("]")
+		data = str(raw_data).strip().lstrip("[").rstrip("]")
 	elif key in text_fields:
-		data = raw_data.strip().replace(";","-")
+		data = str(raw_data).strip().replace(";","-")
 	else:
-		data = raw_data.strip()
+		data = str(raw_data).strip()
 	print("data: " + key + " " + str(data))
 
 	return data

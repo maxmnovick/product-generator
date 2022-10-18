@@ -2131,10 +2131,13 @@ def convert_list_of_items_to_fields(all_items_json):
 			for key in item_json:
 				standard_key = determiner.determine_standard_key(key)
 				formatted_input = reader.format_vendor_product_data(item_json[key], standard_key) # passing in a single value corresponding to key. also need key to determine format.
-				if key in all_fields_dict.keys():
-					all_fields_dict[standard_key].append(formatted_input)
-				else:
-					all_fields_dict[standard_key] = [formatted_input]
+				if standard_key != '' and formatted_input != '':
+					if key in all_fields_dict.keys():
+						print("add to existing key")
+						all_fields_dict[standard_key].append(formatted_input)
+					else:
+						print("add new key")
+						all_fields_dict[standard_key] = [formatted_input]
 		# all_fields_dict['sku'] = all_skus
 		# all_fields_dict['collection'] = all_collections
 		print("all_fields_dict: " + str(all_fields_dict))

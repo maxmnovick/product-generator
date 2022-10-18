@@ -8,6 +8,8 @@ def determine_matching_field(desired_field_name, current_field_name):
     print("current_field_name: " + current_field_name)
 
 def determine_standard_key(raw_key):
+    print("\n===Determine Standard Key for " + raw_key + "===\n")
+
     standard_key = ''
 
     all_field_keywords = { 
@@ -31,7 +33,9 @@ def determine_standard_key(raw_key):
     for field_key, field_keywords in all_field_keywords.items():
         print("field_key, field_keywords: " + field_key + ", " + str(field_keywords))
         for keyword in field_keywords:
-            if re.search(keyword, raw_key):
+            raw_key_no_space = re.sub('(\\s+|_)','',raw_key.lower()) # unpredictable typos OR format in headers given by vendor such as 'D E S C R I P T I O N'
+            keyword_no_space = re.sub('\\s', '', keyword)
+            if re.search(keyword_no_space, raw_key_no_space):
                 print("keyword " + keyword + " in raw_key " + raw_key)
                 standard_key = field_key
                 break
@@ -67,8 +71,8 @@ def determine_field_name(field, sheet_df):
     field_name = ''
     for keyword in keywords:
         for header in sheet_headers:
-            header_no_space = re.sub('(\s+|_)','',header.lower()) # unpredictable typos OR format in headers given by vendor such as 'D E S C R I P T I O N'
-            keyword_no_space = re.sub('\s', '', keyword)
+            header_no_space = re.sub('(\\s+|_)','',header.lower()) # unpredictable typos OR format in headers given by vendor such as 'D E S C R I P T I O N'
+            keyword_no_space = re.sub('\\s', '', keyword)
             if re.search(keyword_no_space, header_no_space):
                 field_name = header
                 print("field_name: " + field_name)
