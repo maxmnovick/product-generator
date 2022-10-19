@@ -629,17 +629,28 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 # to [{'1':'1','2':'2','3':'3'},{'1':'4','2':'5','3':'6'}]
 def convert_all_final_item_info_to_json(all_info):
 	print("\n===Convert All Final Item Info to JSON===\n")
+	print("all_info: " + str(all_info))
 	all_json = []
 
-	desired_import_fields = ['handle','title','body_html','vendor','standard_product_type','product_type','product_tags','published','product_option_string', 'sku','item_weight_in_grams','vrnt_inv_tracker','vrnt_inv_qty','vrnt_inv_policy','vrnt_fulfill_service','vrnt_price','vrnt_compare_price','vrnt_req_ship','vrnt_taxable','barcode','product_img_src','img_position','img_alt','vrnt_img','vrnt_weight_unit','vrnt_tax_code','item_cost','product_status']
+	# Handle;Title;Body (HTML);Vendor;Standardized Product Type;Custom Product Type;Tags;Published;Option1 Name;Option1 Value;Option2 Name;Option2 Value;Option3 Name;Option3 Value;Variant SKU;Variant Grams;Variant Inventory Tracker;Variant Inventory Qty;Variant Inventory Policy;Variant Fulfillment Service;Variant Price;Variant Compare At Price;Variant Requires Shipping;Variant Taxable;Variant Barcode;Image Src;Image Position;Image Alt Text;Variant Image;Variant Weight Unit;Variant Tax Code;Cost per item;Status
+	# ['handle','title','body_html','vendor','standard_product_type','product_type','product_tags','published','option1_name', 'option1_value', 'option2_name', 'option2_value', 'option3_name', 'option3_value', 'sku','item_weight_in_grams','vrnt_inv_tracker','vrnt_inv_qty','vrnt_inv_policy','vrnt_fulfill_service','vrnt_price','vrnt_compare_price','vrnt_req_ship','vrnt_taxable','barcode','product_img_src','img_position','img_alt','vrnt_img','vrnt_weight_unit','vrnt_tax_code','item_cost','product_status']
+	desired_import_fields = ['handle','title','body_html','vendor','standard_product_type','product_type','product_tags','published','option1_name', 'option1_value', 'option2_name', 'option2_value', 'option3_name', 'option3_value', 'sku','item_weight_in_grams','vrnt_inv_tracker','vrnt_inv_qty','vrnt_inv_policy','vrnt_fulfill_service','vrnt_price','vrnt_compare_price','vrnt_req_ship','vrnt_taxable','barcode','product_img_src','img_position','img_alt','vrnt_img','vrnt_weight_unit','vrnt_tax_code','item_cost','product_status']
+	num_fields = len(desired_import_fields)
+	print("num_fields in desired_import_fields: " + str(num_fields))
 
 	for item_info in all_info:
+		print("item_info: " + str(item_info))
 		# 1;2;3
 		item_info_list = item_info.split(';') # this always comes in standard format corresponding to desired import fields
+		print("item_info_list: " + str(item_info_list))
+		num_features = len(item_info_list)
+		print("num_features in item_info_list: " + str(num_features))
 		item_json = {}
 		for field_idx in range(len(desired_import_fields)):
 			field = desired_import_fields[field_idx]
+			print("field: " + str(field))
 			value = item_info_list[field_idx]
+			print("value: " + str(value))
 			# handle
 			item_json[field] = value
 
