@@ -81,3 +81,52 @@ def determine_field_name(field, sheet_df):
         if matching_field:
             break
     return field_name
+
+
+
+
+def determine_measurement_type(measurement, handle):
+
+	#print("=== Determine Measurement Type=== ")
+
+	meas_type = 'rectangular' # default to rectangular WxD b/c most common. alt option: round
+
+	measurement = measurement.lower() # could contain words such as "Round" or "n/a"
+	#print("Measurement: " + measurement)
+
+	blank_meas = True
+	if measurement != 'n/a' and measurement != '':
+		blank_meas = False
+
+	if not blank_meas:
+		# eg "9\' x 2\'"
+		if re.search('\'|\"',measurement): # given in units of feet and/or inches
+
+			#print("===Measurement Given in Custom Format===")
+
+			meas_ft_value = meas_in_value = 0.0
+
+			#if re.search("round",measurement):
+				#print("Measurement is of Round Object, so Diam or Rad?")
+
+			meas_vars = []
+			meas_value = measurement # from here on use value
+
+			if re.search('\'\d+\"\s*\d+(\'|\")',meas_value):
+				meas_type = 'combined_rect' #already set by default
+				print("Warning for " + handle + ": Width and Depth given in same field, while determining measurement type: \"" + meas_value + "\"!")
+			elif re.search('(\")\s*.+(\")',meas_value) or re.search('(\')\s*.+(\')',meas_value):
+				meas_type = 'invalid'
+				print("Warning for " + handle + ": 2 values with the same unit given while determining measurement type: \"" + meas_value + "\"!")
+			# assuming meas value followed by meas type
+			elif re.search('\s+',meas_value):
+				#print("Measurement contains a space character.")
+				meas_vars = re.split('\s+',meas_value)
+				#print("Meas vars: " + str(meas_vars))
+				meas_value = meas_vars[0]
+				meas_type = meas_vars[1]
+
+	#print("Measurement value: " + meas_value)
+	#print("Measurement type: \"" + meas_type + "\"\n")
+
+	return meas_type

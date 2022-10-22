@@ -3,6 +3,7 @@
 
 import json, re, pandas
 import determiner # custom
+import generator # to generate handle, to warn if an item has an error by handle (consider assigning ID based on init order of input details, to save compute)
 
 class Measurement:
 	def __init__(self, meas_value, meas_type):
@@ -325,3 +326,163 @@ def format_vendor_product_data(raw_data, key):
 	print("data: " + key + " " + str(data))
 
 	return data
+
+def format_field_values(field_name, all_details, init_all_details=[]):
+	print(field_name)
+
+	# General Info from Details table
+	field_values = []
+	field_idx = 0
+
+	# order of detail fields makes it faster compute, but could change to find key to make more robust
+	sku_idx = 0
+	collection_idx = 1
+	title_idx = 2
+	intro_idx = 3
+	color_idx = 4
+	mat_idx = 5
+	finish_idx = 6
+	width_idx = 7
+	depth_idx = 8
+	height_idx = 9
+	weight_idx = 10
+	features_idx = 11
+	cost_idx = 12
+	img_src_idx = 13
+	barcode_idx = 14
+	
+	if field_name == 'sku':
+		field_idx = sku_idx
+
+		# simplest transfer no formatting
+		for item_details in all_details:
+			value = item_details[field_idx]
+			field_values.append(value)
+
+
+	elif field_name == 'width':
+		field_idx = width_idx
+
+		# Read and Format Measurements
+		# assign to reader
+		default_meas_type = "rectangular"
+
+		measurements = []
+
+		# use dims from details table for shopify description and zoho inventory
+		#print("=== Get Widths ===")
+		# field values: all_widths = []
+		for item_idx in range(len(all_details)):
+			item_details = all_details[item_idx]
+			init_item_details = init_all_details[item_idx]
+
+			handle = generator.generate_handle(item_details) # we need to know which products have invalid measurements
+			#print("Item: " + handle)
+
+			#width = item_details[width_idx]
+			#print("Width: " + width)
+			#init_width = init_item_details[width_idx]
+			#print("Init Width: " + init_width)
+
+			meas_type = determiner.determine_measurement_type(item_details[width_idx], handle) # we need to know if the measurement is of a round or rectangular object so we can format output
+
+			#print("Width: " + width)
+			#init_width = init_item_details[width_idx]
+			#print("Init Width: " + init_width)
+
+			width = format_dimension(item_details[width_idx], handle)
+
+			#print("Width: " + width)
+			#init_width = init_item_details[width_idx]
+			#print("Init Width: " + init_width)
+
+			#m = reader.Measurement(width,meas_type)
+			if meas_type == 'rectangular':
+				item_details[width_idx] = width
+			else: #if meas_type == 'round' or meas_type == 'square' or meas_type == 'invalid':
+				item_details[width_idx] = width
+				item_details[depth_idx] = width
+				# add dim to init_item_details so not really init item details anymore but needed for sorting later, now that we know dims
+				init_item_details[depth_idx] = width
+
+			field_values.append(width)
+			#measurements.append(m)
+
+			#print("=== Got Widths ===")
+			#print("Width: " + width)
+			#init_width = init_item_details[width_idx]
+			#print("Init Width: " + init_width)
+
+		#writer.display_all_item_details(init_all_details)
+	elif field_name == 'depth':
+		for item_idx in range(len(all_details)):
+			item_details = all_details[item_idx]
+			handle = generator.generate_handle(item_details) # we need to know which products have invalid measurements
+			depth = format_dimension(item_details[depth_idx], handle)
+			item_details[depth_idx] = depth
+			field_values.append(depth)
+
+	elif field_name == 'height':
+		for item_details in all_details:
+			handle = generator.generate_handle(item_details) # we need to know which products have invalid measurements
+			height = format_dimension(item_details[height_idx], handle)
+			item_details[height_idx] = height
+			field_values.append(height)
+
+	elif field_name == 'weight':
+		#print("\n===Get All Weights===\n")
+		for item_details in all_details:
+			
+			#print("item_details: " + str(item_details))
+			handle = generator.generate_handle(item_details) # we need to know which products have invalid measurements
+			weight = ''
+			# check for blank handle here for precaution
+			if handle == '':
+				print("WARNING: Blank handle while getting weights!")
+			else:
+				weight = format_dimension(item_details[weight_idx], handle)
+			item_details[weight_idx] = weight
+			field_values.append(weight)
+
+	elif field_name == 'cost':
+		for item_details in all_details:
+			cost = ''
+			if len(item_details) > cost_idx:
+				cost = item_details[cost_idx]
+			if cost.lower() == 'n/a':
+				field_values.append('')
+			else:
+				field_values.append(cost)
+
+	elif field_name == 'barcode':
+		for item_details in all_details:
+			barcode = ''
+			if len(item_details) > barcode_idx:
+				barcode = item_details[barcode_idx]
+			if barcode.lower() == 'n/a':
+				field_values.append('')
+			else:
+				field_values.append(barcode)
+
+	elif field_name == 'img':
+		for item_details in all_details:
+			img_src = ''
+			if len(item_details) > img_src_idx:
+				img_src = item_details[img_src_idx]
+				img_src = re.sub(";",",",img_src) # semicolons will be interpreted as column delimeters later so they are reserved, and we want all img srcs in same column for import
+			if img_src.lower() == 'n/a':
+				field_values.append('')
+			else:
+				field_values.append(img_src)
+
+	elif field_name == 'vrnt_img':
+		for item_idx in range(len(all_details)):
+			item_details = all_details[item_idx]
+			vrnt_img = ''
+			if len(item_details) > img_src_idx:
+				img_src = item_details[img_src_idx]
+				if not re.search(",",img_src): # we can only be sure it is correct variant img if only 1 img and 1 variant, else need more processing
+					vrnt_img = img_src
+			field_values.append(vrnt_img)
+
+	return field_values

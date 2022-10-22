@@ -981,7 +981,7 @@ def isolate_product_strings(all_imports, import_type):
 
 		product_start_idx = product_stop_idx
 		if product_start_idx > len(all_imports) - 1:
-			break;
+			break
 
 	#print("Products: " + str(products) + "\n")
 	return products
@@ -1005,7 +1005,7 @@ def capitalize_sentences(intro):
 			# if sentence starts with numerals or special characters, get idx of first letter
 			first_letter_idx = 0
 
-			first_letter = re.search('\w', sentence)
+			first_letter = re.search('\\w', sentence)
 			if first_letter is not None:
 				first_letter_idx = first_letter.start()
 			#print("first_letter_idx: " + str(first_letter_idx))
@@ -1057,7 +1057,7 @@ def generate_intro(item_details):
 
 	intro = random.choice(intro_templates)
 
-	print(intro)
+	#print(intro)
 
 	return intro
 
@@ -1102,7 +1102,7 @@ def generate_intro_html(product):
 			# if no intro given then generate one
 			# if only word given, assume error bc intro cannot be one word
 			# for example some of Acme intros are '<span>' for unknown reason
-			if intro == '' or intro == 'intro' or intro == 'n/a' or not re.search('\s',intro):
+			if intro == '' or intro == 'intro' or intro == 'n/a' or not re.search('\\s',intro):
 				intro = generate_intro(variant)
 
 		# check if intro blank
@@ -1147,6 +1147,8 @@ def generate_colors_fmla(product, init_product):
 
 		valid_opt = False
 
+		colors_fmla = ''
+
 		for vrnt_idx in range(len(product)):
 			variant = product[vrnt_idx]
 			init_variant = init_product[vrnt_idx]
@@ -1169,6 +1171,8 @@ def generate_colors_fmla(product, init_product):
 
 			option_data = generate_options(variant, init_variant)
 
+			option_names = []
+			option_values = []
 			if len(option_data) > 0:
 				option_names = option_data[0]
 				#print("Option Names: " + str(option_names))
@@ -1177,22 +1181,29 @@ def generate_colors_fmla(product, init_product):
 
 			# get the value of the size option, if there is one
 			opt_idx = 0
-			for current_opt_name in option_names:
-				if current_opt_name == opt_name:
-					#print("Valid Opt: " + opt_name)
-					valid_opt = True
-					break
-				opt_idx += 1
+			if len(option_names) > 0:
+				for current_opt_name in option_names:
+					if current_opt_name == opt_name:
+						#print("Valid Opt: " + opt_name)
+						valid_opt = True
+						break
+					opt_idx += 1
+			else:
+				print("WARNING: No option names given!")
 
 
 			#print("Opt Idx: " + str(opt_idx))
 			if valid_opt:
-				opt_value = option_values[opt_idx]
+				opt_value = ''
+				if len(option_values) > opt_idx:
+					opt_value = option_values[opt_idx]
 				#print("Option Value: " + opt_value)
 
 				opt_fmla = colors_fmla
-
-				color_options[opt_value] = opt_fmla
+				if opt_value in color_options.keys():
+					color_options[opt_value] = opt_fmla
+				else:
+					print("WARNING: Option Value not in Color Options Keys!")
 
 		#print("Populated Option Values: " + opt_name + ": " + str(color_options))
 
@@ -1233,6 +1244,8 @@ def generate_colors_html(product, init_product):
 
 		valid_opt = False
 
+		colors_html = ''
+
 		for vrnt_idx in range(len(product)):
 			variant = product[vrnt_idx]
 			init_variant = init_product[vrnt_idx]
@@ -1255,6 +1268,8 @@ def generate_colors_html(product, init_product):
 
 			option_data = generate_options(variant, init_variant)
 
+			option_names = []
+			option_values = []
 			if len(option_data) > 0:
 				option_names = option_data[0]
 				#print("Option Names: " + str(option_names))
@@ -1582,7 +1597,7 @@ def get_variant_indices_by_size(product_details):
 
 		elif blank_depth:
 			# if width contains multiple ft symbols and depth is blank, take digits before first foot symbol as width and digits after as depth
-			if re.search('\'\s*\d+\'',width):
+			if re.search('\'\\s*\\d+\'',width):
 				print("Format Notice: Measurement contains improper sequence of two separate feet measurements!")
 				dims = width.split('\'')
 				width = dims[0].rstrip('\'')
@@ -1618,6 +1633,8 @@ def get_sorted_indices(product):
 	for variant in product:
 		width = depth = height = ''
 
+		handle = ''
+
 		if len(variant) > 7:
 			handle = variant[1].strip().lower()
 			#print("Handle: " + handle)
@@ -1637,6 +1654,7 @@ def get_sorted_indices(product):
 		if height != '' and height != 'n/a':
 			blank_height = False
 
+		meas_type = ''
 		if not blank_width:
 			meas_type = reader.determine_measurement_type(width, handle)
 
@@ -1659,7 +1677,7 @@ def get_sorted_indices(product):
 
 		elif blank_depth:
 			# if width contains multiple ft symbols and depth is blank, take digits before first foot symbol as width and digits after as depth
-			if re.search('\'\s*\d+\'',width):
+			if re.search('\'\\s*\\d+\'',width):
 				dims = width.split('\'')
 				width = dims[0].rstrip('\'')
 				depth = dims[1].rstrip('\'')
@@ -1753,6 +1771,8 @@ def generate_dimensions_fmla(product, init_product):
 		sorted_variants = sort_variants_by_size(product)
 
 		type = ''
+
+		dim_fmla = ''
 
 		for vrnt_idx in range(len(sorted_variants)):
 			variant = sorted_variants[vrnt_idx]
@@ -1883,6 +1903,8 @@ def generate_dimensions_html(product, init_product):
 
 		type = ''
 
+		dim_html = ''
+
 		for vrnt_idx in range(len(sorted_variants)):
 			variant = sorted_variants[vrnt_idx]
 			init_variant = init_sorted_variants[vrnt_idx]
@@ -1995,7 +2017,7 @@ def generate_features(item_details):
 	# bullet point indicates new line in features fmla so use bullet point for new line
 	features = '• Perfectly balanced and sturdy • Lightweight and easy to carry for convenience. • Durable construction, built to last. '
 
-	print("Features: " + features)
+	#print("Features: " + features)
 	return features
 
 
@@ -2359,7 +2381,7 @@ def generate_catalog_auto(vendor):
 
 		# take first sheet and loop thru following sheets to see if matching sku entry
 		sheet1 = all_sheet_all_field_values[0]
-		print("sheet1: " + str(sheet1))
+		#print("sheet1: " + str(sheet1))
 		# all keys
 		# sku_key = 'sku'
 		# # all fields/values
@@ -2374,26 +2396,26 @@ def generate_catalog_auto(vendor):
 			if key in sheet1.keys():
 			#if sheet1[key] != '':
 				all_sheet1_values[key] = sheet1[key]
-		print("all_sheet1_values init: " + str(all_sheet1_values))
+		#print("all_sheet1_values init: " + str(all_sheet1_values))
 
 		# see if all fields given by seeing if left blank or key exists?
 		all_fields_given = True
-		print("sheet1.keys(): " + str(sheet1.keys()))
+		#print("sheet1.keys(): " + str(sheet1.keys()))
 		for key in desired_field_names:
 			
 			if key not in sheet1.keys():
 			#if sheet1[key] == '':
 				all_fields_given = False
 				break
-		print("all_fields_given in first sheet? " + str(all_fields_given)) # since we assume all sheets rely on each other for full info this does not happen until we upgrade to allowing sheets with full and partial info
+		#print("all_fields_given in first sheet? " + str(all_fields_given)) # since we assume all sheets rely on each other for full info this does not happen until we upgrade to allowing sheets with full and partial info
 
 		all_sheet1_skus = all_sheet1_values['sku']
 		for product_idx in range(len(all_sheet1_skus)):
 			sheet1_all_field_values = {}
 			for key in all_sheet1_values:
-				print("key in all_sheet1_values: " + str(key))
+				#print("key in all_sheet1_values: " + str(key))
 				sheet1_value = all_sheet1_values[key][product_idx]
-				print("sheet1_value: " + str(sheet1_value))
+				#print("sheet1_value: " + str(sheet1_value))
 				sheet1_all_field_values[key] = sheet1_value
 			# sheet1_sku = all_sheet1_skus[product_idx]
 			# sheet1_collection = ''
@@ -2401,7 +2423,7 @@ def generate_catalog_auto(vendor):
 			# 	sheet1_collection = all_sheet1_collections[product_idx]
 			# #sheet1_cost = all_sheet1_prices[product_idx]
 			# sheet_all_field_values = [sheet1_sku] # corresponding to desired field names
-			print("sheet1_all_field_values: " + str(sheet1_all_field_values))
+			#print("sheet1_all_field_values: " + str(sheet1_all_field_values))
 
 			# init blank and then we will check if spots blank to see if we should transfer data
 			product_catalog_dict = {
@@ -2426,10 +2448,12 @@ def generate_catalog_auto(vendor):
 				if key in sheet1.keys():
 				#if sheet1[key] != '':
 					current_sheet_value = sheet1[key][product_idx]
-					print("current_sheet_" + key + ": " + str(current_sheet_value))
+					#print("current_sheet_" + key + ": " + str(current_sheet_value))
 					if current_sheet_value != '' and current_sheet_value != 'n/a':
 						product_catalog_dict[key] = current_sheet_value
-			print("product_catalog_dict after sheet1: " + str(product_catalog_dict))
+			#print("product_catalog_dict after sheet1: " + str(product_catalog_dict))
+
+			sheet1_sku = ''
 
 			if all_fields_given:
 				for field_idx in range(len(desired_field_names)):
@@ -2445,7 +2469,7 @@ def generate_catalog_auto(vendor):
 				for current_sheet_idx in range(1,len(all_sheet_all_field_values)):
 					
 					current_sheet = all_sheet_all_field_values[current_sheet_idx] # current sheet
-					print("current_sheet: " + str(current_sheet))
+					#print("current_sheet: " + str(current_sheet))
 					# current_sheet_dict = {}
 					# for key in desired_field_names:
 					# 	if key in current_sheet_all_field_values.keys():
@@ -2468,14 +2492,14 @@ def generate_catalog_auto(vendor):
 						#current_sheet_collection = all_current_sheet_collections[current_sheet_item_idx]
 						
 						if sheet1_sku == current_sheet_sku:
-							print("sheet1_sku matches current_sheet_sku: " + sheet1_sku + ", " + current_sheet_sku)
+							#print("sheet1_sku matches current_sheet_sku: " + sheet1_sku + ", " + current_sheet_sku)
 							#match_in_sheet = True
 
 							for key in desired_field_names:
 								if key in current_sheet.keys():
 								#if current_sheet[key] != '':
 									current_sheet_value = current_sheet[key][current_sheet_item_idx]
-									print("current_sheet_" + key + ": " + str(current_sheet_value))
+									#print("current_sheet_" + key + ": " + str(current_sheet_value))
 									if current_sheet_value != '' and current_sheet_value != 'n/a':
 										product_catalog_dict[key] = current_sheet_value
 							# product_catalog_dict['sku'] = sheet1_sku
@@ -2492,7 +2516,7 @@ def generate_catalog_auto(vendor):
 
 							break
 
-			print("product_catalog_dict: " + str(product_catalog_dict))
+			#print("product_catalog_dict: " + str(product_catalog_dict))
 
 
 			# see if crucial fields given by seeing if left blank or key exists?
@@ -2506,7 +2530,7 @@ def generate_catalog_auto(vendor):
 
 			if crucial_fields_given: 
 				catalog_info = list(product_catalog_dict.values()) #[sheet1_sku] #, coll_name, product_type, intro, color, material, finish, length, width, height, weight, features, sheet1_cost, img_links, barcode]
-				print("catalog_info: " + str(catalog_info))
+				#print("catalog_info: " + str(catalog_info))
 				catalog.append(catalog_info)
 			else:
 				print("Warning: Missing fields for SKU " + sheet1_sku + ", so product not uploaded!")
@@ -2763,9 +2787,97 @@ def generate_catalog(vendor):
 
 	return catalog
 
+def generate_vrnt_price(cost, type, seller):
+
+	#print("Cost: " + cost)
+
+	vrnt_price_string = ''
+
+	if cost != '':
+		cost_value = float(cost) # make float for math operations
+		#print("Cost Value: " + str(cost_value))
+
+		vrnt_price = 0.0
+		vrnt_price_string = ''
+		rug_deliv_price = 70
+		mattress_multiplier = 3
+		common_deliv_rate = 1.15
+		online_only_rate = 1
+		if seller == 'JF':
+			common_multiplier = 2.4
+		elif seller == 'HFF':
+			common_multiplier = 1.8
+			online_only_rate = 1.1
+			common_deliv_rate = 1.2
+		else:
+			common_multiplier = 2.0
+
+		if type == 'rugs':
+			vrnt_price = cost_value * online_only_rate * common_multiplier + rug_deliv_price
+			#print("vrnt_price = " + str(cost_value) + " * " + str(common_multiplier) + " + " + str(rug_deliv_price) + " = " + str(vrnt_price))
+		elif type == 'mattresses' or type == 'box springs':
+			vrnt_price = cost_value * online_only_rate * mattress_multiplier
+		else:
+			vrnt_price = cost_value * online_only_rate * common_deliv_rate * common_multiplier
+		#print("Variant Price Before Rounding: " + str(vrnt_price))
+
+		# round price
+		rounded_price = roundup(vrnt_price)
+		rounded_price = float(rounded_price)
+		#print("Rounded Price Up To Nearest 100: " + str(rounded_price))
+
+		remainder = rounded_price % vrnt_price
+		#print("Remainder: " + str(remainder))
+
+		if type == 'rugs':
+			# if the remainder is below 30, round up; if 30 or above, round down
+			if remainder >= 30:
+				vrnt_price = rounddown(vrnt_price) - 0.01
+			else:
+				vrnt_price = rounded_price - 0.01
+		else:
+			# if the remainder is below 50, round up; if 50 or above, round down
+			if remainder >= 50:
+				vrnt_price = rounddown(vrnt_price) - 0.01
+			else:
+				vrnt_price = rounded_price - 0.01
+
+		vrnt_price_string = str(vrnt_price)
+
+		#print("Final Variant Price: " + vrnt_price_string)
+
+	return vrnt_price_string
+
+def generate_vrnt_compare_price(price):
+
+	#print("Price: " + price)
+
+	compare_price_string = ''
+
+	if price != '':
+
+		price_value = float(price)
+
+		compare_price = 0.0
+		compare_price_string = ''
+		discount = True
+		discount_multiplier = 1.2
+		if discount:
+			compare_price = round_price(price_value * discount_multiplier)
+			compare_price_string = str(compare_price)
+			#print("Compare Price: " + compare_price_string)
+
+	return compare_price_string
+
 # helper functions
 def roundup(x):
 	 return int(math.ceil(x / 100.0)) * 100
 
 def rounddown(x):
 	 return int(math.floor(x / 100.0)) * 100
+
+def round_price(price):
+	rounded_price = roundup(price)
+	rounded_price = float(rounded_price)
+
+	return rounded_price - 0.01
