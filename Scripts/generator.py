@@ -2806,9 +2806,11 @@ def generate_vrnt_price(cost, type, seller):
 		if seller == 'JF':
 			common_multiplier = 2.4
 		elif seller == 'HFF':
-			common_multiplier = 1.8
+			common_multiplier = 1.5 #ideally > 1.8
 			online_only_rate = 1.1
-			common_deliv_rate = 1.2
+			# need a separate var to compute price with deliv, 
+			# or just set it at the end before output
+			common_deliv_rate = 1.0 #1.2 # calculate this to display in descrip, and incorporate into price as shipping rate
 		else:
 			common_multiplier = 2.0
 
