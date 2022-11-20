@@ -1,9 +1,11 @@
 # generator.py
 # functions for a generator
 
-import reader, writer, determiner # custom
-import re, datetime, math, random, pandas
+import reader, writer, determiner
+import isolator # for isolating products in list of all products
+import re, datetime, math, random, pandas # random number for random sale item to set compare price
 import numpy as np
+import sorter # sort variants by size
 
 # order of detail fields
 sku_idx = 0
@@ -106,6 +108,7 @@ def generate_handle(item_details):
 
 		# keywords in form without dashes so remove excess from descrip to compare to keywords
 		plain_descrip = descrip.lower().strip()
+		#print("plain_descrip: " + plain_descrip)
 		plain_features = features.lower().strip()
 
 		for title_suffix, title_keywords in all_keywords.items():
@@ -330,13 +333,18 @@ def generate_product_img_src(item_details):
 
 	img_src = item_details[img_src_idx]
 
-	if re.search('drive.google.com',img_src):
+	if img_src == 'n/a':
+		img_src = ''
+
+	elif re.search('drive.google.com',img_src):
 		# extract ID
 		img_id = re.sub("https://drive.google.com/file/d/|/view\?usp=sharing","",img_src)
 		#img_id = re.sub("/view\?usp=sharing","",img_id)
 		print("img_id: " + img_id)
 
 		img_src = "https://drive.google.com/uc?export=view&id=" + img_id
+	
+	
 
 	return img_src
 
@@ -481,85 +489,10 @@ def generate_all_options(all_details, init_all_details):
 
 	return all_options
 
-def generate_description_instances(product, init_product):
-	print("\n===Generate Description Instances===\n")
-
-	descrip_instances = []
-
-	body_html = ""
-
-	html_descrip = True # user input based on spreadsheet tool. we want to use html bc we need to make a table format for data. 
-	
-	if html_descrip == True:
-		
-		intro_html = generate_intro_html(product)
-
-		colors_html = generate_colors_html(product,init_product)
-
-		materials_html = generate_materials_html(product)
-
-		finishes_html = generate_finishes_html(product)
-
-		dimensions_html = generate_dimensions_html(product,init_product)
-
-		features_html = generate_features_html(product)
-
-		#arrival_html = generate_arrival_html(product) # arrival time, such as Arrives: 3-4 weeks from Date of Purchase (eventually update dynamically based on date of purchase)
-
-		descrip_html = intro_html + colors_html + materials_html + finishes_html + dimensions_html + features_html
-		body_html = descrip_html
-
-	elif html_descrip == False:
-
-		intro_fmla = generate_intro_fmla(product)
-
-		colors_fmla = generate_colors_fmla(product,init_product)
-
-		materials_fmla = generate_materials_fmla(product)
-
-		finishes_fmla = generate_finishes_fmla(product)
-
-		dimensions_fmla = generate_dimensions_fmla(product,init_product)
-
-		features_fmla = generate_features_fmla(product)
-
-		#arrival_fmla = generate_arrival_fmla(product) # arrival time, such as Arrives: 3-4 weeks from Date of Purchase (eventually update dynamically based on date of purchase)
-
-		descrip_fmla = "=CONCATENATE(" + intro_fmla  + ",CHAR(10)," + colors_fmla  + ",CHAR(10)," + materials_fmla  + ",CHAR(10)," + finishes_fmla  + ",CHAR(10)," + dimensions_fmla + ",CHAR(10)," + features_fmla + ")"
-		body_html = descrip_fmla
-
-	# all variants of the product get the same description
-	# the variants must be ordered by options, based on knowledge of desired option order and available options
-	for variant in product:
-		descrip_instances.append(body_html)
-
-	# instead of saving description instances and relying on them to align with product variants, 
-	# make dictionary matching description to product handle
-	# and then when setting the description, use the product handle as the key
-	#descrip_dict[handle] = body_html
-	# see generate_descrip_dict()
-
-	return descrip_instances
-
-def generate_all_descriptions(all_details, init_all_details):
-	print("\n===Generate All Descriptions===\n")
-	all_descriptions = []
-
-	init_products = isolate_products(init_all_details)
-	products = isolate_products(all_details) # why isolate products and not go line by line in all details?
-
-	for product_idx in range(len(products)):
-		product = products[product_idx]
-		init_product = init_products[product_idx]
-		descrip_instances = generate_description_instances(product, init_product)
-		for descrip_instance in descrip_instances:
-			all_descriptions.append(descrip_instance)
-
-	return all_descriptions
-
 # instead of saving description instances and relying on them to align with product variants, 
 # make dictionary matching description to product handle
 # and then when setting the description, use the product handle as the key
+# preview table needed to display table within table in html
 def generate_description(product, init_product):
 	print("\n===Generate Description===\n")
 
@@ -573,13 +506,13 @@ def generate_description(product, init_product):
 		
 		intro_html = generate_intro_html(product)
 
-		colors_html = generate_colors_html(product,init_product)
+		colors_html = generate_colors_html(product, init_product)
 
 		materials_html = generate_materials_html(product)
 
 		finishes_html = generate_finishes_html(product)
 
-		dimensions_html = generate_dimensions_html(product,init_product)
+		dimensions_html = generate_dimensions_html(product, init_product)
 
 		features_html = generate_features_html(product)
 
@@ -588,32 +521,13 @@ def generate_description(product, init_product):
 		descrip_html = intro_html + colors_html + materials_html + finishes_html + dimensions_html + features_html
 		body_html = descrip_html
 
-	elif html_descrip == False:
-
-		intro_fmla = generate_intro_fmla(product)
-
-		colors_fmla = generate_colors_fmla(product,init_product)
-
-		materials_fmla = generate_materials_fmla(product)
-
-		finishes_fmla = generate_finishes_fmla(product)
-
-		dimensions_fmla = generate_dimensions_fmla(product,init_product)
-
-		features_fmla = generate_features_fmla(product)
-
-		#arrival_fmla = generate_arrival_fmla(product) # arrival time, such as Arrives: 3-4 weeks from Date of Purchase (eventually update dynamically based on date of purchase)
-
-		descrip_fmla = "=CONCATENATE(" + intro_fmla  + ",CHAR(10)," + colors_fmla  + ",CHAR(10)," + materials_fmla  + ",CHAR(10)," + finishes_fmla  + ",CHAR(10)," + dimensions_fmla + ",CHAR(10)," + features_fmla + ")"
-		body_html = descrip_fmla
-
 	
 
 	return body_html
 
 # products = { "<sku>": { "handle":"<handle>", "description":"<description>"  } }
 # dict = { <handle>:<description> }
-def generate_descrip_dict(all_details, init_all_details):
+def generate_descrip_dict(all_details, init_all_details, inv_qtys={}):
 	print("\n===Generate Description Dictionary===\n")
 	# instead of saving description instances and relying on them to align with product variants, 
 	# make dictionary matching description to product handle
@@ -621,8 +535,8 @@ def generate_descrip_dict(all_details, init_all_details):
 	descrip_dict = {}
 	
 
-	init_products = isolate_products(init_all_details)
-	products = isolate_products(all_details) # why isolate products and not go line by line in all details?
+	init_products = isolator.isolate_products(init_all_details)
+	products = isolator.isolate_products(all_details) # why isolate products and not go line by line in all details?
 
 	for product_idx in range(len(products)):
 		product = products[product_idx]
@@ -873,150 +787,10 @@ def determine_unique_variant(question_variant, sorted_product, import_type):
 
 	return unique_vrnt
 
-def isolate_detail_field(all_details, field_title):
 
-	#print("\n=== Isolate Detail Field: " + field_title + " ===")
 
-	detail_field_values = []
 
-	handle_idx = 1 # shopify
-	item_name_idx = 1 # zoho
-	field_idx = 0
-	if field_title == "handle":
-		field_idx = handle_idx
-	elif field_title == "title":
-		field_idx = item_name_idx
 
-	for item_idx in range(len(all_details)):
-		item_details = all_details[item_idx]
-		#print("Item Details: " + str(item_details))
-		field_value = item_details[field_idx]
-		#print("Init Field Value: " + field_value)
-
-		if field_title == "title": # zoho import where title is part of item name title/opt_value
-			field_data = field_value.split("/")
-			field_value = field_data[0]
-
-		#print("Final Field Value: " + field_value)
-		detail_field_values.append(field_value)
-
-	#print("=== Isolated Detail Field: " + field_title + " ===\n")
-
-	return detail_field_values
-
-def isolate_product_from_details(all_details, start_idx, stop_idx):
-	product_rows = []
-
-	for variant_idx in range(start_idx, stop_idx):
-		product_rows.append(all_details[variant_idx])
-
-	return product_rows
-
-def isolate_products(all_details):
-	products = []
-
-	field_title = "handle" # we know that all variants of the same product have the same handle
-
-	#handles = np.array(isolate_detail_field(all_details, field_title))
-	handles = np.array(generate_all_handles(all_details))
-
-	_, idx, cnt = np.unique(handles, return_index=True, return_counts=True)
-
-	unique_handles = handles[np.sort(idx)]
-	counts = cnt[np.argsort(idx)]
-	indices = np.sort(idx)
-
-	num_products = len(unique_handles)
-
-	# isolate products and append to products array
-	for product_idx in range(num_products):
-		product_start_idx = indices[product_idx]
-		product_stop_idx = product_start_idx + counts[product_idx]
-
-		product_rows = isolate_product_from_details(all_details, product_start_idx, product_stop_idx)
-		products.append(product_rows)
-
-		product_start_idx = product_stop_idx
-		if product_start_idx > len(all_details) - 1:
-			break
-
-	#print("Products: " + str(products) + "\n")
-	return products
-
-def isolate_product_strings(all_imports, import_type):
-	products = []
-
-	#print("All Imports: " + str(all_imports) + "\n")
-	#print("Isolate Product Strings for Import Type: \"" + import_type + "\"")
-
-	field_title = "handle" # we know that all variants of the same product have the same handle
-
-	if import_type == "zoho":
-		field_title = "title"
-
-	all_import_data = []
-	for variant_import in all_imports:
-		import_data = []
-		import_data = variant_import.split(";")
-		all_import_data.append(import_data)
-
-	handles = np.array(isolate_detail_field(all_import_data, field_title))
-	#handles = np.array(generate_all_handles(all_details))
-
-	_, idx, cnt = np.unique(handles, return_index=True, return_counts=True)
-
-	unique_handles = handles[np.sort(idx)]
-	counts = cnt[np.argsort(idx)]
-	indices = np.sort(idx)
-
-	num_products = len(unique_handles)
-
-	# isolate products and append to products array
-	for product_idx in range(num_products):
-		product_start_idx = indices[product_idx]
-		product_stop_idx = product_start_idx + counts[product_idx]
-
-		product_rows = isolate_product_from_details(all_imports, product_start_idx, product_stop_idx)
-		products.append(product_rows)
-
-		product_start_idx = product_stop_idx
-		if product_start_idx > len(all_imports) - 1:
-			break
-
-	#print("Products: " + str(products) + "\n")
-	return products
-
-# originally based on capitalizing sentences for an intro paragraph
-def capitalize_sentences(intro):
-
-	#===\n")
-
-	final_sentences = ''
-
-	intro_sentences = intro.split('.')
-	#print("intro_sentences: " + str(intro_sentences))
-	for sentence in intro_sentences:
-		#print("sentence: " + sentence)
-		if len(sentence) > 1: # if space after last sentence then there will be a blank last element which should not be taken
-			
-			sentence = sentence.strip()
-			#print("sentence: \'" + sentence + '\'')
-
-			# if sentence starts with numerals or special characters, get idx of first letter
-			first_letter_idx = 0
-
-			first_letter = re.search('\\w', sentence)
-			if first_letter is not None:
-				first_letter_idx = first_letter.start()
-			#print("first_letter_idx: " + str(first_letter_idx))
-			if first_letter_idx == 0:
-				sentence = sentence[first_letter_idx].upper() + sentence[first_letter_idx+1:] + '. '
-			else:
-				sentence = sentence[:first_letter_idx] + sentence[first_letter_idx].upper() + sentence[first_letter_idx+1:] + '. ' #sentence = sentence.strip().capitalize() + '. '
-			final_sentences += sentence
-
-	#print("final_sentences: " + final_sentences)
-	return final_sentences
 
 def generate_intro(item_details):
 	intro = ''
@@ -1061,30 +835,6 @@ def generate_intro(item_details):
 
 	return intro
 
-def generate_intro_fmla(product):
-	intro_fmla = "\"\""
-
-	for variant in product:
-
-		intro = ''
-
-		if len(variant) > 3:
-			handle = variant[1].strip().lower()
-			#print("Handle: " + handle)
-			intro = variant[3].strip().lower()
-			print("Intro: " + intro)
-			# if no intro given then generate one
-			if intro == '' or intro == 'intro':
-				intro = generate_intro(variant)
-
-		if intro != '' and intro != 'n/a':
-			intro = capitalize_sentences(intro)
-			intro = re.sub('\"','\",CHAR(34),\"', intro) # if quotes found in intro, such as for dimensions, then fmla will incorrectly interpret that as closing string
-			intro_fmla = "\"" + intro + "\""
-		#print("Intro Formula: " + intro_fmla)
-
-	return intro_fmla
-
 def generate_intro_html(product):
 	print("\n===Generate Intro HTML===\n")
 	intro_html = ''
@@ -1107,7 +857,7 @@ def generate_intro_html(product):
 
 		# check if intro blank
 		if intro != '' and intro != 'n/a':
-			intro = capitalize_sentences(intro)
+			intro = writer.capitalize_sentences(intro)
 			#intro = re.sub('\"','\",CHAR(34),\"', intro) # if quotes found in intro, such as for dimensions, then fmla will incorrectly interpret that as closing string
 			intro_html = "<p>" + intro + "</p>"
 			break # once we make an intro for the product we dont need to loop thru any more variants because they all get the same intro
@@ -1115,126 +865,15 @@ def generate_intro_html(product):
 
 	return intro_html
 
-def determine_given_colors(product_details):
-	given_colors = True
-
-	for variant_details in product_details:
-		colors = ''
-
-		if len(variant_details) > 4:
-			colors = variant_details[4].strip()
-
-			if colors == '' or colors.lower() == 'n/a':
-				# no colors given
-				given_colors = False
-
-		else:
-			given_colors = False
-
-	return given_colors
-
-def generate_colors_fmla(product, init_product):
-
-	final_colors_fmla = "\"\"" # init fmla for this part of the description
-	if determine_given_colors(product): # if we are NOT given colors we do not include colors in the description
-		final_colors_fmla = "\"Colors: \"" # only if at least 1 of the variants has colors
-
-		opt_name = 'Color' # choose what option we want to show
-		standard_type = opt_name.lower() + "s" # standards are defined in the data/standards folder
-		options = reader.read_standards(standard_type) # get dict of options
-		color_options = options[opt_name]
-		#print("Color Options: " + str(color_options))
-
-		valid_opt = False
-
-		colors_fmla = ''
-
-		for vrnt_idx in range(len(product)):
-			variant = product[vrnt_idx]
-			init_variant = init_product[vrnt_idx]
-
-			valid_opt = False
-
-			colors = ''
-
-			if len(variant) > 4:
-				handle = variant[1].strip().lower()
-				#print("Handle: " + handle)
-				colors = variant[4].strip().lower()
-				#print("Colors: " + colors)
-
-			colors_fmla = '\"\"' # init option fmla so if no value given it is empty quotes
-			if colors != '' and colors != 'n/a':
-				colors = re.sub('\"','\",CHAR(34),\"', colors) # if something like "red" brown is given as colors, then fmla will incorrectly interpret that as closing string
-				colors_fmla = "\"" + colors + "\""
-			#print("Colors Formula: " + colors_fmla)
-
-			option_data = generate_options(variant, init_variant)
-
-			option_names = []
-			option_values = []
-			if len(option_data) > 0:
-				option_names = option_data[0]
-				#print("Option Names: " + str(option_names))
-				option_values = option_data[1]
-				#print("Option Values: " + str(option_values))
-
-			# get the value of the size option, if there is one
-			opt_idx = 0
-			if len(option_names) > 0:
-				for current_opt_name in option_names:
-					if current_opt_name == opt_name:
-						#print("Valid Opt: " + opt_name)
-						valid_opt = True
-						break
-					opt_idx += 1
-			else:
-				print("WARNING: No option names given!")
-
-
-			#print("Opt Idx: " + str(opt_idx))
-			if valid_opt:
-				opt_value = ''
-				if len(option_values) > opt_idx:
-					opt_value = option_values[opt_idx]
-				#print("Option Value: " + opt_value)
-
-				opt_fmla = colors_fmla
-				if opt_value in color_options.keys():
-					color_options[opt_value] = opt_fmla
-				else:
-					print("WARNING: Option Value not in Color Options Keys!")
-
-		#print("Populated Option Values: " + opt_name + ": " + str(color_options))
-
-		# now we have populated all color values for this product
-		# so create color fmla by looping through colors and printing those with valid values
-		if valid_opt:
-			#print("Colors: ")
-			opt_idx = 0
-			for color_name, color_value in color_options.items():
-				if color_value != '':
-					variant_color_fmla = color_value
-					#print(variant_color_fmla)
-					if opt_idx == 0:
-						final_colors_fmla += "," + variant_color_fmla
-					else:
-						final_colors_fmla += ",\", or \"," + variant_color_fmla
-					opt_idx += 1
-			#print()
-			final_colors_fmla += ",\". \""
-		else:
-			final_colors_fmla += "," + colors_fmla + ",\". \""
-
-	#print("Colors Formula: " + final_colors_fmla + "\n")
-
-	return final_colors_fmla
-
 def generate_colors_html(product, init_product):
 
+	print("\n===Generate Colors HTML===\n")
+
 	final_colors_html = "" # init fmla for this part of the description
-	if determine_given_colors(product): # if we are NOT given colors we do not include colors in the description
-		final_colors_html = "<table><tr><td>Colors: " # only if at least 1 of the variants has colors
+	
+	if determiner.determine_given_colors(product): # if we are NOT given colors we do not include colors in the description
+		print("Given Colors!")
+		final_colors_html += "<table><tr><td>Colors: " # only if at least 1 of the variants has colors
 
 		opt_name = 'Color' # choose what option we want to show
 		standard_type = opt_name.lower() + "s" # standards are defined in the data/standards folder
@@ -1316,60 +955,21 @@ def generate_colors_html(product, init_product):
 		else:
 			final_colors_html += colors_html + ". </td></tr>"
 
-	#print("Colors HTML: " + final_colors_html + "\n")
+	print("Colors HTML: " + final_colors_html + "\n")
 
 	return final_colors_html
 
-def determine_given_materials(product_details):
-	given_materials = True
 
-	for variant_details in product_details:
-		materials = ''
-
-		if len(variant_details) > 5:
-			materials = variant_details[5].strip()
-
-			if materials == '' or materials.lower() == 'n/a':
-				# no colors given
-				given_materials = False
-
-		else:
-			given_materials = False
-
-	return given_materials
-
-def generate_materials_fmla(product):
-
-	final_materials_fmla = "\"\"" # init fmla for this part of the description
-	if determine_given_materials(product): # if we are NOT given materials we do not include materials in the description
-		final_materials_fmla = "\"Materials: \"" # only if at least 1 of the variants has materials
-
-		# for now, only handle cases where all variants have same material
-		variant1 = product[0]
-
-		materials = ''
-
-		if len(variant1) > 5:
-			handle = variant1[1].strip().lower()
-			materials = variant1[5].strip().lower()
-
-		materials_fmla = '\"\"' # init option fmla so if no value given it is empty quotes
-		if materials != '' and materials != 'n/a':
-			# format materials string by correcting typos and replacing invalid characters
-			materials = re.sub('\"','\'', materials) # if something like "s" spring is given as material, then fmla will incorrectly interpret that as closing string
-
-			materials_fmla = "\"" + materials + "\""
-
-		final_materials_fmla += "," + materials_fmla + ",\". \""
-
-	return final_materials_fmla
 
 def generate_materials_html(product):
 
-	final_materials_html = "<tr>" # init fmla for this part of the description
-	if determine_given_materials(product): # if we are NOT given materials we do not include materials in the description
+	final_materials_html = "" # init fmla for this part of the description
+	if determiner.determine_given_materials(product): # if we are NOT given materials we do not include materials in the description
 		#print("\n===GIVEN MATERIALS===\n")
-		final_materials_html = "<tr><td>Materials: </td>" # only if at least 1 of the variants has materials
+		if not determiner.determine_given_colors(product):
+			final_materials_html = "<table>"
+
+		final_materials_html += "<tr><td>Materials: </td>" # only if at least 1 of the variants has materials
 		#print("final_materials_html: " + final_materials_html)
 		# for now, only handle cases where all variants have same material
 		variant1 = product[0]
@@ -1391,52 +991,18 @@ def generate_materials_html(product):
 
 	return final_materials_html
 
-def determine_given_finishes(product_details):
-	given_finishes = True
 
-	for variant_details in product_details:
-		finishes = ''
-
-		if len(variant_details) > 6:
-			finishes = variant_details[6].strip()
-
-			if finishes == '' or finishes.lower() == 'n/a':
-				# no finishes given
-				given_finishes = False
-
-		else:
-			given_finishes = False
-
-	return given_finishes
-
-def generate_finishes_fmla(product):
-
-	final_finishes_fmla = "\"\"" # init fmla for this part of the description
-	if determine_given_finishes(product): # if we are NOT given finishes we do not include finishes in the description
-		final_finishes_fmla = "\"Finishes: \"" # only if at least 1 of the variants has finishes
-
-		# for now, only handle cases where all variants have same material
-		variant1 = product[0]
-
-		finishes = ''
-
-		if len(variant1) > 6:
-			handle = variant1[1].strip().lower()
-			finishes = variant1[6].strip().lower()
-
-		finishes_fmla = '\"\"' # init option fmla so if no value given it is empty quotes
-		if finishes != '' and finishes != 'n/a':
-			finishes_fmla = "\"" + finishes + "\""
-
-		final_finishes_fmla += "," + finishes_fmla + ",\". \""
-
-	return final_finishes_fmla
 
 def generate_finishes_html(product):
 
+	print("\n===Generate Finishes HTML===\n")
+
 	final_finishes_html = "" # init fmla for this part of the description
-	if determine_given_finishes(product): # if we are NOT given finishes we do not include finishes in the description
-		final_finishes_html = "<tr><td>Finishes: </td>" # only if at least 1 of the variants has finishes
+	if determiner.determine_given_finishes(product): # if we are NOT given finishes we do not include finishes in the description
+		print("Given Finishes!")
+		if not determiner.determine_given_colors(product) and not determiner.determine_given_materials(product):
+			final_finishes_html = "<table>"
+		final_finishes_html += "<tr><td>Finishes: </td>" # only if at least 1 of the variants has finishes
 
 		# for now, only handle cases where all variants have same material
 		variant1 = product[0]
@@ -1452,439 +1018,23 @@ def generate_finishes_html(product):
 			finishes_html = "<td>" + finishes.title() + ". </td></tr>"
 
 		final_finishes_html += finishes_html + "</table>"
-	else:
+	elif determiner.determine_given_colors(product) or determiner.determine_given_materials(product):
 		# close the description data table
-		final_finishes_html = "</table>"
+		final_finishes_html += "</table>"
+
+	print("final_finishes_html: " + final_finishes_html)
 
 	return final_finishes_html
 
-def determine_given_dimensions(product_details):
-	given_dims = True
 
-	for variant_details in product_details:
-		width = depth = height = ''
 
-		if len(variant_details) > 7:
-			width = variant_details[7].strip()
 
-			if len(variant_details) > 8:
-				depth = variant_details[8].strip()
-
-				if len(variant_details) > 9:
-					height = variant_details[9].strip()
-		else:
-			given_dims = False
-
-		if width == '' or width.lower() == 'n/a':
-			# no width given but maybe other dims given
-			if depth == '' or depth.lower() == 'n/a':
-				# no width or depth given but maybe height given
-				if height == '' or height.lower() == 'n/a':
-					given_dims = False
-
-	return given_dims
-
-# product input includes all variants of product
-# def set_option_values(product, opt_name):
-#
-# 	standard_type = opt_name.lower() + "s"
-#
-# 	options = reader.read_standards(standard_type)
-#
-# 	valid_opt = False
-#
-# 	for variant in product:
-#
-# 		dim_fmla = ''
-#
-# 		if opt_name == 'Size':
-# 			width = depth = height = ''
-#
-# 			if len(variant) > 5:
-# 				handle = variant[1].strip()
-# 				#print("Handle: " + handle)
-# 				width = variant[5].strip()
-#
-# 				if len(item_details) > 6:
-# 					depth = variant[6].strip()
-#
-# 					if len(item_details) > 7:
-# 						height = variant[7].strip()
-#
-# 			width_fmla = depth_fmla = height_fmla = '\"\"'
-# 			if width != '' and width != 'n/a':
-# 				width_fmla = "\"" + width + "\",CHAR(34),\" W \""
-# 			if depth != '' and depth != 'n/a':
-# 				depth_fmla = "\"" + depth + "\",CHAR(34),\" D \""
-# 			if height != '' and height != 'n/a':
-# 				height_fmla = "\"" + height + "\",CHAR(34),\" H\""
-#
-# 			dim_fmla = width_fmla + ",\"x \"," + depth_fmla + ",\"x \"," + height_fmla + ",\". \""
-#
-# 		option_data = generate_options(variant)
-# 		option_names = []
-# 		option_values = []
-# 		if len(option_data) > 0:
-# 			option_names = option_data[0]
-# 			option_values = option_data[1]
-#
-# 		# get the value of the size option, if there is one
-# 		opt_idx = 0
-# 		for current_opt_name in option_names:
-# 			if current_opt_name == opt_name:
-# 				valid_opt = True
-# 				break
-# 			opt_idx += 1
-#
-# 		if valid_opt:
-# 			opt_value = option_values[opt_idx]
-#
-# 			opt_fmla = ''
-# 			if opt_name == 'Size':
-# 				opt_fmla = dim_fmla
-# 			elif opt_name == 'Color':
-# 				opt_fmla = color_fmla
-#
-# 			options[opt_value] = opt_fmla
-#
-# 	print(opt_name + ": " + str(options))
-#
-# 	return options
-
-def determine_valid_option(option_values):
-	valid_opt = False
-	for dims in option_values.values():
-		if dims != '':
-			valid_opt = True
-
-	return valid_opt
-
-def get_variant_indices_by_size(product_details):
-	#print("\n=== Get Variant Indices by Size ===\n")
-
-	areas = []
-	widths = []
-
-	for variant in product_details:
-		width = depth = height = ''
-
-		if len(variant) > 7:
-			handle = variant[1].strip().lower()
-			#print("Handle: " + handle)
-			width = variant[7].strip()
-
-			if len(variant) > 8:
-				depth = variant[8].strip()
-
-				if len(variant) > 9:
-					height = variant[9].strip()
-
-		blank_width = blank_depth = blank_height = True
-		if width != '' and width != 'n/a':
-			blank_width = False
-		if depth != '' and depth != 'n/a':
-			blank_depth = False
-		if height != '' and height != 'n/a':
-			blank_height = False
-
-		if not blank_width and not blank_depth:
-			area = int(width) * int(depth)
-			areas.append(area)
-			widths.append(int(width))
-
-		elif blank_width:
-			widths.append(0) # we need 0 returned for width if empty
-
-		elif blank_depth:
-			# if width contains multiple ft symbols and depth is blank, take digits before first foot symbol as width and digits after as depth
-			if re.search('\'\\s*\\d+\'',width):
-				print("Format Notice: Measurement contains improper sequence of two separate feet measurements!")
-				dims = width.split('\'')
-				width = dims[0].rstrip('\'')
-				depth = dims[2].rstrip('\'')
-				widths.append(int(width))
-		else:
-			widths.append(0) # we need 0 returned for width if empty
-
-	#print("Areas: " + str(areas))
-
-	#areas_array = np.array(areas)
-	#print("Widths: " + str(widths))
-	num_widths = len(widths)
-	#print("Num Widths: " + str(num_widths))
-
-	widths_array = np.array(widths)
-
-	sorted_indices = np.argsort(widths_array)
-	sorted_indices = np.flip(sorted_indices)
-	#print("Sorted Indices: " + str(sorted_indices))
-
-	#print("\n=== Got Variant Indices by Size ===\n")
-
-	return sorted_indices
-
-def get_sorted_indices(product):
-
-	#print("\n=== Get Variant Indices by Size ===\n")
-
-	areas = []
-	widths = []
-
-	for variant in product:
-		width = depth = height = ''
-
-		handle = ''
-
-		if len(variant) > 7:
-			handle = variant[1].strip().lower()
-			#print("Handle: " + handle)
-			width = variant[7].strip()
-
-			if len(variant) > 8:
-				depth = variant[8].strip()
-
-				if len(variant) > 9:
-					height = variant[9].strip()
-
-		blank_width = blank_depth = blank_height = True
-		if width != '' and width != 'n/a':
-			blank_width = False
-		if depth != '' and depth != 'n/a':
-			blank_depth = False
-		if height != '' and height != 'n/a':
-			blank_height = False
-
-		meas_type = ''
-		if not blank_width:
-			meas_type = reader.determine_measurement_type(width, handle)
-
-		if not blank_width and not blank_depth:
-			width = reader.format_dimension(width, handle)
-			depth = reader.format_dimension(depth, handle)
-
-			width_float = float(width)
-			width_int = round(width_float,0)
-
-			depth_float = float(depth)
-			depth_int = round(depth_float,0)
-
-			area = width_int * depth_int
-			areas.append(area)
-			widths.append(width_int)
-
-		elif blank_width:
-			widths.append(0) # we need 0 returned for width if empty
-
-		elif blank_depth:
-			# if width contains multiple ft symbols and depth is blank, take digits before first foot symbol as width and digits after as depth
-			if re.search('\'\\s*\\d+\'',width):
-				dims = width.split('\'')
-				width = dims[0].rstrip('\'')
-				depth = dims[1].rstrip('\'')
-
-				width = reader.format_dimension(width, handle)
-				depth = reader.format_dimension(depth, handle)
-
-				width_float = float(width)
-				width_int = round(width_float,0)
-				widths.append(width_int)
-
-			if meas_type == 'round' or meas_type == 'square':
-				width = reader.format_dimension(width, handle)
-				depth = width
-
-				width_float = float(width)
-				width_int = round(width_float,0)
-
-				depth_float = float(depth)
-				depth_int = round(depth_float,0)
-
-				area = width_int * depth_int
-				areas.append(area)
-				widths.append(width_int)
-		else:
-			widths.append(0) # we need 0 returned for width if empty
-
-	#print("Areas: " + str(areas))
-	#print("Widths: " + str(widths))
-
-	#areas_array = np.array(areas)
-	widths_array = np.array(widths)
-
-	sorted_indices = np.argsort(widths_array)
-	#sorted_indices = np.flip(sorted_indices) removed flip b/c thought better to have larger first for upsell but actually better to have smaller first b/c then customer is willing to explore options (otherwise high price is deterrent to even looking)
-	#print("Sorted Indices: " + str(sorted_indices))
-
-	#print("\n=== Got Variant Indices by Size ===\n")
-
-	return sorted_indices
-
-def sort_variants_by_size(product):
-
-	variant1 = product[0]
-	handle = variant1[handle_idx]
-	#print("=== Sort Variants by Size: " + handle + " ===")
-
-	sorted_indices = get_sorted_indices(product) # numpy array
-	num_widths = sorted_indices.size
-	#print("Num Widths: " + str(num_widths))
-
-	sorted_variants = product
-	num_variants = len(product)
-	#print("Num Variants: " + str(num_variants))
-
-	# only sort variants if we have valid values for sorting
-	if num_variants == num_widths:
-		sorted_variants = []
-		for idx in range(num_variants):
-			#print("Index: " + str(idx))
-			sorted_idx = sorted_indices[idx]
-			#print("Sorted Index: " + str(sorted_idx))
-			sorted_variant = product[sorted_idx]
-			sorted_variants.append(sorted_variant)
-	else:
-		print("Warning for " + handle + ": Num Variants != Num Widths (" + str(num_variants) + " != " + str(num_widths) + ") while sorting variants!")
-
-	#for variant in sorted_variants:
-		#print("Sorted Variant: " + str(variant))
-	return sorted_variants
-
-def generate_dimensions_fmla(product, init_product):
-
-	dimensions_fmla = "\"\"" # init fmla for this part of the description
-	if determine_given_dimensions(product): # if we are NOT given dimensions we do not include dimensions in the description
-		dimensions_fmla = "\"Dimensions (in): \"" # only if at least 1 of the variants has dimensions
-
-		#sizes = set_option_values(product, 'Size')
-		opt_name = 'Size' # choose what option we want to show
-		standard_type = opt_name.lower() + "s" # standards are defined in the data/standards folder
-		options = reader.read_standards(standard_type) # get dict of options
-		size_options = options[opt_name]
-		#print("Size Options: " + str(size_options))
-
-		valid_opt = False
-
-		# sort variants
-		#print("Sort Init Variants")
-		init_sorted_variants = sort_variants_by_size(init_product)
-		#print("Sort Variants")
-		sorted_variants = sort_variants_by_size(product)
-
-		type = ''
-
-		dim_fmla = ''
-
-		for vrnt_idx in range(len(sorted_variants)):
-			variant = sorted_variants[vrnt_idx]
-			init_variant = init_sorted_variants[vrnt_idx]
-
-			valid_opt = False
-
-			type = generate_product_type(variant)
-
-			width = depth = height = ''
-
-			if len(variant) > 7:
-				handle = variant[1].strip().lower()
-				#print("Handle: " + handle)
-				width = variant[7].strip()
-
-				if len(variant) > 8:
-					depth = variant[8].strip()
-
-					if len(variant) > 9:
-						height = variant[9].strip()
-
-			blank_width = blank_depth = blank_height = True
-			if width != '' and width != 'n/a':
-				blank_width = False
-			if depth != '' and depth != 'n/a':
-				blank_depth = False
-			if height != '' and height != 'n/a':
-				blank_height = False
-
-			dim_fmla = ''
-			width_fmla = depth_fmla = height_fmla = '\"\"' # init option fmla so if no value given it is empty quotes
-			if not blank_width:
-				width_fmla = "\"" + width + "\",CHAR(34),\" W\""
-				dim_fmla = width_fmla
-			if not blank_depth:
-				depth_fmla = "\"" + depth + "\",CHAR(34),\" D\""
-				if blank_width:
-					dim_fmla = depth_fmla
-				else:
-					dim_fmla += ",\" x \"," + depth_fmla
-			if not blank_height:
-				height_fmla = "\"" + height + "\",CHAR(34),\" H\""
-				if blank_width and blank_height:
-					dim_fmla = height_fmla
-				else:
-					dim_fmla += ",\" x \"," + height_fmla
-
-			dim_fmla += ",\". \""
-
-			option_data = generate_options(variant, init_variant)
-			#print("Option Data: " + str(option_data))
-			option_names = []
-			option_values = []
-			if len(option_data) > 0:
-				option_names = option_data[0]
-				option_values = option_data[1]
-
-			# order option values from large to small, and correspond with dim_fmla
-
-			# get the value of the size option, if there is one
-			opt_idx = 0
-			for current_opt_name in option_names:
-				if current_opt_name == opt_name:
-					valid_opt = True
-					break
-				opt_idx += 1
-
-			if valid_opt:
-				opt_value = option_values[opt_idx] # option value is dictionary key
-
-				opt_fmla = dim_fmla
-
-				# before assigning to options dict, could sort dims but could also sort after by checking if custom dims and storing in separate array to sort
-				size_options[opt_value] = opt_fmla
-
-		#print(opt_name + ": " + str(size_options))
-
-		# now we have populated all size values for this product
-		# so create dim fmla by looping through sizes and printing those with valid values
-		if valid_opt:
-			#print("Dimensions: ")
-
-			# reorder custom dims from large to small
-
-			for size, dims in size_options.items():
-				if dims != '':
-					#print("Dims: " + dims)
-					if type == 'rugs':
-						variant_dim_fmla = dims # do not add quote-comma to dims b/c already there
-						#print("variant_dim_fmla: " + variant_dim_fmla)
-						dimensions_fmla += ",CHAR(10)," + variant_dim_fmla
-					else:
-						size_fmla = "\"" + size + ": \","
-						#print("size_fmla: " + size_fmla)
-						variant_dim_fmla = size_fmla + dims
-						#print(variant_dim_fmla)
-						dimensions_fmla += ",CHAR(10)," + variant_dim_fmla
-
-			#print()
-		else:
-			dimensions_fmla += "," + dim_fmla
-
-	#print("Dimensions Formula: " + dimensions_fmla + "\n")
-
-	return dimensions_fmla
 
 def generate_dimensions_html(product, init_product):
 
 	dimensions_html = "" # init fmla for this part of the description
-	if determine_given_dimensions(product): # if we are NOT given dimensions we do not include dimensions in the description
-		dimensions_html = "<table><tr><td>Dimensions (in.): </td><td>" # only if at least 1 of the variants has dimensions
+	if determiner.determine_given_dimensions(product): # if we are NOT given dimensions we do not include dimensions in the description
+		dimensions_html += "<table><tr><td>Dimensions (in.): </td><td>" # only if at least 1 of the variants has dimensions
 
 		#sizes = set_option_values(product, 'Size')
 		opt_name = 'Size' # choose what option we want to show
@@ -1897,9 +1047,9 @@ def generate_dimensions_html(product, init_product):
 
 		# sort variants
 		#print("Sort Init Variants")
-		init_sorted_variants = sort_variants_by_size(init_product)
+		init_sorted_variants = sorter.sort_variants_by_size(init_product)
 		#print("Sort Variants")
-		sorted_variants = sort_variants_by_size(product)
+		sorted_variants = sorter.sort_variants_by_size(product)
 
 		type = ''
 
@@ -2003,11 +1153,13 @@ def generate_dimensions_html(product, init_product):
 						#print(variant_dim_fmla)
 						dimensions_html += variant_dim_html
 
+			dimensions_html += "</table>"
+
 			#print()
 		else:
 			dimensions_html += dim_html + "</table>"
 
-	#print("Dimensions HTML: " + dimensions_html + "\n")
+	print("Dimensions HTML: " + dimensions_html + "\n")
 
 	return dimensions_html
 
@@ -2021,59 +1173,17 @@ def generate_features(item_details):
 	return features
 
 
-def generate_features_fmla(product):
-	features_fmla = "\"\""
-
-	for variant in product:
-
-		features = ''
-
-		if len(variant) > 11:
-			handle = variant[1].strip().lower()
-			#print("Handle: " + handle)
-			features = variant[11].strip()
-			print("Features: " + features)
-			# if no intro given then generate one
-			if features == '' or str.lower(features) == 'features':
-				features = generate_features(variant)
-
-		if features != '' and features != 'n/a':
-			# need better way to check if there are no proper nouns that should stay capitalized, b/c too blunt to lowercase everything
-			features = features.lower()
-
-			# add periods before bullets
-			# make sure no extra periods added so no double periods if sentence already has period at end
-			features = re.sub(r"([^\.])\s•",r"\1. •", features) 
-			if features[-1] != '.':
-				#print("Last character: " + features[-1])
-				features += '. '
-
-			features = capitalize_sentences(features).strip()
-
-			features = re.sub('\"','\",CHAR(34),\"', features) # if quotes found in features, such as for dimensions, then fmla will incorrectly interpret that as closing string
-			
-			
-
-			features = re.sub('•','\",CHAR(10),\"• \",\"', features) # bullet point indicates new line
-			features = re.sub('    ','\",CHAR(10),\"• \",\"', features) # 4 spaces indicates new line
-			features = re.sub('ï|Ï','\",CHAR(10),\"• \",\"', features) # ï character indicates new line (for Coaster)
-			features_fmla = "\"" + features + "\""
-
-			
-
-		#print("Features Formula: " + features_fmla)
-
-	return features_fmla
 
 def generate_features_html(product):
-	features_html = "\"\""
+	#features_html = "\"\""
+	features_html = ""
 
 	for variant in product:
 
 		features = ''
 
 		if len(variant) > 11:
-			handle = variant[1].strip().lower()
+			#handle = variant[1].strip().lower()
 			#print("Handle: " + handle)
 			features = variant[11].strip()
 			print("Features: " + features)
@@ -2092,7 +1202,7 @@ def generate_features_html(product):
 				#print("Last character: " + features[-1])
 				features += '. '
 
-			features = capitalize_sentences(features).strip()
+			features = writer.capitalize_sentences(features).strip()
 
 			#features = re.sub('\"','\",CHAR(34),\"', features) # if quotes found in features, such as for dimensions, then fmla will incorrectly interpret that as closing string
 			
@@ -2353,6 +1463,9 @@ def generate_catalog_from_json(all_items_json):
 
 
 	return catalog
+
+def generate_catalog_from_info(all_items_info):
+	print("\n===Generate Catalog from Info===\n")
 
 def generate_catalog_auto(vendor):
 	print("\n===Auto Generate Catalog Given Vendor " + vendor.title() + " ===\n")
@@ -2806,11 +1919,9 @@ def generate_vrnt_price(cost, type, seller):
 		if seller == 'JF':
 			common_multiplier = 2.4
 		elif seller == 'HFF':
-			common_multiplier = 1.5 #ideally > 1.8
+			common_multiplier = 1.5 #1.8
 			online_only_rate = 1.1
-			# need a separate var to compute price with deliv, 
-			# or just set it at the end before output
-			common_deliv_rate = 1.0 #1.2 # calculate this to display in descrip, and incorporate into price as shipping rate
+			common_deliv_rate = 1.0 #1.2
 		else:
 			common_multiplier = 2.0
 
@@ -2853,23 +1964,38 @@ def generate_vrnt_price(cost, type, seller):
 def generate_vrnt_compare_price(price):
 
 	#print("Price: " + price)
-
 	compare_price_string = ''
 
-	if price != '':
+	# only set compare price ~1/3 of the time at random to show that sales are genuine and do not apply to all items only select few, which may increase purchases for perception of sale and time limit
+	random_sale_item = random.randrange(1,3)
+	if random_sale_item == 1:
 
-		price_value = float(price)
+		if price != '':
 
-		compare_price = 0.0
-		compare_price_string = ''
-		discount = True
-		discount_multiplier = 1.2
-		if discount:
-			compare_price = round_price(price_value * discount_multiplier)
-			compare_price_string = str(compare_price)
-			#print("Compare Price: " + compare_price_string)
+			price_value = float(price)
+
+			compare_price = 0.0
+			compare_price_string = ''
+			discount = True
+			discount_multiplier = 1.2
+			if discount:
+				compare_price = round_price(price_value * discount_multiplier)
+				compare_price_string = str(compare_price)
+				#print("Compare Price: " + compare_price_string)
 
 	return compare_price_string
+
+
+# should all_details contain inv data, even though we do not know no. locations?
+# ideally separate table
+def generate_all_inv_qtys(all_inv_data):
+	print("\n===Generate All Inventory Quantities===\n")
+	# first use keywords to find qty in raw data
+	# see if name abbreviation used in field
+	# see number of locations for vendor
+	# based on inv qty at location, and moving time bt locations, we can get pickup time
+	inv_qtys = {}
+	return inv_qtys
 
 # helper functions
 def roundup(x):

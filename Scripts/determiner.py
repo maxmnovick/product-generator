@@ -81,10 +81,7 @@ def determine_field_name(field, sheet_df):
         if matching_field:
             break
     return field_name
-
-
-
-
+    
 def determine_measurement_type(measurement, handle):
 
 	#print("=== Determine Measurement Type=== ")
@@ -130,3 +127,84 @@ def determine_measurement_type(measurement, handle):
 	#print("Measurement type: \"" + meas_type + "\"\n")
 
 	return meas_type
+
+def determine_given_colors(product_details):
+	given_colors = True
+
+	for variant_details in product_details:
+		colors = ''
+
+		if len(variant_details) > 4:
+			colors = variant_details[4].strip()
+
+			if colors == '' or colors.lower() == 'n/a':
+				# no colors given
+				given_colors = False
+
+		else:
+			given_colors = False
+
+	return given_colors
+
+
+def determine_given_materials(product_details):
+	given_materials = True
+
+	for variant_details in product_details:
+		materials = ''
+
+		if len(variant_details) > 5:
+			materials = variant_details[5].strip()
+
+			if materials == '' or materials.lower() == 'n/a':
+				# no colors given
+				given_materials = False
+
+		else:
+			given_materials = False
+
+	return given_materials
+
+def determine_given_finishes(product_details):
+	given_finishes = True
+
+	for variant_details in product_details:
+		finishes = ''
+
+		if len(variant_details) > 6:
+			finishes = variant_details[6].strip()
+
+			if finishes == '' or finishes.lower() == 'n/a':
+				# no finishes given
+				given_finishes = False
+
+		else:
+			given_finishes = False
+
+	return given_finishes
+
+def determine_given_dimensions(product_details):
+	given_dims = True
+
+	for variant_details in product_details:
+		width = depth = height = ''
+
+		if len(variant_details) > 7:
+			width = variant_details[7].strip()
+
+			if len(variant_details) > 8:
+				depth = variant_details[8].strip()
+
+				if len(variant_details) > 9:
+					height = variant_details[9].strip()
+		else:
+			given_dims = False
+
+		if width == '' or width.lower() == 'n/a':
+			# no width given but maybe other dims given
+			if depth == '' or depth.lower() == 'n/a':
+				# no width or depth given but maybe height given
+				if height == '' or height.lower() == 'n/a':
+					given_dims = False
+
+	return given_dims

@@ -57,7 +57,7 @@ def write_data(arranged_data, input):
 # valid for json files
 def read_keywords(key_type):
 	key_type = re.sub(' ','-',key_type)
-	keys_filename = "../Data/keywords/" + key_type + "-keywords.json"
+	keys_filename = "data/keywords/" + key_type + "-keywords.json"
 
 	lines = [] # capture each line in the document
 
@@ -87,7 +87,7 @@ def read_keywords(key_type):
 # valid for json files
 def read_standards(standard_type):
 	standard_type = re.sub(' ','-',standard_type)
-	keys_filename = "../Data/standards/" + standard_type + ".json"
+	keys_filename = "data/standards/" + standard_type + ".json"
 
 	lines = [] # capture each line in the document
 

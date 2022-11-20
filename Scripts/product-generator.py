@@ -11,327 +11,45 @@
 # unless it is much more efficient to loop through all fields for the same product
 # rather than looping through all products for the same field, like the generator currently does
 
-import generator, reader, writer, copy, re
+import re
+import copy # to store init deep copy of catalog for processing
+import reader # format input field values
+import writer
 import converter # convert all weights to grams
+import generator # generate output
 import sorter # sort items by size
 
-# order of detail fields
-sku_idx = 0
-handle_idx = 1
-title_idx = 2
-intro_idx = 3
-color_idx = 4
-mat_idx = 5
-finish_idx = 6
-width_idx = 7
-depth_idx = 8
-height_idx = 9
-weight_idx = 10
-features_idx = 11
-cost_idx = 12
-img_src_idx = 13
-barcode_idx = 14
+
+
+# order of detail fields, from init catalog, not needed bc field determined by keywords
 
 # set the seller for different cost to price conversions and other requirements such as if inventory tracking capable
 seller = 'HFF' # examples: JF, HFF
 
 vendor = "acme"
 
-input = "new" # example inputs: details, options, names, new, all, raw
-output = "product"
-extension = "tsv"
+# input = "new" # example inputs: details, options, names, new, all, raw
+# output = "product"
+# extension = "tsv"
 
-arg = ''
+# arg = ''
 
-if arg == 'js':
-	all_details = []
-elif arg == 'json':
+# if arg == 'js':
+# 	all_details = []
+# elif arg == 'json':
 	
-	#all_items_json = [[{'item#':'sku1','collection':'col1'}]] # raw data field names unknwown so look for keywords in raw key/field name
-	all_items_json = [[{'Catalog Year': 2022, 'Catalog Page': 1255, ' Item#': '00118', 'D E S C R I P T I O N': 'COMPUTER DESK', '2022\n  EAST PETE PRICE ': 77, '#PC/CTN': 1, 'Ctn GW\n(lbs)': 36, 'Carton CUFT': 3.48, 'Collection Name': 'Vincent'}]]
-	all_details = generator.generate_catalog_from_json(all_items_json)
-else:
-	if vendor == 'acme': # acme gives 3 separate sheets so combine to make catalog
-		all_details = generator.generate_catalog_auto(vendor)
-	else:
-		all_details = generator.extract_data(vendor, input, extension)
-# store init item details untouched so we can detect measurement type based on input format of dimensions
-init_all_details = copy.deepcopy(all_details)
-#writer.display_all_item_details(init_all_details)
-
-# General Info from Details table
-all_skus = reader.format_field_values('sku', all_details)
-
-# Read and Format Measurements
-# assign to reader
-# default_meas_type = "rectangular"
-
-# measurements = []
-
-# use dims from details table for shopify description and zoho inventory
-all_widths = reader.format_field_values('width', all_details, init_all_details)
-
-all_depths = reader.format_field_values('depth', all_details, init_all_details)
-
-all_heights = reader.format_field_values('height', all_details, init_all_details)
-
-all_weights = reader.format_field_values('weight', all_details, init_all_details)
-init_unit='lb'
-all_weights_in_grams = converter.convert_all_weights_to_grams(all_weights, init_unit) # shopify requires grams
-	
-all_costs = reader.format_field_values('cost', all_details)
-
-all_barcodes = reader.format_field_values('barcode', all_details)
-
-all_img_srcs = reader.format_field_values('img', all_details)
-all_vrnt_imgs = reader.format_field_values('vrnt_img', all_details)
-
-# ====== Shopify Product Catalog ======
-print("\n====== Shopify Product Catalog ======\n")
-
-#writer.display_all_item_details(init_all_details)
-
-# generate handles
-product_handles = generator.generate_all_handles(all_details) # formerly copied directly from catalog table but now made automatically from raw data descrip and collection name (if col name not given by vendor then look in product names table)
-#writer.display_field_values(product_handles)
-
-# generate titles, based on handles
-product_titles = generator.generate_all_titles(all_details, product_handles)
-#writer.display_field_values(product_titles)
-
-# generate tags
-product_tags = generator.generate_all_tags(all_details, vendor)
-#writer.display_field_values(product_tags)
-
-# generate product types
-product_types = generator.generate_all_product_types(all_details)
-#writer.display_field_values(product_types)
-
-# generate product img srcs
-product_img_srcs = generator.generate_all_product_img_srcs(all_details)
-#writer.display_field_values(product_img_srcs)
-
-# generate options
-product_options = generator.generate_all_options(all_details, init_all_details) # we need init details to detect measurement type
-#writer.display_field_values(product_options)
-#writer.display_all_item_details(init_all_details)
-
-# generate descriptions by list of instances
-product_descriptions = generator.generate_all_descriptions(all_details, init_all_details)
-#writer.display_field_values(product_descriptions)
-# generate descriptions with dictionary
-product_descrip_dict = generator.generate_descrip_dict(all_details, init_all_details)
-#writer.display_field_values(product_descrip_dict)
-
-# def compute_vrnt_price(cost, type):
-
-# 	#print("Cost: " + cost)
-
-# 	vrnt_price_string = ''
-
-# 	if cost != '':
-# 		cost_value = float(cost) # make float for math operations
-# 		#print("Cost Value: " + str(cost_value))
-
-# 		vrnt_price = 0.0
-# 		vrnt_price_string = ''
-# 		rug_deliv_price = 70
-# 		mattress_multiplier = 3
-# 		common_deliv_rate = 1.15
-# 		online_only_rate = 1
-# 		if seller == 'JF':
-# 			common_multiplier = 2.4
-# 		elif seller == 'HFF':
-# 			common_multiplier = 1.8
-# 			online_only_rate = 1.1
-# 			common_deliv_rate = 1.2
-# 		else:
-# 			common_multiplier = 2.0
-
-# 		if type == 'rugs':
-# 			vrnt_price = cost_value * online_only_rate * common_multiplier + rug_deliv_price
-# 			#print("vrnt_price = " + str(cost_value) + " * " + str(common_multiplier) + " + " + str(rug_deliv_price) + " = " + str(vrnt_price))
-# 		elif type == 'mattresses' or type == 'box springs':
-# 			vrnt_price = cost_value * online_only_rate * mattress_multiplier
-# 		else:
-# 			vrnt_price = cost_value * online_only_rate * common_deliv_rate * common_multiplier
-# 		#print("Variant Price Before Rounding: " + str(vrnt_price))
-
-# 		# round price
-# 		rounded_price = generator.roundup(vrnt_price)
-# 		rounded_price = float(rounded_price)
-# 		#print("Rounded Price Up To Nearest 100: " + str(rounded_price))
-
-# 		remainder = rounded_price % vrnt_price
-# 		#print("Remainder: " + str(remainder))
-
-# 		if type == 'rugs':
-# 			# if the remainder is below 30, round up; if 30 or above, round down
-# 			if remainder >= 30:
-# 				vrnt_price = generator.rounddown(vrnt_price) - 0.01
-# 			else:
-# 				vrnt_price = rounded_price - 0.01
-# 		else:
-# 			# if the remainder is below 50, round up; if 50 or above, round down
-# 			if remainder >= 50:
-# 				vrnt_price = generator.rounddown(vrnt_price) - 0.01
-# 			else:
-# 				vrnt_price = rounded_price - 0.01
-
-# 		vrnt_price_string = str(vrnt_price)
-
-# 		#print("Final Variant Price: " + vrnt_price_string)
-
-# 	return vrnt_price_string
-
-# def round_price(price):
-# 	rounded_price = generator.roundup(price)
-# 	rounded_price = float(rounded_price)
-
-# 	return rounded_price - 0.01
-
-# def compute_vrnt_compare_price(price):
-
-# 	#print("Price: " + price)
-
-# 	compare_price_string = ''
-
-# 	if price != '':
-
-# 		price_value = float(price)
-
-# 		compare_price = 0.0
-# 		compare_price_string = ''
-# 		discount = True
-# 		discount_multiplier = 1.2
-# 		if discount:
-# 			compare_price = round_price(price_value * discount_multiplier)
-# 			compare_price_string = str(compare_price)
-# 			#print("Compare Price: " + compare_price_string)
-
-# 	return compare_price_string
-
-# returns list of all unique variants no longer grouped into products
-# def isolate_unique_variants(all_sorted_products, import_type):
-# 	unique_variants = []
-# 	for sorted_product in all_sorted_products:
-# 		for variant in sorted_product:
-# 			if generator.determine_unique_variant(variant, sorted_product, import_type):
-# 				unique_variants.append(variant)
-
-# 	return unique_variants
-
-# # sort from small to large so price user sees in grid view is first price shown on product page
-# def sort_items_by_size(all_item_info, import_type):
-# 	print("\n=== Sort Items by Size ===\n")
-# 	all_sorted_items = all_item_info # list of strings in shopify import format
-
-# 	# isolate products in unsorted import table
-# 	isolated_product_imports = generator.isolate_product_strings(all_item_info, import_type)
-# 	#print("\n===Unsorted Product Imports===\n" + str(isolated_product_imports) + "\n")
-# 	num_product_imports = len(isolated_product_imports)
-# 	#print("Num Unsorted Product Imports: " + str(num_product_imports) + "\n")
-
-# 	isolated_product_details = generator.isolate_products(all_details)
-# 	#print("\n===Unsorted Product Details===\n" + str(isolated_product_details) + "\n")
-# 	num_product_details = len(isolated_product_details)
-# 	#print("Num Unsorted Product Details: " + str(num_product_details) + "\n")
-
-# 	if num_product_imports == num_product_details:
-# 		all_sorted_products = []
-# 		all_sorted_items = []
-
-# 		num_isolated_products = len(isolated_product_details)
-# 		#print("Num Isolated Products: " + str(num_isolated_products))
-
-# 		for product_idx in range(num_isolated_products):
-# 			product_details = isolated_product_details[product_idx] # list of data
-# 			#print("product_details: " + str(product_details))
-# 			product_imports = isolated_product_imports[product_idx] # string of data
-# 			#print("product_imports: " + str(product_imports))
-
-# 			sorted_indices = generator.get_sorted_indices(product_details)
-# 			num_sorted_indices = sorted_indices.size
-# 			#print("Num Sorted Indices = Num Widths: " + str(num_sorted_indices))
-
-# 			num_variants = len(product_details)
-# 			#print("Num Variants: " + str(num_variants))
-
-# 			sorted_variants = product_details # init as unsorted variants
-# 			# only sort variants if we have valid values for sorting
-# 			if num_variants == num_sorted_indices:
-# 				#print('num_variants == num_sorted_indices')
-# 				sorted_variants = [] # How can we be sure there are valid dimensions given?
-# 				for idx in range(num_variants):
-# 					#print("Index: " + str(idx))
-# 					sorted_idx = sorted_indices[idx]
-# 					#print("Sorted Index: " + str(sorted_idx))
-# 					sorted_variant = product_imports[sorted_idx]
-# 					sorted_variants.append(sorted_variant)
-# 			else:
-# 				print("Warning: Num Variants != Num Sorted Indices while sorting items!")
-
-# 			#print("sorted_variants: " + str(sorted_variants))
-
-# 			all_sorted_products.append(sorted_variants)
-# 			#print("all_sorted_products: " + str(all_sorted_products))
-
-# 		all_sorted_items = isolate_unique_variants(all_sorted_products, import_type)
-# 		#print("all_sorted_items: " + str(all_sorted_items))
+# 	#all_items_json = [[{'item#':'sku1','collection':'col1'}]] # raw data field names unknwown so look for keywords in raw key/field name
+# 	all_items_json = [[{'Catalog Year': 2022, 'Catalog Page': 1255, ' Item#': '00118', 'D E S C R I P T I O N': 'COMPUTER DESK', '2022\n  EAST PETE PRICE ': 77, '#PC/CTN': 1, 'Ctn GW\n(lbs)': 36, 'Carton CUFT': 3.48, 'Collection Name': 'Vincent'}]]
+# 	all_details = generator.generate_catalog_from_json(all_items_json)
+# else:
+# 	if vendor == 'acme': # acme gives 3 separate sheets so combine to make catalog
+# 		all_details = generator.generate_catalog_auto(vendor)
 # 	else:
-# 		print("Warning: Num Product Imports != Num Product Details (" + str(num_product_imports) + " != " + str(num_product_details) + ") while sorting items!\n")
+# 		all_details = generator.extract_data(vendor, input, extension)
 
-# 	return all_sorted_items
-
-# def split_variants_by_img(all_import_strings):
-# 	print("\n===Split Variants by Image===\n")
-
-# 	#print("all_import_strings: " + str(all_import_strings))
-# 	all_split_variants_by_img = []
-
-# 	all_import_data = []
-# 	for item in all_import_strings:
-# 		#print("item: " + str(item))
-# 		# split by semicolon
-# 		item_data = item.split(';')
-# 		all_import_data.append(item_data)
-# 	#print("all_import_data: " + str(all_import_data))
-
-# 	for item_import_data in all_import_data:
-# 		#print("item_import_data: " + str(item_import_data))
-# 		import_img_src_idx = 25
-# 		images_string = item_import_data[import_img_src_idx]
-# 		#print("images_string: " + str(images_string))
-# 		images_list = images_string.split(',')
-# 		#print("images_list: " + str(images_list))
-# 		items_with_single_img = []
-# 		for img_idx in range(len(images_list)):
-# 			img = images_list[img_idx]
-# 			#print("img: " + str(img))
-# 			# if not first img then we only want handle and image in row, blanking out all others so it does not cause conflict during import
-# 			if img_idx != 0:
-# 				for value_idx in range(len(item_import_data)):
-# 					value = item_import_data[value_idx]
-# 					if value_idx != 0: # keep handle
-# 						value = ''
-# 						item_import_data[value_idx] = value
-# 			item_import_data[import_img_src_idx] = img
-
-# 			#convert to string with semicolon delimiter
-# 			value_string = ''
-# 			for value_idx in range(len(item_import_data)):
-# 				value = item_import_data[value_idx]
-# 				if value_idx == 0:
-# 					value_string = value
-# 				else:
-# 					value_string += ';' + value
-# 			all_split_variants_by_img.append(value_string)
-# 		#print("all_split_variants_by_img: " + str(all_split_variants_by_img))
-
-# 	return all_split_variants_by_img
 
 # print as single string that can then be separated by semicolon delimiter
-def display_shopify_variants(import_tool = 'shopify'): # set import tool when calling to display the variants to be imported with the given import tool, bc they have different import orders although some do not care about order but use the title to determine field value match
+def display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool = 'shopify'): # set import tool when calling to display the variants to be imported with the given import tool, bc they have different import orders although some do not care about order but use the title to determine field value match
 
 	print("\n === Display Shopify Variants === \n")
 
@@ -364,9 +82,8 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 			vrnt_inv_policy = 'deny'
 		vrnt_weight_unit = 'lb'
 		cmd = 'UPDATE'
-		#vrnt_price = compute_vrnt_price(item_cost, product_type)
+
 		vrnt_price = generator.generate_vrnt_price(item_cost, product_type, seller) # seller tells us desired multiplier
-		#vrnt_compare_price = compute_vrnt_compare_price(vrnt_price)
 		vrnt_compare_price = generator.generate_vrnt_compare_price(vrnt_price)
 
 		# fields determined by request content/context
@@ -397,18 +114,7 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 			vrnt_img = '' # still need to account for multiple img srcs given
 
 			# each image needs a new row, but deal with that after sorted by size bc that function needs to isolate products and sort indices
-			# product_imgs = product_img_src.split(",")
-			# #print("product_imgs: " + str(product_imgs))
-			# if len(product_imgs) > 0:
-			# 	for img in product_imgs:
-			# 		#print("img: " + str(img))
-			# 		final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + img + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
-			# 		#print(final_item_info)
-			# 		all_final_item_info.append(final_item_info)
-			# else:
-			# 	final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
-			# 	#print(final_item_info)
-			# 	all_final_item_info.append(final_item_info)
+			
 
 			final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
 			#print(final_item_info)
@@ -435,103 +141,111 @@ def display_shopify_variants(import_tool = 'shopify'): # set import tool when ca
 
 	return sorted_final_item_info
 
-# convert from ['1;2;3','4,5,6']
-# to [{'1':'1','2':'2','3':'3'},{'1':'4','2':'5','3':'6'}]
-# def convert_all_final_item_info_to_json(all_info):
-# 	print("\n===Convert All Final Item Info to JSON===\n")
-# 	print("all_info: " + str(all_info))
-# 	all_json = []
 
-# 	# Handle;Title;Body (HTML);Vendor;Standardized Product Type;Custom Product Type;Tags;Published;Option1 Name;Option1 Value;Option2 Name;Option2 Value;Option3 Name;Option3 Value;Variant SKU;Variant Grams;Variant Inventory Tracker;Variant Inventory Qty;Variant Inventory Policy;Variant Fulfillment Service;Variant Price;Variant Compare At Price;Variant Requires Shipping;Variant Taxable;Variant Barcode;Image Src;Image Position;Image Alt Text;Variant Image;Variant Weight Unit;Variant Tax Code;Cost per item;Status
-# 	# ['handle','title','body_html','vendor','standard_product_type','product_type','product_tags','published','option1_name', 'option1_value', 'option2_name', 'option2_value', 'option3_name', 'option3_value', 'sku','item_weight_in_grams','vrnt_inv_tracker','vrnt_inv_qty','vrnt_inv_policy','vrnt_fulfill_service','vrnt_price','vrnt_compare_price','vrnt_req_ship','vrnt_taxable','barcode','product_img_src','img_position','img_alt','vrnt_img','vrnt_weight_unit','vrnt_tax_code','item_cost','product_status']
-# 	desired_import_fields = ['handle','title','body_html','vendor','standard_product_type','product_type','product_tags','published','option1_name', 'option1_value', 'option2_name', 'option2_value', 'option3_name', 'option3_value', 'sku','item_weight_in_grams','vrnt_inv_tracker','vrnt_inv_qty','vrnt_inv_policy','vrnt_fulfill_service','vrnt_price','vrnt_compare_price','vrnt_req_ship','vrnt_taxable','barcode','product_img_src','img_position','img_alt','vrnt_img','vrnt_weight_unit','vrnt_tax_code','item_cost','product_status']
-# 	num_fields = len(desired_import_fields)
-# 	print("num_fields in desired_import_fields: " + str(num_fields))
 
-# 	for item_info in all_info:
-# 		print("item_info: " + str(item_info))
-# 		# 1;2;3
-# 		item_info_list = item_info.split(';') # this always comes in standard format corresponding to desired import fields
-# 		print("item_info_list: " + str(item_info_list))
-# 		num_features = len(item_info_list)
-# 		print("num_features in item_info_list: " + str(num_features))
-# 		item_json = {}
-# 		for field_idx in range(len(desired_import_fields)):
-# 			field = desired_import_fields[field_idx]
-# 			print("field: " + str(field))
-# 			value = item_info_list[field_idx]
-# 			print("value: " + str(value))
-# 			# handle
-# 			item_json[field] = value
-
-# 		all_json.append(item_json)
-
-# 	print("all_json: " + str(all_json))
-
-# 	return all_json
-
-all_final_item_info = display_shopify_variants() # currently uses all global variables. main fcn
-all_final_item_json = converter.convert_all_final_item_info_to_json(all_final_item_info)
+#all_final_item_info = display_shopify_variants() # currently uses all global variables. main fcn
+#all_final_item_json = converter.convert_all_final_item_info_to_json(all_final_item_info)
 
 #generator.write_data(all_final_item_info, vendor, output, extension)
 
-# ====== Zoho Inventory ======
 
-inventory_enabled = False # ask seller if separate tracking capable and if so what platform (eg zoho inventory)
 
-if inventory_enabled:
 
-	print("\n====== Zoho Inventory ======\n")
 
-	# generate item names
-	item_names = generator.generate_all_item_names(all_details, init_all_details)
-	#writer.display_field_values(item_names)
+def generate_all_products(all_items_info):
+	print("\n===Generate All Products===\n")
 
-	# generate "inventory" types (formerly "collection" types)
-	item_collection_types = generator.generate_all_collection_types(all_details)
-	#writer.display_field_values(item_collection_types)
+	seller = 'HFF'
+	vendor = 'acme'
 
-	# print as single string that can then be separated by comma delimiter
-	def display_zoho_items():
+	print("input all_items_info: " + str(all_items_info))
+	all_details = generator.generate_catalog_from_info(all_items_info) # catalog here corresponds to all_details in original product generator
+	print("catalog: " + str(all_details))
 
-		all_final_item_info = []
+	# generate product
+	print("\n===Generate Product===\n")
+	# store init item details untouched so we can detect measurement type based on input format of dimensions
+	init_all_details = copy.deepcopy(all_details)
 
-		for item_idx in range(len(item_names)):
+	# General Info from Details table
+	all_skus = reader.format_field_values('sku', all_details)
+	all_widths = reader.format_field_values('width', all_details, init_all_details)
+	all_depths = reader.format_field_values('depth', all_details, init_all_details)
+	all_heights = reader.format_field_values('height', all_details, init_all_details)
+	all_weights = reader.format_field_values('weight', all_details, init_all_details)
+	init_unit='lb'
+	all_weights_in_grams = converter.convert_all_weights_to_grams(all_weights, init_unit) # shopify requires grams
+	all_costs = reader.format_field_values('cost', all_details)
+	all_barcodes = reader.format_field_values('barcode', all_details)
+	all_img_srcs = reader.format_field_values('img', all_details)
+	all_vrnt_imgs = reader.format_field_values('vrnt_img', all_details)
 
-			# fields generated specifically for zoho import
-			item_name = item_names[item_idx]
-			item_collection_type = item_collection_types[item_idx]
 
-			ref_num = item_idx + 1
-			account = 'Cost of Goods Sold'
-			reason = 'Update Inventory'
+	# ====== Shopify Product Catalog ======
+	print("\n====== Shopify Product Catalog ======\n")
 
-			# fields determined by request content/context
-			adj_date = ''
-			warehouse = ''
-			qty_adj = ''
-			adj_descrip = ''
+	#writer.display_all_item_details(init_all_details)
 
-			# fields copied from details to zoho import
-			item_width = all_widths[item_idx]
-			item_depth = all_depths[item_idx]
-			item_height = all_heights[item_idx]
+	# generate handles
+	product_handles = generator.generate_all_handles(all_details) # formerly copied directly from catalog table but now made automatically from raw data descrip and collection name (if col name not given by vendor then look in product names table)
+	#writer.display_field_values(product_handles)
 
-			# general fields
-			sku = all_skus[item_idx]
-			item_weight = all_weights[item_idx]
+	# generate titles, based on handles
+	product_titles = generator.generate_all_titles(all_details, product_handles)
+	#writer.display_field_values(product_titles)
 
-			final_item_info = sku + ";" + item_name + ";" + item_width + ";" + item_depth + ";" + item_height + ";" + item_weight + ";" + item_collection_type + ";" + str(ref_num) + ";" + account + ";" + reason + ";" + vendor + ";" + adj_date + ";" + warehouse + ";" + adj_descrip + ";" + qty_adj
+	# generate tags
+	product_tags = generator.generate_all_tags(all_details, vendor)
+	#writer.display_field_values(product_tags)
 
-			#print(final_item_info)
-			all_final_item_info.append(final_item_info)
+	# generate product types
+	product_types = generator.generate_all_product_types(all_details)
+	#writer.display_field_values(product_types)
 
-		import_type = 'zoho'
-		sorted_final_item_info = sorter.sort_items_by_size(all_final_item_info, import_type, all_details)
-		#sorted_final_item_info = all_final_item_info
+	# generate product img srcs
+	product_img_srcs = generator.generate_all_product_img_srcs(all_details)
+	#writer.display_field_values(product_img_srcs)
 
-		writer.display_zoho_item_headers()
-		for item_info in sorted_final_item_info:
-			print(item_info)
+	# generate options
+	product_options = generator.generate_all_options(all_details, init_all_details) # we need init details to detect measurement type
+	#writer.display_field_values(product_options)
+	#writer.display_all_item_details(init_all_details)
 
-	display_zoho_items()
+	# ====== Inventory ======
+	# need this inv info to add to description
+	inventory_enabled = True # ask seller if separate tracking capable and if so what platform (eg zoho inventory)
+	inv_tracker = ''
+	product_inv_qtys = {}
+	if inventory_enabled:
+		print("\n====== Inventory ======\n")
+		inv_tracker = 'shopify'
+		all_inv_data = {}
+		product_inv_qtys = generator.generate_all_inv_qtys(all_inv_data)
+
+	# generate descriptions with dictionary
+	product_descrip_dict = generator.generate_descrip_dict(all_details, init_all_details, product_inv_qtys)
+	#writer.display_field_values(product_descrip_dict)
+
+	
+
+
+	if inv_tracker == 'zoho':
+		item_names = generator.generate_all_item_names(all_details, init_all_details) # generate item names
+		item_collection_types = generator.generate_all_collection_types(all_details) # generate "inventory" types (formerly "collection" types)
+		writer.display_zoho_items(item_names, item_collection_types, all_widths, all_depths, all_heights, all_skus, all_weights, vendor, all_details) # print as single string that can then be separated by comma delimiter
+
+
+
+
+	
+	#all_products = ['handle;title;variant_sku;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33']
+	all_products = display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool = 'shopify')
+	print("all_products: " + str(all_products))
+
+
+	
+
+	return all_products
+
+all_items_info = []
+product_import_rows = generate_all_products(all_items_info)

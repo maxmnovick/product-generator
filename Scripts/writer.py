@@ -2,6 +2,7 @@
 # functions for a writer
 
 import re
+import sorter
 
 # order of detail fields
 sku_idx = 0
@@ -28,6 +29,7 @@ def display_field_values(values):
 
 def display_shopify_variant_headers(import_tool='shopify'):
 	print("\n=== Shopify Variants == \n")
+	product_variable_names = []
 	if import_tool == 'shopify':
 		product_variable_names = ["Handle", "Title", "Body (HTML)", "Vendor", "Standardized Product Type", "Custom Product Type", "Tags", "Published", "Option1 Name", "Option1 Value", "Option2 Name", "Option2 Value", "Option3 Name","Option3 Value", "Variant SKU", "Variant Grams", "Variant Inventory Tracker", "Variant Inventory Qty", "Variant Inventory Policy", "Variant Fulfillment Service", "Variant Price", "Variant Compare At Price", "Variant Requires Shipping", "Variant Taxable", "Variant Barcode", "Image Src", "Image Position", "Image Alt Text", "Variant Image", "Variant Weight Unit", "Variant Tax Code", "Cost per item", "Status"]
 	elif import_tool == 'excelify':
@@ -92,3 +94,79 @@ def display_all_item_details(all_dtls):
 
 		print(handle + ": " + str(item_details))
 	print()
+
+# originally based on capitalizing sentences for an intro paragraph
+def capitalize_sentences(intro):
+
+	#===\n")
+
+	final_sentences = ''
+
+	intro_sentences = intro.split('.')
+	#print("intro_sentences: " + str(intro_sentences))
+	for sentence in intro_sentences:
+		#print("sentence: " + sentence)
+		if len(sentence) > 1: # if space after last sentence then there will be a blank last element which should not be taken
+			
+			sentence = sentence.strip()
+			#print("sentence: \'" + sentence + '\'')
+
+			# if sentence starts with numerals or special characters, get idx of first letter
+			first_letter_idx = 0
+
+			first_letter = re.search('\\w', sentence)
+			if first_letter is not None:
+				first_letter_idx = first_letter.start()
+			#print("first_letter_idx: " + str(first_letter_idx))
+			if first_letter_idx == 0:
+				sentence = sentence[first_letter_idx].upper() + sentence[first_letter_idx+1:] + '. '
+			else:
+				sentence = sentence[:first_letter_idx] + sentence[first_letter_idx].upper() + sentence[first_letter_idx+1:] + '. ' #sentence = sentence.strip().capitalize() + '. '
+			final_sentences += sentence
+
+	#print("final_sentences: " + final_sentences)
+	return final_sentences
+
+
+# print as single string that can then be separated by comma delimiter
+def display_zoho_items(item_names, item_collection_types, all_widths, all_depths, all_heights, all_skus, all_weights, vendor, all_details):
+
+	all_final_item_info = []
+
+	for item_idx in range(len(item_names)):
+
+		# fields generated specifically for zoho import
+		item_name = item_names[item_idx]
+		item_collection_type = item_collection_types[item_idx]
+
+		ref_num = item_idx + 1
+		account = 'Cost of Goods Sold'
+		reason = 'Update Inventory'
+
+		# fields determined by request content/context
+		adj_date = ''
+		warehouse = ''
+		qty_adj = ''
+		adj_descrip = ''
+
+		# fields copied from details to zoho import
+		item_width = all_widths[item_idx]
+		item_depth = all_depths[item_idx]
+		item_height = all_heights[item_idx]
+
+		# general fields
+		sku = all_skus[item_idx]
+		item_weight = all_weights[item_idx]
+
+		final_item_info = sku + ";" + item_name + ";" + item_width + ";" + item_depth + ";" + item_height + ";" + item_weight + ";" + item_collection_type + ";" + str(ref_num) + ";" + account + ";" + reason + ";" + vendor + ";" + adj_date + ";" + warehouse + ";" + adj_descrip + ";" + qty_adj
+
+		#print(final_item_info)
+		all_final_item_info.append(final_item_info)
+
+	import_type = 'zoho'
+	sorted_final_item_info = sorter.sort_items_by_size(all_final_item_info, import_type, all_details)
+	#sorted_final_item_info = all_final_item_info
+
+	display_zoho_item_headers()
+	for item_info in sorted_final_item_info:
+		print(item_info)
