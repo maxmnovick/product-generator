@@ -1,6 +1,7 @@
 # product-generator.py
 # generate product page in Shopify by setting variables in table format
-# for import with Excelify
+# for import with Excelify or shopify import tool
+# local test for generateml.com
 
 # take all subsidiary generators and bring them together to generate a product
 # now we are looping first through all products, getting one field at a time for all products
@@ -151,16 +152,19 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 
 
 
-
-def generate_all_products(all_items_info):
+# input: {}
+def generate_all_products(vendor):
 	print("\n===Generate All Products===\n")
+	all_products = []
 
 	seller = 'HFF'
 	vendor = 'acme'
 
-	print("input all_items_info: " + str(all_items_info))
-	all_details = generator.generate_catalog_from_info(all_items_info) # catalog here corresponds to all_details in original product generator
+	
+	all_details = generator.generate_catalog_from_data(vendor) # catalog here corresponds to all_details in original product generator
 	print("catalog: " + str(all_details))
+	
+	
 
 	# generate product
 	print("\n===Generate Product===\n")
@@ -181,71 +185,77 @@ def generate_all_products(all_items_info):
 	all_vrnt_imgs = reader.format_field_values('vrnt_img', all_details)
 
 
-	# ====== Shopify Product Catalog ======
-	print("\n====== Shopify Product Catalog ======\n")
+	# # ====== Shopify Product Catalog ======
+	# print("\n====== Shopify Product Catalog ======\n")
 
-	#writer.display_all_item_details(init_all_details)
+	# #writer.display_all_item_details(init_all_details)
 
-	# generate handles
-	product_handles = generator.generate_all_handles(all_details) # formerly copied directly from catalog table but now made automatically from raw data descrip and collection name (if col name not given by vendor then look in product names table)
-	#writer.display_field_values(product_handles)
+	# # generate handles
+	# product_handles = generator.generate_all_handles(all_details) # formerly copied directly from catalog table but now made automatically from raw data descrip and collection name (if col name not given by vendor then look in product names table)
+	# #writer.display_field_values(product_handles)
 
-	# generate titles, based on handles
-	product_titles = generator.generate_all_titles(all_details, product_handles)
-	#writer.display_field_values(product_titles)
+	# # generate titles, based on handles
+	# product_titles = generator.generate_all_titles(all_details, product_handles)
+	# #writer.display_field_values(product_titles)
 
-	# generate tags
-	product_tags = generator.generate_all_tags(all_details, vendor)
-	#writer.display_field_values(product_tags)
+	# # generate tags
+	# product_tags = generator.generate_all_tags(all_details, vendor)
+	# #writer.display_field_values(product_tags)
 
-	# generate product types
-	product_types = generator.generate_all_product_types(all_details)
-	#writer.display_field_values(product_types)
+	# # generate product types
+	# product_types = generator.generate_all_product_types(all_details)
+	# #writer.display_field_values(product_types)
 
-	# generate product img srcs
-	product_img_srcs = generator.generate_all_product_img_srcs(all_details)
-	#writer.display_field_values(product_img_srcs)
+	# # generate product img srcs
+	# product_img_srcs = generator.generate_all_product_img_srcs(all_details)
+	# #writer.display_field_values(product_img_srcs)
 
-	# generate options
-	product_options = generator.generate_all_options(all_details, init_all_details) # we need init details to detect measurement type
-	#writer.display_field_values(product_options)
-	#writer.display_all_item_details(init_all_details)
+	# # generate options
+	# product_options = generator.generate_all_options(all_details, init_all_details) # we need init details to detect measurement type
+	# #writer.display_field_values(product_options)
+	# #writer.display_all_item_details(init_all_details)
 
 	# ====== Inventory ======
 	# need this inv info to add to description
 	inventory_enabled = True # ask seller if separate tracking capable and if so what platform (eg zoho inventory)
 	inv_tracker = ''
 	product_inv_qtys = {}
+	all_inv = {}
 	if inventory_enabled:
 		print("\n====== Inventory ======\n")
+		# bc no standard order, this is dict with keys=location tied to qty
+		all_inv = generator.generate_inv_from_data(vendor) # vendor to retrieve file
+		
 		inv_tracker = 'shopify'
-		all_inv_data = {}
-		product_inv_qtys = generator.generate_all_inv_qtys(all_inv_data)
+		#product_inv_qtys = generator.generate_all_inv_qtys(all_inv)
 
 	# generate descriptions with dictionary
-	product_descrip_dict = generator.generate_descrip_dict(all_details, init_all_details, product_inv_qtys)
-	#writer.display_field_values(product_descrip_dict)
+	product_descrip_dict = generator.generate_descrip_dict(all_details, init_all_details, all_inv, vendor)
+	writer.display_field_values(product_descrip_dict)
 
 	
 
 
-	if inv_tracker == 'zoho':
-		item_names = generator.generate_all_item_names(all_details, init_all_details) # generate item names
-		item_collection_types = generator.generate_all_collection_types(all_details) # generate "inventory" types (formerly "collection" types)
-		writer.display_zoho_items(item_names, item_collection_types, all_widths, all_depths, all_heights, all_skus, all_weights, vendor, all_details) # print as single string that can then be separated by comma delimiter
+	# if inv_tracker == 'zoho':
+	# 	item_names = generator.generate_all_item_names(all_details, init_all_details) # generate item names
+	# 	item_collection_types = generator.generate_all_collection_types(all_details) # generate "inventory" types (formerly "collection" types)
+	# 	writer.display_zoho_items(item_names, item_collection_types, all_widths, all_depths, all_heights, all_skus, all_weights, vendor, all_details) # print as single string that can then be separated by comma delimiter
 
 
 
 
 	
-	#all_products = ['handle;title;variant_sku;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33']
-	all_products = display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool = 'shopify')
-	print("all_products: " + str(all_products))
+	# #all_products = ['handle;title;variant_sku;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33']
+	# all_products = display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool = 'shopify')
+	# print("all_products: " + str(all_products))
 
 
 	
 
 	return all_products
 
-all_items_info = []
-product_import_rows = generate_all_products(all_items_info)
+# how do we know which files to include? we could go through all files in folder or go by given keywords
+# how do we know file keywords? we know from vendor so use vendor as input
+#file_keywords = ["price","spec","img","inv"] # equivalent to files selected on web format
+
+product_import_rows = generate_all_products(vendor)

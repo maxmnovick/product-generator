@@ -208,3 +208,14 @@ def determine_given_dimensions(product_details):
 					given_dims = False
 
 	return given_dims
+
+def determine_inv_location_key(location, item_inv):
+	loc_key = ''
+	for key in item_inv.keys():
+		if re.search(location.lower(),key.lower()):
+			print("key: " + key)
+			loc_key = key
+			
+	return loc_key
+
+			

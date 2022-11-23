@@ -1,6 +1,10 @@
 # converter.py
 # convert from one type to another, one unit to another, etc
 
+import determiner # to determine a standard key from an arbitrary key given by the user
+import reader # to format vendor product data
+
+
 def convert_all_weights_to_grams(all_init_weights, init_unit='lb'):
     all_weights_in_grams = [] # shopify requires grams
     #print("\n===Convert Weights to Grams===\n")
@@ -56,3 +60,39 @@ def convert_all_final_item_info_to_json(all_info):
 	print("all_json: " + str(all_json))
 
 	return all_json
+
+
+	# convert from all_items_json = [[{'sku':'sku1','collection':'col1'}]]
+# to [{'sku':['sku1'],'collection':['col1']}]
+def convert_list_of_items_to_fields(all_items_json):
+
+	list_of_fields = []
+	all_fields_dict = {}
+	
+	for sheet in all_items_json:
+		print("sheet: " + str(sheet))
+		# all_skus = []
+		# all_collections = []
+		# all_values = []
+		for item_json in sheet:
+			print("item_json: " + str(item_json))
+			# all_skus.append(item_json['sku'])
+			# all_collections.append(item_json['collection'])
+			for key in item_json:
+				standard_key = determiner.determine_standard_key(key)
+				formatted_input = reader.format_vendor_product_data(item_json[key], standard_key) # passing in a single value corresponding to key. also need key to determine format.
+				if standard_key != '' and formatted_input != '':
+					if key in all_fields_dict.keys():
+						print("add to existing key")
+						all_fields_dict[standard_key].append(formatted_input)
+					else:
+						print("add new key")
+						all_fields_dict[standard_key] = [formatted_input]
+		# all_fields_dict['sku'] = all_skus
+		# all_fields_dict['collection'] = all_collections
+		print("all_fields_dict: " + str(all_fields_dict))
+			
+		list_of_fields.append(all_fields_dict)
+
+	print("list_of_fields: " + str(list_of_fields))
+	return list_of_fields

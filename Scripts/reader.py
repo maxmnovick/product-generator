@@ -57,7 +57,8 @@ def write_data(arranged_data, input):
 # valid for json files
 def read_keywords(key_type):
 	key_type = re.sub(' ','-',key_type)
-	keys_filename = "data/keywords/" + key_type + "-keywords.json"
+	keys_filename = "../data/keywords/" + key_type + "-keywords.json"
+	#print("keys_filename: " + keys_filename)
 
 	lines = [] # capture each line in the document
 
@@ -87,7 +88,7 @@ def read_keywords(key_type):
 # valid for json files
 def read_standards(standard_type):
 	standard_type = re.sub(' ','-',standard_type)
-	keys_filename = "data/standards/" + standard_type + ".json"
+	keys_filename = "../data/standards/" + standard_type + ".json"
 
 	lines = [] # capture each line in the document
 
@@ -259,7 +260,10 @@ def format_dimension(measurement, handle):
 	#print("Total Measurement (in): " + total_meas)
 	return total_meas
 
-def read_raw_vendor_product_data(vendor, data_files):
+def read_raw_vendor_product_data(vendor, file_keywords=[]):
+	if len(file_keywords) == 0:
+		file_keywords = ["price","spec","image"] # equivalent to files selected on web format
+	print("file_keywords: " + str(file_keywords))
 
 	ext = 'tsv'
 
@@ -267,11 +271,13 @@ def read_raw_vendor_product_data(vendor, data_files):
 	current_sheet_field_name = '' # loop thru each sheet and each field in each sheet
 
 	all_sheet_all_field_values = [] # only relevant fields?
-	for data_type in data_files:
+	for data_type in file_keywords:
 		current_sheet_all_field_values = {} # could init to have desired fields so when we loop thru later we can check if they are blank, otherwise it will return undefined for that key. or just check if key exists
 		print("\n====== Read Sheet: " + data_type + " ======\n")
 		# remove leading zeros from sku in price list to match sku in spec sheet
-		filepath = "../Data/" + vendor + "-" + data_type.replace(" ","-") + "." + ext
+		filepath = "../data/" + vendor + "-" + data_type.replace(" ","-") + "." + ext
+		if not re.search("sheet",data_type):
+			filepath = "../data/" + vendor + "-" + data_type.replace(" ","-") + "-sheet." + ext
 
 		current_sheet_df = pandas.read_table(filepath).fillna('n/a')
 		current_sheet_df.columns = current_sheet_df.columns.str.strip() # remove excess spaces
@@ -306,6 +312,55 @@ def read_raw_vendor_product_data(vendor, data_files):
 
 	return all_sheet_all_field_values
 
+def read_raw_vendor_inv_data(vendor):
+
+	ext = 'tsv'
+
+	# we dont have desired field names for inventory because we need to see what fields are available and use them all
+	# we do have keywords, such as inventory, inv, location
+	desired_field_names = ['location'] #corresponding to keys in dict. determine by type of generator. bc this is product generator we are look for product fields to form catalog, before it is converted to import
+	current_sheet_field_name = '' # loop thru each sheet and each field in each sheet
+
+	data_type = 'inv' # short for inventory
+	
+	current_sheet_all_field_values = {} # could init to have desired fields so when we loop thru later we can check if they are blank, otherwise it will return undefined for that key. or just check if key exists
+	print("\n====== Read Sheet: " + data_type + " ======\n")
+	# remove leading zeros from sku in price list to match sku in spec sheet
+	filepath = "../data/" + vendor + "-" + data_type.replace(" ","-") + "." + ext
+	if not re.search("sheet",data_type):
+		filepath = "../data/" + vendor + "-" + data_type.replace(" ","-") + "-sheet." + ext
+
+	current_sheet_df = pandas.read_table(filepath).fillna('n/a')
+	current_sheet_df.columns = current_sheet_df.columns.str.strip() # remove excess spaces
+	print("current_sheet_df: " + str(current_sheet_df))
+	current_sheet_headers = current_sheet_df.columns.values
+	print("current_sheet_headers: " + str(current_sheet_headers))
+	# first check if any desired fields
+	# format data. standardize keys. remove extra characters from values.
+	for field_idx in range(len(current_sheet_headers)):
+		current_sheet_field_name = current_sheet_headers[field_idx] # actual name in raw data sheet
+		print("current_sheet_field_name: " + current_sheet_field_name)
+		# if the field name has the keyword location then see if we can determine the location name and number by field name
+		# format: location_ny_qty or locations.<location_name>_qty, example: locations.la_qty
+		if re.search("qty", current_sheet_field_name):
+			location_name = re.sub("locations\\.|_qty","", current_sheet_field_name)
+			if len(location_name) > 3:
+				location_name = location_name.title()
+			else:
+				location_name = location_name.upper()
+			print("location_name: " + location_name)
+
+		all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().tolist() # []
+
+		print("all_current_sheet_field_values: " + current_sheet_field_name + " " + str(all_current_sheet_field_values))
+		current_sheet_all_field_values[current_sheet_field_name] = all_current_sheet_field_values
+				
+				
+
+	inv_sheet_all_field_values = current_sheet_all_field_values
+
+	return inv_sheet_all_field_values
+
 def format_vendor_product_data(raw_data, key):
 	print("\n===Format Vendor Product Data===\n")
 	print("raw_data: " + str(raw_data))
@@ -328,7 +383,7 @@ def format_vendor_product_data(raw_data, key):
 	return data
 
 def format_field_values(field_name, all_details, init_all_details=[]):
-	print(field_name)
+	print("Format field values for " + field_name)
 
 	# General Info from Details table
 	field_values = []
@@ -486,3 +541,16 @@ def format_field_values(field_name, all_details, init_all_details=[]):
 			field_values.append(vrnt_img)
 
 	return field_values
+
+
+# file keywords like price, spec, img, inv
+# then we cna look for files with those keys in them
+# def read_all_items_info(file_keywords, vendor=''):
+# 	print("\n===Read All Item Info===\n")
+# 	print("file_keywords: " + str(file_keywords))
+
+# 	for key in file_keywords:
+# 		filename = key + "-sheet.tsv" # acme-price-sheet.tsv
+# 		if vendor != '':
+# 			filename = vendor + "-" + filename
+		

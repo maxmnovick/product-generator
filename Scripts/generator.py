@@ -6,6 +6,7 @@ import isolator # for isolating products in list of all products
 import re, datetime, math, random, pandas # random number for random sale item to set compare price
 import numpy as np
 import sorter # sort variants by size
+import converter # convert list of items to fields (like transpose matrix), for generating catalog from info
 
 # order of detail fields
 sku_idx = 0
@@ -379,11 +380,13 @@ def generate_options(item_details, init_item_details):
 	# do not rely entirely on sku b/c could be ambiguous codes that may appear as part of other words not meant to indicate options
 	# example: W is code for wenge brown for vendor=Global, but W is likely to mean something else for other vendors
 	if len(item_details) > 0:
-		sku = item_details[0].strip().lower()
+		sku = item_details[sku_idx].strip().lower()
 		#print("===Generate Options for SKU: " + sku)
-		title = item_details[2].strip().lower()
-		color = item_details[4].strip().lower()
-		#print("Color: " + color)
+		title = item_details[title_idx].strip().lower()
+		color = item_details[color_idx].strip().lower()
+		print("Color: " + color)
+		if color == '' or color == 'n/a':
+			color = item_details[finish_idx].strip().lower()
 
 		# option codes must only be considered valid when they are the entire word in the sku, so must remove dashes to separate words and isolate codes
 		dashless_sku = re.sub('-',' ',sku)
@@ -489,11 +492,120 @@ def generate_all_options(all_details, init_all_details):
 
 	return all_options
 
+def generate_inv_locations(all_inv):
+	print("\n===Generate Inventory Locations===\n")
+	print("all_inv: " + str(all_inv))
+	locations = []
+	headers = all_inv[0].keys()
+	print("headers: " + str(headers))
+	for header in headers:
+		if re.search("qty", header):
+			location = re.sub("locations\\.|_qty", "", header)
+			if len(location) > 3:
+				location = location.title()
+			else:
+				location = location.upper()
+			print("location: " + location)
+			locations.append(location)
+
+	print("locations: " + str(locations))
+	return locations
+
+# if no vendor given, we can only tell if available immediately
+# bc vendor tells us duration of moving bt warehouses
+def generate_arrival_html(product, init_product, all_inv, vendor=''):
+	print("\n===Generate Arrival HTML===\n")
+	print("product: " + str(product))
+	print("init_product: " + str(init_product))
+	print("all_inv: " + str(all_inv))
+
+	nj_to_ny = 2 # weeks
+	ca_to_ny = 4 # weeks, ca is both la and sf
+	valid_locations = ['ny', 'nj', 'la', 'sf']
+
+	available_title_html = '<h2>Available After Order</h2>'
+	all_locations_html = ''
+	locations = generate_inv_locations(all_inv)
+	for location in locations:
+		available_location = 'NY'
+		if location ==  available_location:
+			location_title_html = '<h3>' + location + '</h3>'
+			location_inv_html = ''
+			options = generate_all_options(product, init_product)
+			print("options: " + str(options))
+			arrival_time = '' # when item will arrive, based on given transfer times and inv qty
+			if len(options) > 0:
+				location_inv_html = '<table>'
+				for vrnt_idx in range(len(product)):
+					# convert option string to list of option name-value pairs
+					option_string = options[vrnt_idx]
+					print("option_string: " + str(option_string))
+					option_list = option_string.split(',')
+					option_names = []
+					option_values = []
+					for option_item_idx in range(len(option_list)):
+						if option_item_idx % 2:
+							option_value = option_list[option_item_idx]
+							option_values.append(option_value)
+						else:
+							option_name = option_list[option_item_idx]
+							option_names.append(option_name)
+
+
+					print("option_names: " + str(option_names))
+					print("option_values: " + str(option_values))
+					vrnt = product[vrnt_idx]
+					print("vrnt: " + str(vrnt))
+					vrnt_sku = vrnt[sku_idx]
+					print("vrnt_sku: " + str(vrnt_sku))
+					
+					# go through inv locations, and pull data if valid for internal transfer: ny, nj, la, sf. else need to buy from other locations separately
+					for item_inv in all_inv:
+						print("item_inv: " + str(item_inv))
+						item_sku = item_inv['sku']
+						print("item_sku: " + str(item_sku))
+						if vrnt_sku == item_sku:
+							ny_inv_header = determiner.determine_inv_location_key(location, item_inv)
+							item_ny_inv = int(item_inv[ny_inv_header])
+							if item_ny_inv > 0:
+								arrival_time = 'Immediate'
+							else:
+								arrival_time = 'NA'
+
+							break
+
+
+					location_inv_html += '<tr><td>'
+
+					option_value = option_values[0]
+					location_inv_html += option_value + '</td><td>'
+					location_inv_html += arrival_time + '</td>'
+
+					location_inv_html += '</tr>'
+				location_inv_html += '</table>'
+			else:
+				
+				# go through inv locations, and pull data if valid: ny, nj, la, sf
+				for item_inv in all_inv:
+					print("item_inv: " + str(item_inv))
+				location_inv_html += arrival_time
+
+			
+			location_html = location_title_html + location_inv_html
+
+			all_locations_html += location_html
+
+	arrival_html = available_title_html + all_locations_html
+
+
+	print("arrival_html: " + str(arrival_html))	
+	return arrival_html
+
 # instead of saving description instances and relying on them to align with product variants, 
 # make dictionary matching description to product handle
 # and then when setting the description, use the product handle as the key
 # preview table needed to display table within table in html
-def generate_description(product, init_product):
+def generate_description(product, init_product, all_inv={}, vendor=''):
 	print("\n===Generate Description===\n")
 
 	descrip_instances = []
@@ -503,6 +615,10 @@ def generate_description(product, init_product):
 	html_descrip = True # user input based on spreadsheet tool. we want to use html bc we need to make a table format for data. 
 	
 	if html_descrip == True:
+
+		# display 
+		arrival_html = generate_arrival_html(product, init_product, all_inv, vendor)
+		#arrival_html = generate_arrival_html(product) # arrival time, such as Arrives: 3-4 weeks from Date of Purchase (eventually update dynamically based on date of purchase)
 		
 		intro_html = generate_intro_html(product)
 
@@ -516,9 +632,9 @@ def generate_description(product, init_product):
 
 		features_html = generate_features_html(product)
 
-		#arrival_html = generate_arrival_html(product) # arrival time, such as Arrives: 3-4 weeks from Date of Purchase (eventually update dynamically based on date of purchase)
+		
 
-		descrip_html = intro_html + colors_html + materials_html + finishes_html + dimensions_html + features_html
+		descrip_html = arrival_html + intro_html + colors_html + materials_html + finishes_html + dimensions_html + features_html
 		body_html = descrip_html
 
 	
@@ -527,7 +643,7 @@ def generate_description(product, init_product):
 
 # products = { "<sku>": { "handle":"<handle>", "description":"<description>"  } }
 # dict = { <handle>:<description> }
-def generate_descrip_dict(all_details, init_all_details, inv_qtys={}):
+def generate_descrip_dict(all_details, init_all_details, all_inv={}, vendor=''):
 	print("\n===Generate Description Dictionary===\n")
 	# instead of saving description instances and relying on them to align with product variants, 
 	# make dictionary matching description to product handle
@@ -544,7 +660,7 @@ def generate_descrip_dict(all_details, init_all_details, inv_qtys={}):
 		handle = generate_handle(item_details)
 		print("handle: " + handle)
 		init_product = init_products[product_idx]
-		descrip = generate_description(product, init_product)
+		descrip = generate_description(product, init_product, all_inv, vendor)
 
 		descrip_dict[handle] = descrip
 
@@ -1276,7 +1392,7 @@ def convert_list_of_items_to_fields(all_items_json):
 			
 		list_of_fields.append(all_fields_dict)
 
-	print("all_fields_dict: " + str(all_fields_dict))
+	print("list_of_fields: " + str(list_of_fields))
 	return list_of_fields
 
 
@@ -1464,8 +1580,248 @@ def generate_catalog_from_json(all_items_json):
 
 	return catalog
 
-def generate_catalog_from_info(all_items_info):
-	print("\n===Generate Catalog from Info===\n")
+def generate_inv_from_data(vendor=''):
+	print("\n===Generate Inventory from Data===\n")
+
+	inventory = []
+
+	# we do not know desired field names bc we do not if any inv locations, and if so how many?
+	# look for inv keywords
+	# we do not have crucial field names bc there may not be any inv info given
+
+	# for unknown no. sheets with unknown contents
+	# for user input, we have their list of files to loop thru
+
+	inv_sheet = reader.read_raw_vendor_inv_data(vendor)
+
+	print("\n === Display Inventory Info === \n")
+
+	# for now only assume 1 sheet can contain all inventory
+	print("inv_sheet: " + str(inv_sheet))
+
+	all_inv_sheet_values = {}
+	for key in inv_sheet:
+		all_inv_sheet_values[key] = inv_sheet[key]
+	print("all_sheet1_values init: " + str(all_inv_sheet_values))
+
+	# see if all fields given by seeing if left blank or key exists?
+	all_fields_given = True
+	print("inv_sheet.keys(): " + str(inv_sheet.keys()))
+	
+
+	all_inv_sheet_skus = all_inv_sheet_values['sku']
+	for product_idx in range(len(all_inv_sheet_skus)):
+		inv_sheet_all_field_values = {}
+		for key in all_inv_sheet_values:
+			print("key in all_inv_sheet_values: " + str(key))
+			inv_sheet_value = all_inv_sheet_values[key][product_idx]
+			print("inv_sheet_value: " + str(inv_sheet_value))
+			inv_sheet_all_field_values[key] = inv_sheet_value
+		inv_sheet_sku = all_inv_sheet_skus[product_idx]
+		
+		print("inv_sheet_all_field_values: " + str(inv_sheet_all_field_values))
+
+		# init blank and then we will check if spots blank to see if we should transfer data
+		product_inv_dict = {}
+
+		for key in inv_sheet:
+			current_sheet_value = inv_sheet[key][product_idx]
+			print("current_sheet_" + key + ": " + str(current_sheet_value))
+			if current_sheet_value != '' and current_sheet_value != 'n/a':
+				product_inv_dict[key] = current_sheet_value
+		print("product_inv_dict after sheet1: " + str(product_inv_dict))
+
+		if all_fields_given:
+			for key in inv_sheet:
+				sheet_field_value = inv_sheet_all_field_values[key]
+				if sheet_field_value != '' and sheet_field_value != 'n/a':
+					product_inv_dict[key] = sheet_field_value
+
+		print("product_inv_dict: " + str(product_inv_dict))
+		inventory.append(product_inv_dict)
+
+
+
+	print("inventory: " + str(inventory))
+	return inventory
+	
+
+
+
+
+
+
+
+
+
+
+
+# use keywords standard for products like prices, specs, and images, to find and read files
+# then generate a catalog from the data
+def generate_catalog_from_data(vendor=''):
+	print("\n===Generate Catalog from Data===\n")
+
+	catalog = []
+
+	desired_field_names = ['sku', 'collection', 'type', 'intro', 'color', 'material', 'finish', 'width', 'depth', 'height', 'weight', 'features', 'cost', 'images', 'barcode'] #corresponding to keys in dict. determine by type of generator. bc this is product generator we are look for product fields to form catalog, before it is converted to import
+	crucial_field_names = ['sku', 'cost', 'images'] # , cost, images]
+
+	# for unknown no. sheets with unknown contents
+	# for user input, we have their list of files to loop thru
+
+	all_sheet_all_field_values = reader.read_raw_vendor_product_data(vendor)
+
+	print("\n === Display Catalog Info === \n")
+
+	# take first sheet and loop thru following sheets to see if matching sku entry
+	sheet1 = all_sheet_all_field_values[0]
+	print("sheet1: " + str(sheet1))
+
+	all_sheet1_values = {}
+	for key in desired_field_names:
+		if key in sheet1.keys():
+		#if sheet1[key] != '':
+			all_sheet1_values[key] = sheet1[key]
+	print("all_sheet1_values init: " + str(all_sheet1_values))
+
+	# see if all fields given by seeing if left blank or key exists?
+	all_fields_given = True
+	print("sheet1.keys(): " + str(sheet1.keys()))
+	for key in desired_field_names:
+		
+		if key not in sheet1.keys():
+		#if sheet1[key] == '':
+			all_fields_given = False
+			break
+	print("all_fields_given in first sheet? " + str(all_fields_given)) # since we assume all sheets rely on each other for full info this does not happen until we upgrade to allowing sheets with full and partial info
+
+	all_sheet1_skus = all_sheet1_values['sku']
+	for product_idx in range(len(all_sheet1_skus)):
+		sheet1_all_field_values = {}
+		for key in all_sheet1_values:
+			print("key in all_sheet1_values: " + str(key))
+			sheet1_value = all_sheet1_values[key][product_idx]
+			print("sheet1_value: " + str(sheet1_value))
+			sheet1_all_field_values[key] = sheet1_value
+		sheet1_sku = all_sheet1_skus[product_idx]
+		# sheet1_collection = ''
+		# if len(all_sheet1_collections) > 0:
+		# 	sheet1_collection = all_sheet1_collections[product_idx]
+		# #sheet1_cost = all_sheet1_prices[product_idx]
+		# sheet_all_field_values = [sheet1_sku] # corresponding to desired field names
+		print("sheet1_all_field_values: " + str(sheet1_all_field_values))
+
+		# init blank and then we will check if spots blank to see if we should transfer data
+		product_catalog_dict = {
+			'sku':'n/a',
+			'collection':'n/a',
+			'type':'n/a',
+			'intro':'n/a',
+			'color':'n/a',
+			'material':'n/a',
+			'finish':'n/a',
+			'width':'n/a',
+			'depth':'n/a',
+			'height':'n/a',
+			'weight':'n/a',
+			'features':'n/a',
+			'cost':'n/a',
+			'images':'n/a',
+			'barcode':'n/a'
+		}
+
+		for key in desired_field_names:
+			if key in sheet1.keys():
+			#if sheet1[key] != '':
+				current_sheet_value = sheet1[key][product_idx]
+				print("current_sheet_" + key + ": " + str(current_sheet_value))
+				if current_sheet_value != '' and current_sheet_value != 'n/a':
+					product_catalog_dict[key] = current_sheet_value
+		print("product_catalog_dict after sheet1: " + str(product_catalog_dict))
+
+		if all_fields_given:
+			for field_idx in range(len(desired_field_names)):
+				desired_field_name = desired_field_names[field_idx]
+				sheet_field_value = sheet1_all_field_values[desired_field_name]
+				if sheet_field_value != '' and sheet_field_value != 'n/a':
+					product_catalog_dict[desired_field_name] = sheet_field_value
+			
+
+
+		# compare all subsequent sheets to first sheet
+		elif len(all_sheet_all_field_values) > 1 and not all_fields_given: # if we have more than 1 sheet and we need more fields. 
+			for current_sheet_idx in range(1,len(all_sheet_all_field_values)):
+				
+				current_sheet = all_sheet_all_field_values[current_sheet_idx] # current sheet
+				print("current_sheet: " + str(current_sheet))
+				# current_sheet_dict = {}
+				# for key in desired_field_names:
+				# 	if key in current_sheet_all_field_values.keys():
+				# 		all_current_sheet_current_field_values = current_sheet_all_field_values[key]
+				# 		current_sheet_dict[key] = all_current_sheet_current_field_values
+				
+				#for key in desired_field_names:
+					#if key in current_sheet_all_field_values.keys():
+				all_current_sheet_skus = current_sheet['sku']
+				
+				#all_current_sheet_collections = current_sheet_all_field_values['collections']
+				#all_current_sheet_prices = current_sheet_all_field_values['price']
+		
+
+				#match_in_sheet = False
+				for current_sheet_item_idx in range(len(all_current_sheet_skus)):
+					
+					sheet1_sku = sheet1_all_field_values['sku']
+					current_sheet_sku = all_current_sheet_skus[current_sheet_item_idx]
+					#current_sheet_collection = all_current_sheet_collections[current_sheet_item_idx]
+					
+					if sheet1_sku == current_sheet_sku:
+						print("sheet1_sku matches current_sheet_sku: " + sheet1_sku + ", " + current_sheet_sku)
+						#match_in_sheet = True
+
+						for key in desired_field_names:
+							if key in current_sheet.keys():
+							#if current_sheet[key] != '':
+								current_sheet_value = current_sheet[key][current_sheet_item_idx]
+								print("current_sheet_" + key + ": " + str(current_sheet_value))
+								if current_sheet_value != '' and current_sheet_value != 'n/a':
+									product_catalog_dict[key] = current_sheet_value
+						# product_catalog_dict['sku'] = sheet1_sku
+						# product_catalog_dict['collection'] = current_sheet_collection
+						# product_catalog_dict['type'] = current_sheet_type
+
+						#all_current_sheet_images = []
+						# key = 'images'
+						# if key in current_sheet_all_field_values.keys():
+						# 	all_current_sheet_images = current_sheet_all_field_values[key]
+						# 	current_sheet_values = all_current_sheet_images[current_sheet_item_idx]
+						# 	if current_sheet_values != '' and current_sheet_values != 'n/a':
+						# 		product_catalog_dict[key] = current_sheet_values
+
+						break
+
+		print("product_catalog_dict: " + str(product_catalog_dict))
+
+
+		# see if crucial fields given by seeing if left blank or key exists?
+		crucial_fields_given = True
+		for crucial_field in crucial_field_names:
+			#print("product_catalog_dict.keys(): " + str(product_catalog_dict.keys()))
+			#if crucial_field not in product_catalog_dict.keys():
+			if product_catalog_dict[crucial_field] == '':
+				crucial_fields_given = False
+				break
+
+		if crucial_fields_given: 
+			catalog_info = list(product_catalog_dict.values()) #[sheet1_sku] #, coll_name, product_type, intro, color, material, finish, length, width, height, weight, features, sheet1_cost, img_links, barcode]
+			print("catalog_info: " + str(catalog_info))
+			catalog.append(catalog_info)
+		else:
+			print("Warning: Missing fields for SKU " + sheet1_sku + ", so product not uploaded!")
+
+
+	return catalog
+
 
 def generate_catalog_auto(vendor):
 	print("\n===Auto Generate Catalog Given Vendor " + vendor.title() + " ===\n")
