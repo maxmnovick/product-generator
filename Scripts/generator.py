@@ -501,10 +501,11 @@ def generate_inv_locations(all_inv):
 	for header in headers:
 		if re.search("qty", header):
 			location = re.sub("locations\\.|_qty", "", header)
-			if len(location) > 3:
-				location = location.title()
-			else:
-				location = location.upper()
+			location = location.lower()
+			# if len(location) > 3:
+			# 	location = location.title()
+			# else:
+			# 	location = location.upper()
 			print("location: " + location)
 			locations.append(location)
 
@@ -527,18 +528,24 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 	all_locations_html = ''
 	locations = generate_inv_locations(all_inv)
 	for location in locations:
-		available_location = 'NY'
-		if location ==  available_location:
-			location_title_html = '<h3>' + location + '</h3>'
+		available_location = 'ny'
+		if location.lower() ==  available_location.lower():
+			location_title_html = '<h3>'
+			if len(location) > 3:
+				location_title_html += location.title()
+			else:
+				location_title_html += location.upper()
+			location_title_html += '</h3>'
+			
 			location_inv_html = ''
-			options = generate_all_options(product, init_product)
-			print("options: " + str(options))
+			all_options = generate_all_options(product, init_product)
+			print("options: " + str(all_options))
 			arrival_time = '' # when item will arrive, based on given transfer times and inv qty
-			if len(options) > 0:
+			if len(all_options) > 0:
 				location_inv_html = '<table>'
 				for vrnt_idx in range(len(product)):
 					# convert option string to list of option name-value pairs
-					option_string = options[vrnt_idx]
+					option_string = all_options[vrnt_idx]
 					print("option_string: " + str(option_string))
 					option_list = option_string.split(',')
 					option_names = []
@@ -565,20 +572,38 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 						item_sku = item_inv['sku']
 						print("item_sku: " + str(item_sku))
 						if vrnt_sku == item_sku:
-							ny_inv_header = determiner.determine_inv_location_key(location, item_inv)
-							item_ny_inv = int(item_inv[ny_inv_header])
-							if item_ny_inv > 0:
-								arrival_time = 'Immediate'
-							else:
-								arrival_time = 'NA'
+							# go through by header
+							item_loc_inv = 0
+							for inv_loc in locations:
+								loc_inv_header = determiner.determine_inv_location_key(inv_loc, item_inv)
+								item_loc_inv = int(item_inv[loc_inv_header])
+
+								if item_loc_inv > 0:
+									# if we know this inv loc has stock and we know it is the same as the location we are addressing, then the item is available immediately
+									if location == inv_loc:
+										arrival_time = 'Immediate'
+										break
+									# else if the inv loc is not the current location but we have inv, check if location is ny bc first treatment
+									# if we know this inv loc has stock, check if it is a valid location for ny pickup
+									# if we do not have stock at the current location, then check if we have stock at valid transfer location
+									# for now, only consider ny, with above given valid locations
+									# first check nj bc shorter transfer time
+									if location == 'ny':
+										if inv_loc == 'nj':
+											arrival_time = '2 weeks'
+										elif arrival_time == '': # nj is shortest transfer so if set then 
+											if inv_loc == 'la' or inv_loc == 'sf':
+												arrival_time = '4 weeks'
+												break
 
 							break
+							
 
+					location_inv_html += '<tr>'
+					for option_value in option_values:
+						location_inv_html += '<td>'
 
-					location_inv_html += '<tr><td>'
-
-					option_value = option_values[0]
-					location_inv_html += option_value + '</td><td>'
+						location_inv_html += option_value + '</td><td>'
 					location_inv_html += arrival_time + '</td>'
 
 					location_inv_html += '</tr>'
@@ -1323,7 +1348,7 @@ def generate_features_html(product):
 			#features = re.sub('\"','\",CHAR(34),\"', features) # if quotes found in features, such as for dimensions, then fmla will incorrectly interpret that as closing string
 			
 			if re.search('•',features) or re.search('    ',features) or re.search('ï|Ï',features):
-				features_list = "<ul>"
+				features_list = "<ul class=\'product_features_list\'>"
 				print("\nFEATURES: " + features)
 
 				features_list += re.sub(r'•([^\.]+)\.',r'<li>\1. </li>', features) # bullet point indicates new line
@@ -1334,7 +1359,7 @@ def generate_features_html(product):
 
 				features_html = features_list
 			else:
-				features_html = features
+				features_html = '<p class=\'product_features\'>' + features + '</p>'
 
 			break # for now, once we make features list for variant skip the rest of the variants for now bc it is more complex to organize all variant features in descrip
 
@@ -1658,7 +1683,7 @@ def generate_inv_from_data(vendor=''):
 
 # use keywords standard for products like prices, specs, and images, to find and read files
 # then generate a catalog from the data
-def generate_catalog_from_data(vendor=''):
+def generate_catalog_from_data(vendor='',all_inv={}):
 	print("\n===Generate Catalog from Data===\n")
 
 	catalog = []
@@ -1704,6 +1729,11 @@ def generate_catalog_from_data(vendor=''):
 			print("sheet1_value: " + str(sheet1_value))
 			sheet1_all_field_values[key] = sheet1_value
 		sheet1_sku = all_sheet1_skus[product_idx]
+
+		if len(all_inv) > 0:
+			if not determiner.determine_stocked(sheet1_sku, all_inv):
+				continue
+
 		# sheet1_collection = ''
 		# if len(all_sheet1_collections) > 0:
 		# 	sheet1_collection = all_sheet1_collections[product_idx]
@@ -1818,6 +1848,7 @@ def generate_catalog_from_data(vendor=''):
 			catalog.append(catalog_info)
 		else:
 			print("Warning: Missing fields for SKU " + sheet1_sku + ", so product not uploaded!")
+
 
 
 	return catalog

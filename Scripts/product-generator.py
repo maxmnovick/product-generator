@@ -160,14 +160,40 @@ def generate_all_products(vendor):
 	seller = 'HFF'
 	vendor = 'acme'
 
+
+
+	# ====== Inventory ======
+	# need this inv info to add to description
+	inventory_enabled = True # ask seller if separate tracking capable and if so what platform (eg zoho inventory)
+	inv_tracker = ''
+	product_inv_qtys = {}
+	all_inv = {}
+	if inventory_enabled:
+		print("\n====== Inventory ======\n")
+		# bc no standard order, this is dict with keys=location tied to qty
+		all_inv = generator.generate_inv_from_data(vendor) # vendor to retrieve file
+		
+		inv_tracker = 'shopify'
+		#product_inv_qtys = generator.generate_all_inv_qtys(all_inv)
+
 	
-	all_details = generator.generate_catalog_from_data(vendor) # catalog here corresponds to all_details in original product generator
+	all_details = generator.generate_catalog_from_data(vendor, all_inv) # catalog here corresponds to all_details in original product generator
 	print("catalog: " + str(all_details))
+	# at this point need to go per item in all details, 
+	# get the sku and then check inventory
+	# then if inventory, proceed to gather data for the item
+	# otherwise, would generate much data only to find it is not in stock
+	# if dictionary inefficient, consider making list of out of stock items
+	# and then removing out of stock items from all details before proceeding
+	all_details_in_stock = []
 	
 	
 
 	# generate product
 	print("\n===Generate Product===\n")
+	
+
+
 	# store init item details untouched so we can detect measurement type based on input format of dimensions
 	init_all_details = copy.deepcopy(all_details)
 
@@ -215,19 +241,7 @@ def generate_all_products(vendor):
 	# #writer.display_field_values(product_options)
 	# #writer.display_all_item_details(init_all_details)
 
-	# ====== Inventory ======
-	# need this inv info to add to description
-	inventory_enabled = True # ask seller if separate tracking capable and if so what platform (eg zoho inventory)
-	inv_tracker = ''
-	product_inv_qtys = {}
-	all_inv = {}
-	if inventory_enabled:
-		print("\n====== Inventory ======\n")
-		# bc no standard order, this is dict with keys=location tied to qty
-		all_inv = generator.generate_inv_from_data(vendor) # vendor to retrieve file
-		
-		inv_tracker = 'shopify'
-		#product_inv_qtys = generator.generate_all_inv_qtys(all_inv)
+	
 
 	# generate descriptions with dictionary
 	product_descrip_dict = generator.generate_descrip_dict(all_details, init_all_details, all_inv, vendor)
@@ -236,18 +250,18 @@ def generate_all_products(vendor):
 	
 
 
-	# if inv_tracker == 'zoho':
-	# 	item_names = generator.generate_all_item_names(all_details, init_all_details) # generate item names
-	# 	item_collection_types = generator.generate_all_collection_types(all_details) # generate "inventory" types (formerly "collection" types)
-	# 	writer.display_zoho_items(item_names, item_collection_types, all_widths, all_depths, all_heights, all_skus, all_weights, vendor, all_details) # print as single string that can then be separated by comma delimiter
+	if inv_tracker == 'zoho':
+		item_names = generator.generate_all_item_names(all_details, init_all_details) # generate item names
+		item_collection_types = generator.generate_all_collection_types(all_details) # generate "inventory" types (formerly "collection" types)
+		writer.display_zoho_items(item_names, item_collection_types, all_widths, all_depths, all_heights, all_skus, all_weights, vendor, all_details) # print as single string that can then be separated by comma delimiter
 
 
 
 
 	
-	# #all_products = ['handle;title;variant_sku;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33']
-	# all_products = display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool = 'shopify')
-	# print("all_products: " + str(all_products))
+	#all_products = ['handle;title;variant_sku;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33']
+	#all_products = display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool = 'shopify')
+	print("all_products: " + str(all_products))
 
 
 	

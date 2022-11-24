@@ -214,8 +214,32 @@ def determine_inv_location_key(location, item_inv):
 	for key in item_inv.keys():
 		if re.search(location.lower(),key.lower()):
 			print("key: " + key)
-			loc_key = key
+			
+			if re.search('qty', key.lower()):
+				loc_key = key
+				break
 			
 	return loc_key
 
-			
+def determine_stocked(sheet1_sku, all_inv):
+	print("\n===Determine Stocked===\n")
+	print("sheet1_sku: " + sheet1_sku)
+	print("all_inv: " + str(all_inv))
+	stocked = False
+	for item_inv in all_inv:
+		if item_inv['sku'] == sheet1_sku:
+			print("item_inv: " + str(item_inv))
+			valid_locations = ['ny', 'nj', 'la', 'sf']
+			for loc in valid_locations:
+				print("loc: " + loc)
+				for key, val in item_inv.items():
+					if re.search("qty",key) and re.search(loc,key):
+						if int(val) > 0:
+							print(sheet1_sku + " is stocked in " + loc)
+							stocked = True
+							break
+				if stocked:
+					break
+			break
+
+	return stocked
