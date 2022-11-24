@@ -185,7 +185,6 @@ def generate_all_products(vendor):
 	# otherwise, would generate much data only to find it is not in stock
 	# if dictionary inefficient, consider making list of out of stock items
 	# and then removing out of stock items from all details before proceeding
-	all_details_in_stock = []
 	
 	
 

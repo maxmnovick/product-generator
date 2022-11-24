@@ -174,8 +174,9 @@ def generate_title(item_details, handle=''):
 			#print("Handle Words: " + str(handle_words))
 
 			for word in handle_words:
+				abbrevs = ['TV']
 				roman_numerals = ['I','II','III','IV','V','VI','VII','VIII','IX','X']
-				if word.upper() in roman_numerals:
+				if word.upper() in roman_numerals or word.upper() in abbrevs:
 					word = word.upper()
 				else:
 					word = word.capitalize()
@@ -309,7 +310,15 @@ def generate_product_type(item_details):
 				for keyword in type_keywords:
 					#print("Keyword: " + keyword)
 					if re.search(keyword,dashless_handle):
-						final_type = type
+						final_type = ''
+						type_words = type.split(' ')
+						abbrevs = ['TV']
+						for word in type_words:
+							if word.upper() in abbrevs:
+								word = word.upper()
+							else:
+								word = word.capitalize()
+							final_type += word + " "
 						break
 
 				if final_type != '':
@@ -319,7 +328,7 @@ def generate_product_type(item_details):
 	else:
 		print("Warning: No details for this item!")
 
-	return final_type.title()
+	return final_type
 
 def generate_all_product_types(all_details):
 	all_product_types = []
@@ -540,7 +549,9 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 			location_inv_html = ''
 			all_options = generate_all_options(product, init_product)
 			print("options: " + str(all_options))
-			arrival_time = '' # when item will arrive, based on given transfer times and inv qty
+			arrival_time_string = '' # when item will arrive, based on given transfer times and inv qty
+			arrival_times = [] # collect arrival times and choose min
+			arrival_time = 0 # weeks
 			if len(all_options) > 0:
 				location_inv_html = '<table>'
 				for vrnt_idx in range(len(product)):
@@ -579,9 +590,10 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 								item_loc_inv = int(item_inv[loc_inv_header])
 
 								if item_loc_inv > 0:
+									# fix this logic by comparing transfer times and choosing min
 									# if we know this inv loc has stock and we know it is the same as the location we are addressing, then the item is available immediately
 									if location == inv_loc:
-										arrival_time = 'Immediate'
+										arrival_time_string = 'Immediate'
 										break
 									# else if the inv loc is not the current location but we have inv, check if location is ny bc first treatment
 									# if we know this inv loc has stock, check if it is a valid location for ny pickup
@@ -590,11 +602,13 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 									# first check nj bc shorter transfer time
 									if location == 'ny':
 										if inv_loc == 'nj':
-											arrival_time = '2 weeks'
-										elif arrival_time == '': # nj is shortest transfer so if set then 
+											arrival_time = 2
+											arrival_times.append(arrival_time)
+										elif arrival_time_string == '': # nj is shortest transfer so if set already, but should have already broken loop if set so should always be blank at this point
 											if inv_loc == 'la' or inv_loc == 'sf':
-												arrival_time = '4 weeks'
-												break
+												arrival_time = 4
+												arrival_times.append(arrival_time)
+									arrival_time_string = str(min(arrival_times)) + ' weeks'
 
 							break
 							
@@ -604,7 +618,7 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 						location_inv_html += '<td>'
 
 						location_inv_html += option_value + '</td><td>'
-					location_inv_html += arrival_time + '</td>'
+					location_inv_html += arrival_time_string + '</td>'
 
 					location_inv_html += '</tr>'
 				location_inv_html += '</table>'
@@ -613,7 +627,7 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 				# go through inv locations, and pull data if valid: ny, nj, la, sf
 				for item_inv in all_inv:
 					print("item_inv: " + str(item_inv))
-				location_inv_html += arrival_time
+				location_inv_html += arrival_time_string
 
 			
 			location_html = location_title_html + location_inv_html
@@ -1730,8 +1744,9 @@ def generate_catalog_from_data(vendor='',all_inv={}):
 			sheet1_all_field_values[key] = sheet1_value
 		sheet1_sku = all_sheet1_skus[product_idx]
 
+		prev_skus = []
 		if len(all_inv) > 0:
-			if not determiner.determine_stocked(sheet1_sku, all_inv):
+			if not determiner.determine_stocked(sheet1_sku, all_inv) and not sheet1_sku in prev_skus:
 				continue
 
 		# sheet1_collection = ''
