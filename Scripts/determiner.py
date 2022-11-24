@@ -238,6 +238,13 @@ def determine_stocked(sheet1_sku, all_inv):
 							print(sheet1_sku + " is stocked in " + loc)
 							stocked = True
 							break
+					elif re.search('eta',key): # if there is an eta then it will be stocked
+						if val != '' and val.lower() != 'none':
+							location = re.sub('locations\\.|_warehouse_eta','',key)
+							print(sheet1_sku + " will be stocked in " + location)
+							stocked = True
+							break
+
 				if stocked:
 					break
 			break

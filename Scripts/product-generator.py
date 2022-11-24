@@ -177,14 +177,15 @@ def generate_all_products(vendor):
 		#product_inv_qtys = generator.generate_all_inv_qtys(all_inv)
 
 	
-	all_details = generator.generate_catalog_from_data(vendor, all_inv) # catalog here corresponds to all_details in original product generator
-	print("catalog: " + str(all_details))
 	# at this point need to go per item in all details, 
 	# get the sku and then check inventory
 	# then if inventory, proceed to gather data for the item
 	# otherwise, would generate much data only to find it is not in stock
 	# if dictionary inefficient, consider making list of out of stock items
 	# and then removing out of stock items from all details before proceeding
+	all_details = generator.generate_catalog_from_data(vendor, all_inv) # catalog here corresponds to all_details in original product generator
+	print("catalog: " + str(all_details))
+	
 	
 	
 

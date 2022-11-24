@@ -8,6 +8,8 @@ import numpy as np
 import sorter # sort variants by size
 import converter # convert list of items to fields (like transpose matrix), for generating catalog from info
 
+from datetime import date # get today's date to display when availability updated in product descrip
+
 # order of detail fields
 sku_idx = 0
 collection_idx = handle_idx = 1 # formerly handle_idx = 1 when we were given handle but now we need to make handle from description and collection name
@@ -529,6 +531,10 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 	print("init_product: " + str(init_product))
 	print("all_inv: " + str(all_inv))
 
+
+	updated_date = date.today().strftime("%d-%b-%Y") # %d-%m-%y
+	updated_date_html = '<p class=\'updated_date\'>Updated: ' + str(updated_date) + '</p>'
+
 	nj_to_ny = 2 # weeks
 	ca_to_ny = 4 # weeks, ca is both la and sf
 	valid_locations = ['ny', 'nj', 'la', 'sf']
@@ -537,9 +543,10 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 	all_locations_html = ''
 	locations = generate_inv_locations(all_inv)
 	for location in locations:
-		available_location = 'ny'
+		available_location = 'ny' # consider making items available at the cities they are stocked only because could arrange delivery from there
 		if location.lower() ==  available_location.lower():
-			location_title_html = '<h3>'
+			# format location title
+			location_title_html = '<h3>' # class='product_location_title'
 			if len(location) > 3:
 				location_title_html += location.title()
 			else:
@@ -549,7 +556,7 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 			location_inv_html = ''
 			all_options = generate_all_options(product, init_product)
 			print("options: " + str(all_options))
-			arrival_time_string = '' # when item will arrive, based on given transfer times and inv qty
+			arrival_time_string = 'NA' # when item will arrive, based on given transfer times and inv qty
 			arrival_times = [] # collect arrival times and choose min
 			arrival_time = 0 # weeks
 			if len(all_options) > 0:
@@ -602,13 +609,39 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 									# first check nj bc shorter transfer time
 									if location == 'ny':
 										if inv_loc == 'nj':
-											arrival_time = 2
+											arrival_time = nj_to_ny
 											arrival_times.append(arrival_time)
-										elif arrival_time_string == '': # nj is shortest transfer so if set already, but should have already broken loop if set so should always be blank at this point
+										elif arrival_time_string == '' or arrival_time_string == 'NA': # nj is shortest transfer so if set already, but should have already broken loop if set so should always be blank at this point
 											if inv_loc == 'la' or inv_loc == 'sf':
-												arrival_time = 4
+												arrival_time = ca_to_ny
 												arrival_times.append(arrival_time)
-									arrival_time_string = str(min(arrival_times)) + ' weeks'
+										arrival_time_string = str(min(arrival_times)) + ' weeks'
+
+
+							# if we went through locations and did not find inv, see if eta
+							if arrival_time_string.lower() == 'na':
+								eta_header = ''
+								for key in item_inv.keys(): # later may need to check both eta and loc to see if valid location but currently only eta given for la which is valid
+									if re.search('eta',key):
+										eta_header = key
+										break
+								if eta_header != '':
+									item_eta = item_inv[eta_header]
+									print("item_eta: " + str(item_eta))
+									if item_eta.lower() != 'none':
+										# if no stock and no eta, then it would have been removed earlier, but still check if one got through
+										current_date = datetime.datetime.today()
+										print("current_date: " + str(current_date))
+										eta_date = datetime.datetime.strptime(item_eta, '%Y-%m-%d') # "%d-%b-%Y" %d-%m-%Y'
+										print("eta_date: " + str(eta_date))
+										eta_delta = eta_date - current_date
+										eta_days = eta_delta.days
+										print("eta_days: " + str(eta_days))
+										# if loc=la:
+										transfer_weeks = ca_to_ny
+										eta_weeks = round(float(eta_days) / 7.0, 1) + transfer_weeks
+										print("eta_weeks: " + str(eta_weeks))
+										arrival_time_string = str(eta_weeks) + ' weeks'
 
 							break
 							
@@ -634,7 +667,7 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 
 			all_locations_html += location_html
 
-	arrival_html = available_title_html + all_locations_html
+	arrival_html = updated_date_html + available_title_html + all_locations_html
 
 
 	print("arrival_html: " + str(arrival_html))	
@@ -1744,7 +1777,9 @@ def generate_catalog_from_data(vendor='',all_inv={}):
 			sheet1_all_field_values[key] = sheet1_value
 		sheet1_sku = all_sheet1_skus[product_idx]
 
-		prev_skus = []
+		# if item not stocked and not previously stocked, then continue to next item
+		# if previously stocked but not currently stocked, set to delete
+		prev_skus = all_sheet1_skus #[] temporary make equal to current skus until needed to make prev skus for efficiency
 		if len(all_inv) > 0:
 			if not determiner.determine_stocked(sheet1_sku, all_inv) and not sheet1_sku in prev_skus:
 				continue
