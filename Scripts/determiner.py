@@ -221,16 +221,18 @@ def determine_inv_location_key(location, item_inv):
 			
 	return loc_key
 
-def determine_stocked(sheet1_sku, all_inv):
+def determine_stocked(sheet1_sku, all_inv, locations=[]):
 	print("\n===Determine Stocked===\n")
 	print("sheet1_sku: " + sheet1_sku)
 	print("all_inv: " + str(all_inv))
 	stocked = False
+	if len(locations) == 0:
+		locations = ['ny', 'nj', 'la', 'sf']
 	for item_inv in all_inv:
 		if item_inv['sku'] == sheet1_sku:
 			print("item_inv: " + str(item_inv))
-			valid_locations = ['ny', 'nj', 'la', 'sf']
-			for loc in valid_locations:
+
+			for loc in locations:
 				print("loc: " + loc)
 				for key, val in item_inv.items():
 					if re.search("qty",key) and re.search(loc,key):
@@ -247,6 +249,15 @@ def determine_stocked(sheet1_sku, all_inv):
 
 				if stocked:
 					break
+
 			break
 
 	return stocked
+
+def determine_eta_header(item_inv):
+	eta_header = ''
+	for key in item_inv.keys(): # later may need to check both eta and loc to see if valid location but currently only eta given for la which is valid
+		if re.search('eta',key):
+			eta_header = key
+			break
+	return eta_header

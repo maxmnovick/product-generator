@@ -20,6 +20,8 @@ import converter # convert all weights to grams
 import generator # generate output
 import sorter # sort items by size
 
+from determiner import determine_stocked
+
 
 
 # order of detail fields, from init catalog, not needed bc field determined by keywords
@@ -50,7 +52,7 @@ vendor = "acme"
 
 
 # print as single string that can then be separated by semicolon delimiter
-def display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool = 'shopify'): # set import tool when calling to display the variants to be imported with the given import tool, bc they have different import orders although some do not care about order but use the title to determine field value match
+def display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool = 'shopify', inv_tracker='', all_inv={}): # set import tool when calling to display the variants to be imported with the given import tool, bc they have different import orders although some do not care about order but use the title to determine field value match
 
 	print("\n === Display Shopify Variants === \n")
 
@@ -75,7 +77,37 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 
 		#body_html = product_descriptions[item_idx]
 		body_html = product_descrip_dict[product_handle]
-		vrnt_inv_tracker = '' # leave blank unless inv track capable
+
+		# general fields
+		sku = all_skus[item_idx]
+		item_weight = all_weights[item_idx]
+
+		# we only want to show inv qty if in ny otherwise would be confusing with inventory at other warehouses with different arrival times
+		# so leave blank here and set to shopify if we have inventory in ny or no inventory at all
+		# first check if we have any inventory or eta, bc simplest calculation
+		
+		# if it is stocked outside of ny, tracker='',qty=''
+		vrnt_inv_tracker = '' # leave blank unless inv track capable. get input from generate all products, based on inventory abilities. for now with payment plan we only get 1 location so shopify is good enough
+		vrnt_inv_qty = ''
+		# if no stock or eta, then tracker=shopify and qty=0
+		if not determine_stocked(sku, all_inv):
+			print("Not Stocked")
+			vrnt_inv_tracker = inv_tracker
+			vrnt_inv_qty = '0'
+		else: # we must have stock or eta
+			# if we have stock in ny, tracker=shopify and qty=ny_qty
+			location = 'ny' # only location currently, but could expand
+			vrnt_inv_qty = generator.generate_vrnt_inv_qty(sku, all_inv, location)
+			if int(vrnt_inv_qty) > 0:
+				vrnt_inv_tracker = inv_tracker
+			else:
+				# we know it is stocked or eta, but not in ny bc ny has 0
+				if vrnt_inv_tracker == '' and vrnt_inv_qty == '0': # we do not want to put 0 inventory bc it is stocked outside ny
+					vrnt_inv_qty = ''
+
+		print("vrnt_inv_tracker: " + vrnt_inv_tracker)
+		print("vrnt_inv_qty: " + vrnt_inv_qty)
+
 		vrnt_inv_policy = ''
 		if import_tool == 'excelify':
 			vrnt_inv_policy = 'continue'
@@ -91,16 +123,14 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 		published = 'TRUE'
 		published_scope = 'global'
 
-		# general fields
-		sku = all_skus[item_idx]
-		item_weight = all_weights[item_idx]
+		
 
 		final_item_info = ""
 		if import_tool == 'shopify':
 			# shopify specific fields
 			standard_product_type = ''
 			item_weight_in_grams = all_weights_in_grams[item_idx]
-			vrnt_inv_qty = ''
+			
 			vrnt_fulfill_service = 'manual'
 			vrnt_req_ship = 'TRUE'
 			vrnt_taxable = 'TRUE'
@@ -159,6 +189,7 @@ def generate_all_products(vendor):
 
 	seller = 'HFF'
 	vendor = 'acme'
+	import_tool = 'shopify' # based on seller. if can afford 3rd party, then likely not using shopify
 
 
 
@@ -212,34 +243,34 @@ def generate_all_products(vendor):
 
 
 	# # ====== Shopify Product Catalog ======
-	# print("\n====== Shopify Product Catalog ======\n")
+	print("\n====== Shopify Product Catalog ======\n")
 
-	# #writer.display_all_item_details(init_all_details)
+	#writer.display_all_item_details(init_all_details)
 
-	# # generate handles
-	# product_handles = generator.generate_all_handles(all_details) # formerly copied directly from catalog table but now made automatically from raw data descrip and collection name (if col name not given by vendor then look in product names table)
-	# #writer.display_field_values(product_handles)
+	# generate handles
+	product_handles = generator.generate_all_handles(all_details) # formerly copied directly from catalog table but now made automatically from raw data descrip and collection name (if col name not given by vendor then look in product names table)
+	#writer.display_field_values(product_handles)
 
-	# # generate titles, based on handles
-	# product_titles = generator.generate_all_titles(all_details, product_handles)
-	# #writer.display_field_values(product_titles)
+	# generate titles, based on handles
+	product_titles = generator.generate_all_titles(all_details, product_handles)
+	#writer.display_field_values(product_titles)
 
-	# # generate tags
-	# product_tags = generator.generate_all_tags(all_details, vendor)
-	# #writer.display_field_values(product_tags)
+	# generate tags
+	product_tags = generator.generate_all_tags(all_details, vendor)
+	#writer.display_field_values(product_tags)
 
-	# # generate product types
-	# product_types = generator.generate_all_product_types(all_details)
-	# #writer.display_field_values(product_types)
+	# generate product types
+	product_types = generator.generate_all_product_types(all_details)
+	#writer.display_field_values(product_types)
 
-	# # generate product img srcs
-	# product_img_srcs = generator.generate_all_product_img_srcs(all_details)
-	# #writer.display_field_values(product_img_srcs)
+	# generate product img srcs
+	product_img_srcs = generator.generate_all_product_img_srcs(all_details)
+	#writer.display_field_values(product_img_srcs)
 
-	# # generate options
-	# product_options = generator.generate_all_options(all_details, init_all_details) # we need init details to detect measurement type
-	# #writer.display_field_values(product_options)
-	# #writer.display_all_item_details(init_all_details)
+	# generate options
+	product_options = generator.generate_all_options(all_details, init_all_details) # we need init details to detect measurement type
+	#writer.display_field_values(product_options)
+	#writer.display_all_item_details(init_all_details)
 
 	
 
@@ -258,9 +289,9 @@ def generate_all_products(vendor):
 
 
 
-	
+	# if inv 0, set inv tracker to shopify and inv qty to 0
 	#all_products = ['handle;title;variant_sku;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33']
-	#all_products = display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool = 'shopify')
+	all_products = display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool, inv_tracker, all_inv)
 	print("all_products: " + str(all_products))
 
 

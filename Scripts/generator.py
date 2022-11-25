@@ -3,12 +3,13 @@
 
 import reader, writer, determiner
 import isolator # for isolating products in list of all products
-import re, datetime, math, random, pandas # random number for random sale item to set compare price
+import re, math, random, pandas # random number for random sale item to set compare price
 import numpy as np
 import sorter # sort variants by size
 import converter # convert list of items to fields (like transpose matrix), for generating catalog from info
 
 from datetime import date # get today's date to display when availability updated in product descrip
+from datetime import datetime # get current date and convert given eta date to datetime for difference
 
 # order of detail fields
 sku_idx = 0
@@ -208,7 +209,7 @@ def generate_all_titles(all_details, all_handles=[]):
 
 # tags based on vendor, publication year, color, material, and finish
 def generate_tags(item_details, vendor):
-	now = datetime.datetime.now()
+	now = datetime.now()
 	publication_year = str(now.year) # get current year
 
 	sku = handle = colors = materials = finishes = ''
@@ -313,14 +314,23 @@ def generate_product_type(item_details):
 					#print("Keyword: " + keyword)
 					if re.search(keyword,dashless_handle):
 						final_type = ''
-						type_words = type.split(' ')
+						print("Found type: \'" + type + '\'')
+						type_words = type.split()
+						print("type_words: " + str(type_words))
 						abbrevs = ['TV']
-						for word in type_words:
+						for word_idx in range(len(type_words)):
+							word = type_words[word_idx]
+							
+
 							if word.upper() in abbrevs:
 								word = word.upper()
 							else:
 								word = word.capitalize()
-							final_type += word + " "
+
+							if word_idx == 0:
+								final_type += word # or =word
+							else:
+								final_type += " " + word
 						break
 
 				if final_type != '':
@@ -620,27 +630,24 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 
 							# if we went through locations and did not find inv, see if eta
 							if arrival_time_string.lower() == 'na':
-								eta_header = ''
-								for key in item_inv.keys(): # later may need to check both eta and loc to see if valid location but currently only eta given for la which is valid
-									if re.search('eta',key):
-										eta_header = key
-										break
+								
+								eta_header = determiner.determine_eta_header(item_inv)
 								if eta_header != '':
 									item_eta = item_inv[eta_header]
 									print("item_eta: " + str(item_eta))
 									if item_eta.lower() != 'none':
 										# if no stock and no eta, then it would have been removed earlier, but still check if one got through
-										current_date = datetime.datetime.today()
-										print("current_date: " + str(current_date))
-										eta_date = datetime.datetime.strptime(item_eta, '%Y-%m-%d') # "%d-%b-%Y" %d-%m-%Y'
-										print("eta_date: " + str(eta_date))
+										current_date = datetime.today()
+										#print("current_date: " + str(current_date))
+										eta_date = datetime.strptime(item_eta, '%Y-%m-%d') # "%d-%b-%Y" %d-%m-%Y'
+										#print("eta_date: " + str(eta_date))
 										eta_delta = eta_date - current_date
 										eta_days = eta_delta.days
-										print("eta_days: " + str(eta_days))
+										#print("eta_days: " + str(eta_days))
 										# if loc=la:
 										transfer_weeks = ca_to_ny
 										eta_weeks = round(float(eta_days) / 7.0, 1) + transfer_weeks
-										print("eta_weeks: " + str(eta_weeks))
+										#print("eta_weeks: " + str(eta_weeks))
 										arrival_time_string = str(eta_weeks) + ' weeks'
 
 							break
@@ -652,6 +659,9 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 
 						location_inv_html += option_value + '</td><td>'
 					location_inv_html += arrival_time_string + '</td>'
+
+					# if limited stock, then show stock
+					#limited_stock_html = '<td>' + limited_stock + '</td>'
 
 					location_inv_html += '</tr>'
 				location_inv_html += '</table>'
@@ -981,10 +991,12 @@ def determine_unique_variant(question_variant, sorted_product, import_type):
 
 
 def generate_intro(item_details):
+	print("\n===Generate Intro===\n")
 	intro = ''
 
 	# intro variables based on item details
 	product_type = generate_product_type(item_details)
+	print("product_type: \'" + product_type + "\'")
 
 	room_type = 'room'
 	product_name = str.capitalize(item_details[collection_idx]) #'this product'
@@ -1006,12 +1018,13 @@ def generate_intro(item_details):
 		product_type = product_type_singular = 'pieces'
 
 	elif product_type[-1] == 's':
+		print("Product type ends with s.")
 		product_type_singular = product_type[:-1]
 
 
 	intro1 = 'This exceptional ' + product_type_singular + ' will make ' + pronoun + ' ' + room_type + ' the most delightful room in your home'
 
-	intro2 = str.capitalize(product_name) + ' is here to help with your design problem. Available in our most popular materials for speedier delivery, this distinguished ' + product_type_singular + ' is elegant, traditional, and crafted by hand, just the way you would expect our preeminent ' + product_type + ' to be'
+	intro2 = str.capitalize(product_name) + ' is here to help with your design problem. Available in our highest quality materials, this distinguished ' + product_type_singular + ' is elegant, traditional, and crafted by hand, just the way you would expect our preeminent ' + product_type + ' to be'
 
 	intro3 = 'Elegant ' + room_activity + ' is ' + product_name + '\'s speciality—so much so that you\'ll want to keep it forever. From all sides, you see a graceful shape that is perfectly balanced and sturdy, while being exceptionally refined'
 
@@ -2356,9 +2369,9 @@ def generate_vrnt_price(cost, type, seller):
 		if seller == 'JF':
 			common_multiplier = 2.4
 		elif seller == 'HFF':
-			common_multiplier = 1.5 #1.8
+			common_multiplier = 1.1 #1.8 
 			online_only_rate = 1.1
-			common_deliv_rate = 1.0 #1.2
+			common_deliv_rate = 1.2 #1.2
 		else:
 			common_multiplier = 2.0
 
@@ -2368,7 +2381,10 @@ def generate_vrnt_price(cost, type, seller):
 		elif type == 'mattresses' or type == 'box springs':
 			vrnt_price = cost_value * online_only_rate * mattress_multiplier
 		else:
-			vrnt_price = cost_value * online_only_rate * common_deliv_rate * common_multiplier
+			if seller == 'HFF':
+				vrnt_price = cost_value * online_only_rate * ( common_deliv_rate + common_multiplier - 1 )
+			else:
+				vrnt_price = cost_value * online_only_rate * common_deliv_rate * common_multiplier
 		#print("Variant Price Before Rounding: " + str(vrnt_price))
 
 		# round price
@@ -2433,6 +2449,23 @@ def generate_all_inv_qtys(all_inv_data):
 	# based on inv qty at location, and moving time bt locations, we can get pickup time
 	inv_qtys = {}
 	return inv_qtys
+
+def generate_vrnt_inv_qty(sku, all_inv, location=''):
+	print("\n===Generate Variant Inventory Quantity===\n")
+	inv_qty = ''
+	if location == '':
+		location = 'ny'
+	# compare sku
+	for item_inv in all_inv:
+		if item_inv['sku'] == sku:
+			for key,value in item_inv.items():
+				if re.search(location,key) and re.search('qty',key):
+					inv_qty = value
+					break
+			break
+
+	print("inv_qty in " + location + ": " + inv_qty)
+	return inv_qty
 
 # helper functions
 def roundup(x):
