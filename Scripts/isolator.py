@@ -13,18 +13,20 @@ def isolate_product_from_details(all_details, start_idx, stop_idx):
 	return product_rows
 
 def isolate_products(all_details):
+	print("\n===Isolate Products===\n")
 	products = []
 
 	field_title = "handle" # we know that all variants of the same product have the same handle
 
 	#handles = np.array(isolate_detail_field(all_details, field_title))
 	handles = np.array(generator.generate_all_handles(all_details))
+	print("\n===Handles Array: " + str(handles))
 
 	_, idx, cnt = np.unique(handles, return_index=True, return_counts=True)
 
 	unique_handles = handles[np.sort(idx)]
-	counts = cnt[np.argsort(idx)]
-	indices = np.sort(idx)
+	counts = cnt[np.argsort(idx)] # no. occurrences
+	indices = np.sort(idx) # idx of occurence
 
 	num_products = len(unique_handles)
 
@@ -127,3 +129,26 @@ def isolate_product_strings(all_imports, import_type):
 # 				unique_variants.append(variant)
 
 # 	return unique_variants
+
+
+def isolate_products_from_info(sorted_final_item_info):
+	all_final_items_list = []
+	for item_info in sorted_final_item_info:
+		item_data = item_info.split(';')
+		all_final_items_list.append(item_data)
+	print("all_final_items_list: " + str(all_final_items_list))
+
+	# separate/isolate products by handle
+	# group lists by handle element to get isolated products from final item info
+	# for efficiency, we could assume items already sorted by handle at this point bc we are passed sorted final item info, but we could leave this in case the first sorting fcn fails
+	products = {}
+	product_handle_idx = 0
+	for item_data in all_final_items_list:
+		item_handle = item_data[product_handle_idx]
+		print("item_handle: " + item_handle)
+		products.setdefault(item_handle, []).append(item_data)
+	print("products: " + str(products))
+
+	all_final_items_sorted = list(products.values()) # products separated by handle
+	print("all_final_items_sorted: " + str(all_final_items_sorted))
+	return all_final_items_sorted

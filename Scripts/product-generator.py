@@ -20,7 +20,7 @@ import converter # convert all weights to grams
 import generator # generate output
 import sorter # sort items by size
 
-from determiner import determine_stocked
+from determiner import determine_stocked, determine_inv_tracking
 
 
 
@@ -58,11 +58,16 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 
 	all_final_item_info = []
 
+	# loop thru all vrnts. product titles includes duplicate titles
 	for item_idx in range(len(product_titles)):
+
+		# general fields
+		sku = all_skus[item_idx]
+		item_weight = all_weights[item_idx]
 
 		# fields copied from details to shopify import
 		#handle = all_handles[item_idx] formerly copied directly from catalog table but now made automatically from raw data descrip and collection name (if col name not given by vendor then look in product names table)
-		item_cost = all_costs[item_idx]
+		item_cost = all_costs[item_idx] # need to check if it is a loft bed component, bc then all cost is loft+queen
 		barcode = all_barcodes[item_idx]
 		#img_src = all_img_srcs[item_idx] # formerly copied from catalog but img src may need to be reformatted as with google drive
 
@@ -74,36 +79,38 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 		product_img_src = product_img_srcs[item_idx]
 
 		product_option_string = writer.format_option_string(product_options[item_idx])
+		#product_option_string = product_options_dict[sku]
 
 		#body_html = product_descriptions[item_idx]
 		body_html = product_descrip_dict[product_handle]
 
-		# general fields
-		sku = all_skus[item_idx]
-		item_weight = all_weights[item_idx]
+		
 
 		# we only want to show inv qty if in ny otherwise would be confusing with inventory at other warehouses with different arrival times
 		# so leave blank here and set to shopify if we have inventory in ny or no inventory at all
 		# first check if we have any inventory or eta, bc simplest calculation
 		
-		# if it is stocked outside of ny, tracker='',qty=''
+		# if we have no info about the product,
+		# or, if it is stocked outside of ny, 
+		# tracker='',qty=''
 		vrnt_inv_tracker = '' # leave blank unless inv track capable. get input from generate all products, based on inventory abilities. for now with payment plan we only get 1 location so shopify is good enough
 		vrnt_inv_qty = ''
-		# if no stock or eta, then tracker=shopify and qty=0
-		if not determine_stocked(sku, all_inv):
-			print("Not Stocked")
-			vrnt_inv_tracker = inv_tracker
-			vrnt_inv_qty = '0'
-		else: # we must have stock or eta
-			# if we have stock in ny, tracker=shopify and qty=ny_qty
-			location = 'ny' # only location currently, but could expand
-			vrnt_inv_qty = generator.generate_vrnt_inv_qty(sku, all_inv, location)
-			if int(vrnt_inv_qty) > 0:
+		if determine_inv_tracking(sku, all_inv):
+			# if no stock or eta, then tracker=shopify and qty=0
+			if not determine_stocked(sku, all_inv):
+				print("Not Stocked")
 				vrnt_inv_tracker = inv_tracker
-			else:
-				# we know it is stocked or eta, but not in ny bc ny has 0
-				if vrnt_inv_tracker == '' and vrnt_inv_qty == '0': # we do not want to put 0 inventory bc it is stocked outside ny
-					vrnt_inv_qty = ''
+				vrnt_inv_qty = '0'
+			else: # we must have stock or eta
+				# if we have stock in ny, tracker=shopify and qty=ny_qty
+				location = 'ny' # only location currently, but could expand
+				vrnt_inv_qty = generator.generate_vrnt_inv_qty(sku, all_inv, location)
+				if int(vrnt_inv_qty) > 0:
+					vrnt_inv_tracker = inv_tracker
+				else:
+					# we know it is stocked or eta, but not in ny bc ny has 0
+					if vrnt_inv_tracker == '' and vrnt_inv_qty == '0': # we do not want to put 0 inventory bc it is stocked outside ny
+						vrnt_inv_qty = ''
 
 		print("vrnt_inv_tracker: " + vrnt_inv_tracker)
 		print("vrnt_inv_qty: " + vrnt_inv_qty)
@@ -162,15 +169,26 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 	sorted_final_item_info = sorter.sort_items_by_size(all_final_item_info, "shopify", all_details) # we do not want to remove lines with same handles if they have different images
 	#sorted_final_item_info = all_final_item_info
 
+
+	# generate all bundle vrnts info, and append to sorted final item info
+	# all_bundle_vrnts_info = generator.generate_all_bundle_vrnts_info(sorted_final_item_info, all_details)
+	# for bundle_vrnts_info in all_bundle_vrnts_info:
+	# 	sorted_final_item_info.append(bundle_vrnts_info)
+
+	# need to combine bundle vrnts with solo vrnts in this fcn bc we must modify existing solo product options based on other vrnts
+	all_sorted_final_item_info = generator.generate_all_bundle_vrnts_info(sorted_final_item_info, all_details)
+
+
+
 	# shopify import tool needs imgs on different lines
 	if import_tool == 'shopify':
-		sorted_final_item_info = sorter.split_variants_by_img(sorted_final_item_info)
+		all_sorted_final_item_info = sorter.split_variants_by_img(all_sorted_final_item_info)
 
 	writer.display_shopify_variant_headers()
-	for item_info in sorted_final_item_info:
+	for item_info in all_sorted_final_item_info:
 		print(item_info)
 
-	return sorted_final_item_info
+	return all_sorted_final_item_info
 
 
 
@@ -229,14 +247,14 @@ def generate_all_products(vendor):
 	init_all_details = copy.deepcopy(all_details)
 
 	# General Info from Details table
-	all_skus = reader.format_field_values('sku', all_details)
+	all_skus = reader.format_field_values('sku', all_details) # todo: need to check for bundle skus. eg loft bed + queen bed
 	all_widths = reader.format_field_values('width', all_details, init_all_details)
 	all_depths = reader.format_field_values('depth', all_details, init_all_details)
 	all_heights = reader.format_field_values('height', all_details, init_all_details)
-	all_weights = reader.format_field_values('weight', all_details, init_all_details)
+	all_weights = reader.format_field_values('weight', all_details, init_all_details) # todo: need to check for bundle weights. eg loft bed + queen bed
 	init_unit='lb'
 	all_weights_in_grams = converter.convert_all_weights_to_grams(all_weights, init_unit) # shopify requires grams
-	all_costs = reader.format_field_values('cost', all_details)
+	all_costs = reader.format_field_values('cost', all_details) # todo: need to check for bundle costs. eg loft bed + queen bed
 	all_barcodes = reader.format_field_values('barcode', all_details)
 	all_img_srcs = reader.format_field_values('img', all_details)
 	all_vrnt_imgs = reader.format_field_values('vrnt_img', all_details)
@@ -269,14 +287,15 @@ def generate_all_products(vendor):
 
 	# generate options
 	product_options = generator.generate_all_options(all_details, init_all_details) # we need init details to detect measurement type
-	#writer.display_field_values(product_options)
+	#product_options_dict = generator.generate_options_dict(all_details, init_all_details) # we need init details to detect measurement type
+	#writer.display_field_values(product_options_dict)
 	#writer.display_all_item_details(init_all_details)
 
 	
 
 	# generate descriptions with dictionary
 	product_descrip_dict = generator.generate_descrip_dict(all_details, init_all_details, all_inv, vendor)
-	writer.display_field_values(product_descrip_dict)
+	#writer.display_field_values(product_descrip_dict)
 
 	
 
@@ -292,7 +311,7 @@ def generate_all_products(vendor):
 	# if inv 0, set inv tracker to shopify and inv qty to 0
 	#all_products = ['handle;title;variant_sku;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33']
 	all_products = display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool, inv_tracker, all_inv)
-	print("all_products: " + str(all_products))
+	#print("all_products: " + str(all_products))
 
 
 	

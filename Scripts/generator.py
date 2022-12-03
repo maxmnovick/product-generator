@@ -92,7 +92,7 @@ def write_data(arranged_data, vendor, output, extension):
 
 # generate handles based on descriptions or titles (see handle-generator.py)
 def generate_handle(item_details):
-	#print("\n===Generate Handle===\n")
+	print("\n===Generate Handle===\n")
 	item_sku = item_details[sku_idx]
 
 	# descrip of what type of furniture needed to make title
@@ -106,6 +106,7 @@ def generate_handle(item_details):
 		sku = item_details[sku_idx]
 		descrip = item_details[title_idx]
 		collection_name = item_details[collection_idx]
+		intro = item_details[intro_idx]
 
 		# get features to check if a table is round bc not always differentiated bt round and rect tables in same collection
 		features = item_details[features_idx]
@@ -114,6 +115,9 @@ def generate_handle(item_details):
 		plain_descrip = descrip.lower().strip()
 		#print("plain_descrip: " + plain_descrip)
 		plain_features = features.lower().strip()
+		#print("plain_features: " + plain_features)
+		plain_intro = intro.lower().strip()
+		#print("plain_intro: " + plain_intro)
 
 		for title_suffix, title_keywords in all_keywords.items():
 			#print("Title Suffix: " + title_suffix)
@@ -122,6 +126,9 @@ def generate_handle(item_details):
 				#print("Keyword: " + keyword + "\n")
 				if re.search(keyword,plain_descrip):
 					final_title_suffix = title_suffix
+					if final_title_suffix == 'bed':
+						if re.search('loft bed',plain_intro):
+							final_title_suffix = 'loft bed'
 					break
 
 			if final_title_suffix != '':
@@ -133,7 +140,10 @@ def generate_handle(item_details):
 			#print("final_title_suffix before: " + final_title_suffix)
 			if re.search("round", plain_features):
 				final_title_suffix = re.sub(r"(.*\s)table", r"round \1table", final_title_suffix)
-		#print("final_title_suffix after: " + final_title_suffix)
+		print("final_title_suffix after: " + final_title_suffix)
+
+		
+
 
 		# warn user if no matching keyword
 		if final_title_suffix == '':
@@ -379,13 +389,108 @@ def generate_all_product_img_srcs(all_details):
 
 	return all_product_img_srcs
 
+# products = { "<sku>": { "handle":"<handle>", "description":"<description>"  } }
+# dict = { <sku>:<option string> }
+def generate_options_dict(all_details, init_all_details):
+	print("\n===Generate Options Dictionary===\n")
+	# instead of saving options instances and relying on them to align with product variants, 
+	# make dictionary matching options data to product sku
+	# and then when setting the options, use the product sku as the key
+	options_dict = {}
+	
+
+	init_products = isolator.isolate_products(init_all_details)
+	products = isolator.isolate_products(all_details) # why isolate products and not go line by line in all details?
+
+	for product_idx in range(len(products)):
+		product = products[product_idx]
+		item_details = product[0]
+		# handle = generate_handle(item_details)
+		# print("handle: " + handle)
+		init_product = init_products[product_idx]
+		options = generate_product_options(product, init_product)
+
+		# we need the whole product created to set bundle sku
+		# but at this point we need to set options to determine bundle sku
+		# so do we set by single sku here and then use options to correct sku later
+		# or do we pass in single skus and then pass out bundle skus if needed immediately
+		#options_dict[sku] = options
+
+	print("options_dict: " + str(options_dict))
+	return options_dict
+
+def generate_vrnt_options(vrnt, init_vrnt):
+	vrnt_options = []
+	return vrnt_options
+	
+
+def generate_product_options(product, init_product):
+	print("\n=== Generate Product Options ===\n")
+	product_options = []
+
+	for vrnt_idx in product:
+		vrnt = product[vrnt_idx]
+		init_vrnt = init_product[vrnt_idx]
+
+		vrnt_handle = generate_handle(vrnt)
+		if re.search("loft-bed",vrnt_handle):
+			# if twin loft bed, option will be loft bed only
+			# if optional queen for loft, option will be loft + queen
+			vrnt_type = vrnt[title_idx]
+			opt_name = 'Components'
+			if re.search('twin\\sloft\\sbed',vrnt_type.lower()):
+				opt_value = 'Loft Bed Only'
+			elif re.search('queen\\sbed', vrnt_type.lower()):
+				opt_value = 'Loft Bed + Queen Bed'
+
+
+		vrnt_options = generate_vrnt_options(vrnt, init_vrnt)
+		product_options.append(vrnt_options)
+	return product_options
+
+def generate_all_product_options(all_details, init_all_details):
+	print("\n=== Generate All Product Options ===\n")
+	# if loft bed with optional queen bed, only consider component options, nothing else
+	# later we can incorporate other options but for now only components needed bc only 1 color, size, etc
+	all_products = isolator.isolate_products(all_details)
+	init_all_products = isolator.isolate_products(init_all_details)
+
+	all_product_options = []
+	for product_idx in range(len(all_products)):
+		product = all_products[product_idx]
+		init_product = init_all_products[product_idx]
+
+		vrnt_options = []
+		for vrnt_idx in range(len(product)):
+			vrnt = product[vrnt_idx]
+			init_vrnt = init_product[vrnt_idx]
+
+			options = generate_options(vrnt, init_vrnt) # we need init details to detect measurement type
+			option_names = options[0]
+			option_values = options[1]
+			#print("Options: " + str(options))
+			option_string = ''
+			for opt_idx in range(len(option_names)):
+				option_name = option_names[opt_idx]
+				option_value = option_values[opt_idx]
+				if opt_idx == 0:
+					option_string += option_name + "," + option_value
+				else:
+					option_string += "," + option_name + "," + option_value
+			vrnt_options.append(option_string)
+
+		all_product_options.append(vrnt_options)
+
+
+	return all_product_options
+
 def generate_options(item_details, init_item_details):
 
-	#print("\n=== Generate Options ===\n")
+	print("\n=== Generate Options ===\n")
 
 	init_width = init_item_details[width_idx].strip().lower()
 	#print("Init Width: " + init_width)
-	handle = item_details[handle_idx]
+	handle = generate_handle(item_details)
 	meas_type = reader.determine_measurement_type(init_width, handle)
 
 	sku = color = title = ''
@@ -402,12 +507,13 @@ def generate_options(item_details, init_item_details):
 	# example: W is code for wenge brown for vendor=Global, but W is likely to mean something else for other vendors
 	if len(item_details) > 0:
 		sku = item_details[sku_idx].strip().lower()
-		#print("===Generate Options for SKU: " + sku)
+		print("===Generate Options for SKU: " + sku)
 		title = item_details[title_idx].strip().lower()
 		color = item_details[color_idx].strip().lower()
 		print("Color: " + color)
 		if color == '' or color == 'n/a':
 			color = item_details[finish_idx].strip().lower()
+		print("Finish Color: " + color)
 
 		# option codes must only be considered valid when they are the entire word in the sku, so must remove dashes to separate words and isolate codes
 		dashless_sku = re.sub('-',' ',sku)
@@ -427,20 +533,25 @@ def generate_options(item_details, init_item_details):
 				final_opt_values.append(dim_string)
 				final_opt_names.append(option_name)
 
+		# if loft bed with optional queen bed for loft bed, need to look for component options
+		# see if colors given, one for twin and one for queen
+		# or both twin and queen have multiple colors. if twin and queen have multiple colors, separate color options within same product so they would be Loft Color and Queen Color
+
 		# loop for each type of option, b/c need to fill in value for each possible option (eg loop for size and then loop for color in case item has both size and color options)
 		for option_name, option_dict in all_keywords.items():
-			#print("======Check for Option Name: " + option_name)
+			print("======Check for Option Name: " + option_name)
 			#print("Option Dict: " + str(option_dict))
 
 			final_opt_value = ''
 
 			for option_value, option_keywords in option_dict.items():
-				#print("Option Value: " + option_value)
+				print("Option Value: " + option_value)
 				#print("Option Keywords: " + str(option_keywords))
 
 				for keyword in option_keywords:
 					#print("Keyword: " + keyword)
 					#print("Plain SKU: " + dashless_sku)
+					# search sku first
 					if re.search(keyword,dashless_sku):
 						final_opt_value = option_value
 						final_opt_values.append(final_opt_value)
@@ -458,22 +569,28 @@ def generate_options(item_details, init_item_details):
 						final_opt_names.append(option_name)
 
 						final_opt_string += option_name + "," + final_opt_value + ","
+
 						break
 
 					# if no codes found in sku, check other fields for this item such as color field
 					if re.search(keyword,color):
+						print("Found color option: " + keyword + ", " + color)
 						final_opt_value = option_value
 						final_opt_values.append(final_opt_value)
 
 						final_opt_names.append(option_name)
 
 						final_opt_string += option_name + "," + final_opt_value + ","
+						
 						break
 
 				if final_opt_value != '':
 					#print("Final Option Name: " + option_name)
 					#print("Final Option Value: " + final_opt_value)
 					#print("Option String: " + final_opt_string + "\n")
+
+
+					# see if valid options, given known loft bed from handle
 					break
 
 			#print("======Checked for Option Name: " + option_name + "\n")\
@@ -549,133 +666,186 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 	ca_to_ny = 4 # weeks, ca is both la and sf
 	valid_locations = ['ny', 'nj', 'la', 'sf']
 
-	available_title_html = '<h2>Available After Order</h2>'
+
+	# if all inv given but any of the vrnts in product are not in it, 
+	# then need to decide if any vrnts are available in inv
+	# if no vrnts in product are given, show inv tracking not available
+	inv_tracking = False
+	if len(all_inv) > 0:
+		# if any vrnt given inv, we know at least one inv tracked
+		for vrnt in product:
+			for item_inv in all_inv:
+				vrnt_sku = vrnt[sku_idx]
+				item_sku = item_inv['sku']
+				if vrnt_sku == item_sku:
+					inv_tracking = True
+					break
+			if inv_tracking == True:
+				break
+		# if some but not all vrnts are given inv, include after table like 
+		# no inv tracking, call to ask for inventory
+		# option, call <phone>
+
+	available_title_html = ''
 	all_locations_html = ''
-	locations = generate_inv_locations(all_inv)
-	for location in locations:
-		available_location = 'ny' # consider making items available at the cities they are stocked only because could arrange delivery from there
-		if location.lower() ==  available_location.lower():
-			# format location title
-			location_title_html = '<h3>' # class='product_location_title'
-			if len(location) > 3:
-				location_title_html += location.title()
-			else:
-				location_title_html += location.upper()
-			location_title_html += '</h3>'
-			
-			location_inv_html = ''
-			all_options = generate_all_options(product, init_product)
-			print("options: " + str(all_options))
-			arrival_time_string = 'NA' # when item will arrive, based on given transfer times and inv qty
-			arrival_times = [] # collect arrival times and choose min
-			arrival_time = 0 # weeks
-			if len(all_options) > 0:
-				location_inv_html = '<table>'
-				for vrnt_idx in range(len(product)):
-					# convert option string to list of option name-value pairs
-					option_string = all_options[vrnt_idx]
-					print("option_string: " + str(option_string))
-					option_list = option_string.split(',')
-					option_names = []
-					option_values = []
-					for option_item_idx in range(len(option_list)):
-						if option_item_idx % 2:
-							option_value = option_list[option_item_idx]
-							option_values.append(option_value)
-						else:
-							option_name = option_list[option_item_idx]
-							option_names.append(option_name)
+	if inv_tracking == False:
+		print("No inv tracking for this product " + str(product[0][title_idx]))
+		available_title_html = '<h2>Available, Call for Arrival Time</h2>'
+	else:
+		available_title_html = '<h2>Available After Order</h2>'
+		all_locations_html = ''
+		locations = generate_inv_locations(all_inv)
+		for location in locations:
+			available_location = 'ny' # consider making items available at the cities they are stocked only because could arrange delivery from there
+			if location.lower() ==  available_location.lower():
+				# format location title
+				location_title_html = '<h3>' # class='product_location_title'
+				if len(location) > 3:
+					location_title_html += location.title()
+				else:
+					location_title_html += location.upper()
+				location_title_html += '</h3>'
+				
+				location_inv_html = ''
+				all_options = generate_all_options(product, init_product)
+				print("options: " + str(all_options))
+				arrival_time_string = 'NA' # when item will arrive, based on given transfer times and inv qty
+				arrival_times = [] # collect arrival times and choose min
+				arrival_time = 0 # weeks
+				if len(all_options) > 0:
+					location_inv_html = '<table>'
+					for vrnt_idx in range(len(product)):
+						# convert option string to list of option name-value pairs
+						option_string = all_options[vrnt_idx]
+						print("option_string: " + str(option_string))
+						option_list = option_string.split(',')
+						option_names = []
+						option_values = []
+						for option_item_idx in range(len(option_list)):
+							if option_item_idx % 2:
+								option_value = option_list[option_item_idx]
+								option_values.append(option_value)
+							else:
+								option_name = option_list[option_item_idx]
+								option_names.append(option_name)
 
 
-					print("option_names: " + str(option_names))
-					print("option_values: " + str(option_values))
-					vrnt = product[vrnt_idx]
-					print("vrnt: " + str(vrnt))
-					vrnt_sku = vrnt[sku_idx]
-					print("vrnt_sku: " + str(vrnt_sku))
+						print("option_names: " + str(option_names))
+						print("option_values: " + str(option_values))
+						vrnt = product[vrnt_idx]
+						print("vrnt: " + str(vrnt))
+						vrnt_sku = vrnt[sku_idx]
+						print("vrnt_sku: " + str(vrnt_sku))
+
+						limited_stock = 0
+						
+						# go through inv locations, and pull data if valid for internal transfer: ny, nj, la, sf. else need to buy from other locations separately
+						for item_inv in all_inv:
+							print("item_inv: " + str(item_inv))
+							item_sku = item_inv['sku']
+							print("item_sku: " + str(item_sku))
+							if vrnt_sku == item_sku:
+								# go through by header
+								item_loc_inv = 0
+								for inv_loc in locations:
+									loc_inv_header = determiner.determine_inv_location_key(inv_loc, item_inv)
+									item_loc_inv = int(item_inv[loc_inv_header])
+
+									if item_loc_inv > 0:
+										# fix this logic by comparing transfer times and choosing min
+										# if we know this inv loc has stock and we know it is the same as the location we are addressing, then the item is available immediately
+										if location == inv_loc:
+											arrival_time_string = 'Immediate'
+											break
+										# else if the inv loc is not the current location but we have inv, check if location is ny bc first treatment
+										# if we know this inv loc has stock, check if it is a valid location for ny pickup
+										# if we do not have stock at the current location, then check if we have stock at valid transfer location
+										# for now, only consider ny, with above given valid locations
+										# first check nj bc shorter transfer time
+										if location == 'ny':
+											if inv_loc == 'nj':
+												arrival_time = nj_to_ny
+												arrival_times.append(arrival_time)
+											elif arrival_time_string == '' or arrival_time_string == 'NA': # nj is shortest transfer so if set already, but should have already broken loop if set so should always be blank at this point
+												if inv_loc == 'la' or inv_loc == 'sf':
+													arrival_time = ca_to_ny
+													arrival_times.append(arrival_time)
+											arrival_time_string = str(min(arrival_times)) + ' weeks'
+
+											# we want to show the limited stock qty associated with the min arrival time
+											# if item_loc_inv < 10:
+											# 	print("Limited Stock")
+											# 	limited_stock = item_loc_inv
+
+								# get limited stock from location with shortest arrival time
+								limited_stock_enabled = False # enable if inventory capable for all locations and updates when order placed
+								if limited_stock_enabled:
+									item_location_inv = generate_vrnt_inv_qty(vrnt_sku,all_inv,location)
+									if int(item_location_inv) > 0 and int(item_location_inv) < 10:
+										limited_stock = item_location_inv
+									else:
+										item_nj_inv = generate_vrnt_inv_qty(vrnt_sku,all_inv,'nj')
+										if int(item_nj_inv) > 0 and int(item_nj_inv) < 10:
+											limited_stock = item_location_inv
+										else:
+											item_la_inv = generate_vrnt_inv_qty(vrnt_sku,all_inv,'la')
+											item_sf_inv = generate_vrnt_inv_qty(vrnt_sku,all_inv,'sf')
+											item_ca_inv = int(item_la_inv) + int(item_sf_inv)
+											if item_ca_inv > 0 and item_ca_inv < 10:
+												limited_stock = item_location_inv
+
+
+	
+
+								# if we went through locations and did not find inv, see if eta
+								if arrival_time_string.lower() == 'na':
+									
+									eta_header = determiner.determine_eta_header(item_inv)
+									if eta_header != '':
+										item_eta = item_inv[eta_header]
+										print("item_eta: " + str(item_eta))
+										if item_eta.lower() != 'none':
+											# if no stock and no eta, then it would have been removed earlier, but still check if one got through
+											current_date = datetime.today()
+											#print("current_date: " + str(current_date))
+											eta_date = datetime.strptime(item_eta, '%Y-%m-%d') # "%d-%b-%Y" %d-%m-%Y'
+											#print("eta_date: " + str(eta_date))
+											eta_delta = eta_date - current_date
+											eta_days = eta_delta.days
+											#print("eta_days: " + str(eta_days))
+											# if loc=la:
+											transfer_weeks = ca_to_ny
+											eta_weeks = round(float(eta_days) / 7.0, 1) + transfer_weeks
+											#print("eta_weeks: " + str(eta_weeks))
+											arrival_time_string = str(eta_weeks) + ' weeks'
+
+								break
+								
+
+						location_inv_html += '<tr>'
+						for option_value_idx in range(len(option_values)):
+							option_value = option_values[option_value_idx]
+							location_inv_html += '<td>' + option_value + '</td>'
+						location_inv_html += '<td>' + arrival_time_string + '</td>'
+
+						# if limited stock, then show stock
+						if limited_stock != 0:
+							limited_stock_html = '<td>' + str(limited_stock) + '</td>'
+							location_inv_html += limited_stock_html
+
+						location_inv_html += '</tr>'
+					location_inv_html += '</table>'
+				else:
 					
-					# go through inv locations, and pull data if valid for internal transfer: ny, nj, la, sf. else need to buy from other locations separately
+					# go through inv locations, and pull data if valid: ny, nj, la, sf
 					for item_inv in all_inv:
 						print("item_inv: " + str(item_inv))
-						item_sku = item_inv['sku']
-						print("item_sku: " + str(item_sku))
-						if vrnt_sku == item_sku:
-							# go through by header
-							item_loc_inv = 0
-							for inv_loc in locations:
-								loc_inv_header = determiner.determine_inv_location_key(inv_loc, item_inv)
-								item_loc_inv = int(item_inv[loc_inv_header])
+					location_inv_html += arrival_time_string
 
-								if item_loc_inv > 0:
-									# fix this logic by comparing transfer times and choosing min
-									# if we know this inv loc has stock and we know it is the same as the location we are addressing, then the item is available immediately
-									if location == inv_loc:
-										arrival_time_string = 'Immediate'
-										break
-									# else if the inv loc is not the current location but we have inv, check if location is ny bc first treatment
-									# if we know this inv loc has stock, check if it is a valid location for ny pickup
-									# if we do not have stock at the current location, then check if we have stock at valid transfer location
-									# for now, only consider ny, with above given valid locations
-									# first check nj bc shorter transfer time
-									if location == 'ny':
-										if inv_loc == 'nj':
-											arrival_time = nj_to_ny
-											arrival_times.append(arrival_time)
-										elif arrival_time_string == '' or arrival_time_string == 'NA': # nj is shortest transfer so if set already, but should have already broken loop if set so should always be blank at this point
-											if inv_loc == 'la' or inv_loc == 'sf':
-												arrival_time = ca_to_ny
-												arrival_times.append(arrival_time)
-										arrival_time_string = str(min(arrival_times)) + ' weeks'
-
-
-							# if we went through locations and did not find inv, see if eta
-							if arrival_time_string.lower() == 'na':
-								
-								eta_header = determiner.determine_eta_header(item_inv)
-								if eta_header != '':
-									item_eta = item_inv[eta_header]
-									print("item_eta: " + str(item_eta))
-									if item_eta.lower() != 'none':
-										# if no stock and no eta, then it would have been removed earlier, but still check if one got through
-										current_date = datetime.today()
-										#print("current_date: " + str(current_date))
-										eta_date = datetime.strptime(item_eta, '%Y-%m-%d') # "%d-%b-%Y" %d-%m-%Y'
-										#print("eta_date: " + str(eta_date))
-										eta_delta = eta_date - current_date
-										eta_days = eta_delta.days
-										#print("eta_days: " + str(eta_days))
-										# if loc=la:
-										transfer_weeks = ca_to_ny
-										eta_weeks = round(float(eta_days) / 7.0, 1) + transfer_weeks
-										#print("eta_weeks: " + str(eta_weeks))
-										arrival_time_string = str(eta_weeks) + ' weeks'
-
-							break
-							
-
-					location_inv_html += '<tr>'
-					for option_value in option_values:
-						location_inv_html += '<td>'
-
-						location_inv_html += option_value + '</td><td>'
-					location_inv_html += arrival_time_string + '</td>'
-
-					# if limited stock, then show stock
-					#limited_stock_html = '<td>' + limited_stock + '</td>'
-
-					location_inv_html += '</tr>'
-				location_inv_html += '</table>'
-			else:
 				
-				# go through inv locations, and pull data if valid: ny, nj, la, sf
-				for item_inv in all_inv:
-					print("item_inv: " + str(item_inv))
-				location_inv_html += arrival_time_string
+				location_html = location_title_html + location_inv_html
 
-			
-			location_html = location_title_html + location_inv_html
-
-			all_locations_html += location_html
+				all_locations_html += location_html
 
 	arrival_html = updated_date_html + available_title_html + all_locations_html
 
@@ -698,10 +868,12 @@ def generate_description(product, init_product, all_inv={}, vendor=''):
 	
 	if html_descrip == True:
 
+		notice_html = generate_product_notice_html(product) # important difference bt description and picture such as when only the bed is included in an image with the whole set
+
 		# display 
 		arrival_html = generate_arrival_html(product, init_product, all_inv, vendor)
 		#arrival_html = generate_arrival_html(product) # arrival time, such as Arrives: 3-4 weeks from Date of Purchase (eventually update dynamically based on date of purchase)
-		
+				
 		intro_html = generate_intro_html(product)
 
 		colors_html = generate_colors_html(product, init_product)
@@ -712,11 +884,11 @@ def generate_description(product, init_product, all_inv={}, vendor=''):
 
 		dimensions_html = generate_dimensions_html(product, init_product)
 
-		features_html = generate_features_html(product)
+		features_html = generate_features_html(product, vendor)
 
 		
 
-		descrip_html = arrival_html + intro_html + colors_html + materials_html + finishes_html + dimensions_html + features_html
+		descrip_html = notice_html + arrival_html + intro_html + colors_html + materials_html + finishes_html + dimensions_html + features_html
 		body_html = descrip_html
 
 	
@@ -1303,7 +1475,7 @@ def generate_dimensions_html(product, init_product):
 				else:
 					dim_html += " x " + height_html
 
-			dim_html += ". </td></tr>"
+			#dim_html += ". </td></tr>"
 
 			option_data = generate_options(variant, init_variant)
 			#print("Option Data: " + str(option_data))
@@ -1354,11 +1526,13 @@ def generate_dimensions_html(product, init_product):
 						#print(variant_dim_fmla)
 						dimensions_html += variant_dim_html
 
-			dimensions_html += "</table>"
+					dimensions_html += ', '
+			dimensions_html = dimensions_html.rstrip(', ')
+			dimensions_html += ". </td></tr></table>" #dim_html += ". </td></tr>"
 
 			#print()
 		else:
-			dimensions_html += dim_html + "</table>"
+			dimensions_html += dim_html + ". </td></tr></table>"
 
 	print("Dimensions HTML: " + dimensions_html + "\n")
 
@@ -1368,14 +1542,15 @@ def generate_features(item_details):
 	print("\n===Generate Features===\n")
 	
 	# bullet point indicates new line in features fmla so use bullet point for new line
-	features = '• Perfectly balanced and sturdy • Lightweight and easy to carry for convenience. • Durable construction, built to last. '
+	features = '• Perfectly balanced and sturdy. • Lightweight and easy to carry for convenience. • Durable construction, built to last. '
 
 	#print("Features: " + features)
 	return features
 
 
 
-def generate_features_html(product):
+def generate_features_html(product, vendor=''):
+	print("\n===Generate Features HTML===\n")
 	#features_html = "\"\""
 	features_html = ""
 
@@ -1386,38 +1561,76 @@ def generate_features_html(product):
 		if len(variant) > 11:
 			#handle = variant[1].strip().lower()
 			#print("Handle: " + handle)
-			features = variant[11].strip()
-			print("Features: " + features)
+			features = variant[features_idx].strip()
+			#print("Raw Features: " + features)
 			# if no intro given then generate one
 			if features == '' or str.lower(features) == 'features':
 				features = generate_features(variant)
 
 		if features != '' and features != 'n/a':
 			# need better way to check if there are no proper nouns that should stay capitalized, b/c too blunt to lowercase everything
-			features = features.lower()
+			features = features.lower().lstrip(',').strip()
+			#print("Lowered and Stripped Features: " + features)
 
-			# add periods before bullets
+
+			if vendor == 'acme': # acme provides list of features separated by commas
+				#print("Vendor: " + vendor)
+				# add new line and bullet point after comma, with period at the end
+				init_features_list = features.split(',')
+				#print("split features: " + str(init_features_list))
+				# remove excess space
+				for i in range(len(init_features_list)):
+					f = init_features_list[i]
+					init_features_list[i] = f.strip()
+				#print("stripped features: " + str(init_features_list))
+
+
+				# remove extra spaces
+				for i in range(len(init_features_list)):
+					f = init_features_list[i]
+					# capitalize first letter
+					f = f.capitalize()
+					#print("f cap: " + f)
+					# add bullet to the beginning
+					#f = '• ' + f
+					init_features_list[i] = f.strip()
+
+				#print("init_features_list: " + str(init_features_list))
+				final_features_string = ''
+				for feature_idx in range(len(init_features_list)):
+					feature = init_features_list[feature_idx]
+					final_features_string += '• ' + feature
+					if feature_idx != len(init_features_list)-1:
+						final_features_string += '. '
+
+				features = final_features_string
+
+
+			# add periods before bullets, if not already there
 			# make sure no extra periods added so no double periods if sentence already has period at end
 			features = re.sub(r"([^\.])\s•",r"\1. •", features) 
 			if features[-1] != '.':
 				#print("Last character: " + features[-1])
 				features += '. '
 
-			features = writer.capitalize_sentences(features).strip()
+			features = writer.capitalize_sentences(features).lstrip(',').strip() # if text inadvertently starts with comma, remove (eg , Bunkie board not required, support slats: 14+14, fixed ladder)
 
 			#features = re.sub('\"','\",CHAR(34),\"', features) # if quotes found in features, such as for dimensions, then fmla will incorrectly interpret that as closing string
 			
+			
+
+
 			if re.search('•',features) or re.search('    ',features) or re.search('ï|Ï',features):
-				features_list = "<ul class=\'product_features_list\'>"
-				print("\nFEATURES: " + features)
+				features_list_html = "<ul class=\'product_features_list\'>"
+				#print("\nFEATURES: " + features)
 
-				features_list += re.sub(r'•([^\.]+)\.',r'<li>\1. </li>', features) # bullet point indicates new line
-				features_list = re.sub(r'    ([^\.]+)\.',r'<li>\1. </li>', features_list) # 4 spaces indicates new line
-				features_list = re.sub(r'ï|Ï([^\.]+)\.',r'<li>\1. </li>', features_list) # ï character indicates new line (for Coaster)
+				features_list_html += re.sub(r'•([^\.]+)\.',r'<li>\1. </li>', features) # bullet point indicates new line
+				features_list_html = re.sub(r'    ([^\.]+)\.',r'<li>\1. </li>', features_list_html) # 4 spaces indicates new line
+				features_list_html = re.sub(r'ï|Ï([^\.]+)\.',r'<li>\1. </li>', features_list_html) # ï character indicates new line (for Coaster)
 				
-				features_list += "</ul>"
+				features_list_html += "</ul>"
 
-				features_html = features_list
+				features_html = features_list_html
 			else:
 				features_html = '<p class=\'product_features\'>' + features + '</p>'
 
@@ -1654,10 +1867,19 @@ def generate_catalog_from_json(all_items_json):
 			if product_catalog_dict[crucial_field] == '':
 				crucial_fields_given = False
 				break
+		# img is not a crucial field if it is for vrnt in a product with an img
 
 		if crucial_fields_given: 
 			catalog_info = list(product_catalog_dict.values()) #[sheet1_sku] #, coll_name, product_type, intro, color, material, finish, length, width, height, weight, features, sheet1_cost, img_links, barcode]
 			print("catalog_info: " + str(catalog_info))
+
+
+			#if image not given, but it is a vrnt in a product that does have an img, then it should be added to the catalog
+			# this is a v2 so save a backup:
+			# separate crucial fields into its 3 components, sku, cost, and image
+			# bc img is only crucial if no other vrnts with img
+			# but img becomes crucial before upload so avoid confusion in label
+
 			catalog.append(catalog_info)
 		else:
 			print("Warning: Missing fields for SKU " + sheet1_sku + ", so product not uploaded!")
@@ -1747,6 +1969,7 @@ def generate_catalog_from_data(vendor='',all_inv={}):
 	print("\n===Generate Catalog from Data===\n")
 
 	catalog = []
+	items_missing_img = [] # at the end, check if these items are vrnts where other vrnts have img so this should be included w/o img
 
 	desired_field_names = ['sku', 'collection', 'type', 'intro', 'color', 'material', 'finish', 'width', 'depth', 'height', 'weight', 'features', 'cost', 'images', 'barcode'] #corresponding to keys in dict. determine by type of generator. bc this is product generator we are look for product fields to form catalog, before it is converted to import
 	crucial_field_names = ['sku', 'cost', 'images'] # , cost, images]
@@ -1899,19 +2122,50 @@ def generate_catalog_from_data(vendor='',all_inv={}):
 		# see if crucial fields given by seeing if left blank or key exists?
 		crucial_fields_given = True
 		for crucial_field in crucial_field_names:
+			print(product_catalog_dict[crucial_field])
 			#print("product_catalog_dict.keys(): " + str(product_catalog_dict.keys()))
 			#if crucial_field not in product_catalog_dict.keys():
-			if product_catalog_dict[crucial_field] == '':
+			if product_catalog_dict[crucial_field] == '' or product_catalog_dict[crucial_field] == 'n/a': # blank is ambiguous but na is clearly marked
 				crucial_fields_given = False
 				break
 
+		# if sku and cost and image given, we can definitely pass the item to the catalog
 		if crucial_fields_given: 
+			print("Crucial Fields Given for " + sheet1_sku)
 			catalog_info = list(product_catalog_dict.values()) #[sheet1_sku] #, coll_name, product_type, intro, color, material, finish, length, width, height, weight, features, sheet1_cost, img_links, barcode]
 			print("catalog_info: " + str(catalog_info))
 			catalog.append(catalog_info)
 		else:
-			print("Warning: Missing fields for SKU " + sheet1_sku + ", so product not uploaded!")
+			print("Missing fields for SKU " + sheet1_sku + ", so check which fields are missing.")
+			if product_catalog_dict['images'] == 'n/a' and product_catalog_dict['sku'] != 'n/a' and product_catalog_dict['cost'] != 'n/a':
+				print("Missing Img but given SKU and Cost, so check if another variant has image.")
+				# we do not have full catalog yet, so we cannot isolate products to see if other vrnts have img
+				# so save to missing image list and check list after catalog compiled
+				# also could include those missing image for now and then remove them 
+				items_missing_img.append(product_catalog_dict)
+			elif product_catalog_dict['sku'] == 'n/a':
+				print("Warning: Missing SKU for item, so product not uploaded!")
+			elif product_catalog_dict['cost'] == 'n/a':
+				print("Warning: Missing cost for SKU " + sheet1_sku + ", so product not uploaded!")
 
+
+	#products = isolator.isolate_products(catalog)
+	# before returning catalog, add items with missing img but vrnt having img
+	for item_missing_img in items_missing_img:
+		missing_img_info = list(item_missing_img.values())
+		missing_img_handle = generate_handle(missing_img_info)
+		print("missing_img_handle: " + missing_img_handle)
+		# check if another item that passed into the catalog with an image has the same handle
+		# if it has the same handle, then check if it is a loft bed, bc only loft beds can assume the image shows both items
+		# else, it is more likely the variant does not have an image shown in the other vrnts image so we must flag and manually check
+		for item in catalog:
+			item_handle = generate_handle(item)
+			if missing_img_handle == item_handle:
+				if re.search('loft-bed',item_handle):
+					print("Found loft bed variant with no image!")
+					catalog.append(missing_img_info)
+
+				break # we can break whether or not loft bed bc we found another vrnt of same product (by handle)
 
 
 	return catalog
@@ -2467,6 +2721,355 @@ def generate_vrnt_inv_qty(sku, all_inv, location=''):
 	print("inv_qty in " + location + ": " + inv_qty)
 	return inv_qty
 
+def generate_product_notice_html(product):
+	# if optional loft bed, make sure customer knows the loft bed is the item in they are looking at, or it is the optional element not included
+	# if we see in intro, both loft bed and optional, together or separate, we can say the loft bed is an optional element
+	# eg if the intro says queen optional, it may be referring to optional size which would be misleading
+	# considering problem that only one of these items has an image, we must combine these two items
+	# then at the img stage we are already ignoring the loft bc there is an image error but we cannot rely on that
+	# we must check if that sku is the loft part of the pair, and if so add the variant queen+loft
+	# then no need to print notice yet but there may be use for other notices
+	notice_html = ''
+	return  notice_html
+
+# if it is a loft bed, we might be given optional underbed,
+# so generate bundle loft+underbed
+# product given in the past has been from the original catalog,
+# but now it might be more efficient to pass the product at stage 2, after all products with no bundles are made
+# solo product means it can be sold as is, but there may also be bundles of finished products
+# solo_product = [ { 'handle':'<handle>', 'sku1':'<sku1>', 'price1':'<price1>' }, { 'handle':'<handle>', 'sku2':'<sku2>', 'price2':'<price2>' }, ... ] fields/keys are shopify product import fields var names
+# also useful for sectionals
+# should we pass all solo products here and eval if need bundles? yes, else there would be error if accidentally passed solo product with no bundle
+# just bc we can handle the case, does not mean it is most efficient
+# it should be equally efficient to determine if bundle within this fcn or before it so include within it for robustness
+def generate_bundle_vrnts(solo_product):
+	print("\n===Generate Bundle Variants===\n")
+	bundle_vrnts = [] # default no bundle vrnts and only special cases get bundle vrnts. other products may create new products which are sets of solo products, but this fcn is for bundles within the same product. see generate_bundle_product
+
+	# determine if loft bed bc treated differently
+	# loft bed determined by handle bc type still bed, and handle same for all vrnts in fp
+	product_handle = solo_product[0]['handle']
+	if re.search('loft-bed', product_handle):
+		# if twin and queen, add bundle of the 2
+		# if colors or other options, no bundle
+		bundle_vrnt = {}
+		bundle_sku = ''
+		for vrnt in solo_product:
+			bundle_sku += vrnt['sku']
+		bundle_vrnt['sku'] = bundle_sku
+		print("bundle_vrnt: " + str(bundle_vrnt))
+
+		# will need to add options to given vrnts in solo product
+		# eg for loft bed the bundle option is loft+queen, so then for loft opt is loft only and for queen opt is queen only
+
+	
+	return bundle_vrnts
+
+# new products which are bundles of solo products
+# eg bedroom set
+def generate_bundle_products(solo_products):
+	print("\n===Generate Bundle Product===\n")
+	bundle_products = []
+	return bundle_products
+
+
+# from all details we can generate solo products too but here we just want bundle vrnts
+# we could pass the solo products here directly but then we need solo products to get bundle products?
+# test both generate vrnts from all details and from solo products
+def generate_all_bundle_vrnts(all_details):
+	print("\n===Generate All Bundle Variants===\n")
+
+	products = isolator.isolate_products(all_details)
+
+# generate from sorted final item info for efficiency
+# final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+def generate_all_bundle_vrnts_info(all_item_info, catalog):
+	print("\n===Generate All Bundle Variants Info===\n")
+
+	all_final_item_info = []
+
+	# given field names or idx
+	product_handle_idx = 0
+	product_title_idx = 1
+	body_html_idx = 2
+	vendor_idx = 3
+	std_product_type_idx = 4
+	product_type_idx = 5
+	product_tags_idx = 6
+	published_idx = 7
+	vrnt_opt1_name_idx = 8
+	vrnt_opt1_val_idx = 9
+	vrnt_opt2_name_idx = 10
+	vrnt_opt2_val_idx = 11
+	vrnt_opt3_name_idx = 12
+	vrnt_opt3_val_idx = 13
+	vrnt_sku_idx = 14
+	vrnt_weight_idx = 15
+	inv_tracker_idx = 16
+	inv_qty_idx = 17
+	inv_policy_idx = 18
+	fulfill_idx = 19
+	vrnt_price_idx = 20
+	vrnt_compare_price_idx = 21
+	req_ship_idx = 22
+	taxable_idx = 23
+	vrnt_barcode_idx = 24
+	product_img_src_idx = 25
+	img_position_idx = 26
+	img_alt_idx = 27
+	vrnt_img_idx = 28
+	weight_unit_idx = 29
+	tax_code_idx = 30
+	vrnt_cost_idx = 31
+	product_status_idx = 32
+
+	# already given field names or idx globally but readd here for efficiency
+	# order of detail fields
+	sku_idx = 0
+	collection_idx = 1 
+	type_idx = 2
+	intro_idx = 3
+	color_idx = 4
+	mat_idx = 5
+	finish_idx = 6
+	width_idx = 7
+	depth_idx = 8
+	height_idx = 9
+	weight_idx = 10
+	features_idx = 11
+	cost_idx = 12
+	img_src_idx = 13
+	barcode_idx = 14
+
+	# we must isolate products by splitting item info into lists and taking handle,
+	# so then we must reassemble the item at the end of this fcn even if nothing changed and no bundle added
+	all_solo_products = isolator.isolate_products_from_info(all_item_info)
+
+
+	for solo_product in all_solo_products:
+		product_handle = solo_product[0][product_handle_idx] # same for all vrnts so use first vrnt
+
+		# same for all vrnts of product
+		product_title = solo_product[0][product_title_idx]
+		body_html = solo_product[0][body_html_idx]
+		vendor = solo_product[0][vendor_idx]
+		standard_product_type = solo_product[0][std_product_type_idx]
+		product_type = solo_product[0][product_type_idx]
+		product_tag_string = solo_product[0][product_tags_idx]
+		published = solo_product[0][published_idx]
+		inv_policy = solo_product[0][inv_policy_idx] #'deny'
+		vrnt_fulfill_service = solo_product[0][fulfill_idx]
+		vrnt_req_ship = solo_product[0][req_ship_idx]
+		vrnt_taxable = solo_product[0][taxable_idx]
+		vrnt_weight_unit = solo_product[0][weight_unit_idx]
+		vrnt_tax_code = solo_product[0][tax_code_idx]
+		product_status = solo_product[0][product_status_idx]
+
+		# first check if multiple sizes or descrip? if it is in descrip then most likely and easy so check that first
+		if determiner.determine_product_bundle(solo_product):
+
+			
+
+			# need way to organize images for bundles, but leave blank for now
+			product_img_src = ''
+			img_position = ''
+			img_alt = '' 
+			vrnt_img = ''
+
+
+			# bundle product
+			# get the options so that we can alter existing options as well as add options to new bundle vrnt
+			# to assess bundle vrnt options we need to see if solo products color and other opts have multi vals
+			product_option_string = ';;;;;'
+			if re.search('loft-bed', product_handle):
+				product_option_string = 'Components;Loft Bed + Queen Bed;;;;'
+			
+			
+			#bundle_vrnt = {}
+			sku = ''
+			barcode = '' # need custom barcodes for bundle products not specified for vendor
+			#vrnt_options = []
+			item_weight_in_grams = 0.0
+			item_price = 0.0
+			item_cost = 0.0
+			
+			for vrnt_idx in range(len(solo_product)):
+				vrnt = solo_product[vrnt_idx]
+				#opt_names = []
+				#opt_vals = []
+				#vrnt_options = [opt_names, opt_vals] # do we need to see if multiple color options or can we leave that feature for later? most important to remove size options if only 1 for each item
+
+				# how do we detect if the sizes are referring to the same component or different? raw type?
+				# if raw type has loft bed then it is the loft component. likewise for queen bed component
+
+				if vrnt_idx == 0:
+					sku = vrnt[vrnt_sku_idx] 
+				else:
+					sku += " + " + vrnt[vrnt_sku_idx] 
+				#bundle_vrnt['sku'] = bundle_sku
+				#print("bundle_vrnt: " + str(bundle_vrnt))
+				
+				vrnt_weight_in_grams = vrnt[vrnt_weight_idx]
+				item_weight_in_grams += float(vrnt_weight_in_grams)
+
+
+				item_price += float(vrnt[vrnt_price_idx])
+				item_cost += float(vrnt[vrnt_cost_idx])
+
+			item_price = round_bundle(item_price)
+			item_compare_price = generate_vrnt_compare_price(item_price)
+
+			inv_tracker = '' # leave blank unless inv track capable. get input from generate all products, based on inventory abilities. for now with payment plan we only get 1 location so shopify is good enough
+			inv_qty = ''
+			for vrnt_idx in range(len(solo_product)):
+				vrnt = solo_product[vrnt_idx]
+				# if both are available, then treat as available, else treat as unavailable
+				# if no stock or eta, then tracker=shopify and qty=0
+				# if we have stock in ny, tracker=shopify and qty=ny_qty
+				if vrnt[inv_tracker_idx] == 'shopify':
+					inv_tracker = vrnt[inv_tracker_idx]
+					inv_qty = vrnt[inv_qty_idx]
+					break
+
+			final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + str(item_weight_in_grams) + ";" + inv_tracker + ";" + inv_qty + ";" + inv_policy + ";" + vrnt_fulfill_service + ";" + str(item_price) + ";" + item_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + str(item_cost) + ";" + product_status
+			all_final_item_info.append(final_item_info)
+
+			# will need to add options to given vrnts in solo product
+			# eg for loft bed the bundle option is loft+queen, so then for loft opt is loft only and for queen opt is queen only
+			# modify existing vrnt options, based on bundle component options
+			# eg loft only, queen only
+			for vrnt in solo_product:
+				# get opt vals to determine how to change opt vals
+				# may need to loop through opts before this loop to see if multiple vals to remove if only 1 val bc opt misleading
+				vrnt_opt_vals = [vrnt[vrnt_opt1_val_idx],vrnt[vrnt_opt2_val_idx],vrnt[vrnt_opt3_val_idx]]
+				if 'Twin' in vrnt_opt_vals:
+					product_option_string = 'Components;Loft Bed;;;;' # take from catalog raw type or based on loft bed is always twin size
+				elif 'Queen' in vrnt_opt_vals:
+					product_option_string = 'Components;Queen Bed;;;;'
+
+				sku = vrnt[vrnt_sku_idx]
+				item_weight_in_grams = vrnt[vrnt_weight_idx]
+				inv_tracker = vrnt[inv_tracker_idx]
+				inv_qty = vrnt[inv_qty_idx]
+				item_price = vrnt[vrnt_price_idx]
+				item_compare_price = vrnt[vrnt_compare_price_idx]
+				barcode = vrnt[vrnt_barcode_idx]
+				product_img_src = vrnt[product_img_src_idx]
+				img_position = vrnt[img_position_idx]
+				img_alt = vrnt[img_alt_idx]
+				vrnt_img = vrnt[vrnt_img_idx]
+				item_cost = vrnt[vrnt_cost_idx]
+
+				final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + inv_tracker + ";" + inv_qty + ";" + inv_policy + ";" + vrnt_fulfill_service + ";" + item_price + ";" + item_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+				all_final_item_info.append(final_item_info)
+
+		else: # no bundle so transfer vrnts directly with no addition
+			for vrnt in solo_product:
+
+				# if no change, reconstruct opt string from opt data
+				product_option_string = vrnt[vrnt_opt1_name_idx] + ";" + vrnt[vrnt_opt1_val_idx] + ";" + vrnt[vrnt_opt2_name_idx] + ";" + vrnt[vrnt_opt2_val_idx] + ";" + vrnt[vrnt_opt3_name_idx] + ";" + vrnt[vrnt_opt3_val_idx]
+				
+				sku = vrnt[vrnt_sku_idx]
+				item_weight_in_grams = vrnt[vrnt_weight_idx]
+				inv_tracker = vrnt[inv_tracker_idx]
+				inv_qty = vrnt[inv_qty_idx]
+				item_price = vrnt[vrnt_price_idx]
+				item_compare_price = vrnt[vrnt_compare_price_idx]
+				barcode = vrnt[vrnt_barcode_idx]
+				product_img_src = vrnt[product_img_src_idx]
+				img_position = vrnt[img_position_idx]
+				img_alt = vrnt[img_alt_idx]
+				vrnt_img = vrnt[vrnt_img_idx]
+				item_cost = vrnt[vrnt_cost_idx]
+				
+
+				final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + inv_tracker + ";" + inv_qty + ";" + inv_policy + ";" + vrnt_fulfill_service + ";" + item_price + ";" + item_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+				all_final_item_info.append(final_item_info)
+
+
+	return all_final_item_info
+
+
+# generate from sorted final item info for efficiency
+# final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+def generate_all_bundle_vrnts_from_catalog(catalog, product_descrip_dict):
+	print("\n===Generate All Bundle Variants from Catalog===\n")
+	print("catalog: " + str(catalog))
+
+	all_bundle_vrnts_info = []
+
+	# already given field names or idx globally but readd here for efficiency
+	# order of detail fields
+	sku_idx = 0
+	collection_idx = 1 
+	type_idx = 2
+	intro_idx = 3
+	color_idx = 4
+	mat_idx = 5
+	finish_idx = 6
+	width_idx = 7
+	depth_idx = 8
+	height_idx = 9
+	weight_idx = 10
+	features_idx = 11
+	cost_idx = 12
+	img_src_idx = 13
+	barcode_idx = 14
+	
+
+	# separate products by handle
+	# group lists by handle element to get isolated products from final item info
+	# for efficiency, we could assume items already sorted by handle at this point bc we are passed sorted final item info, but we could leave this in case the first sorting fcn fails
+	solo_products = isolator.isolate_products(catalog)
+
+	for solo_product in solo_products:
+		product_handle = generate_handle(solo_product[0]) # same for all vrnts so use first vrnt
+		# determine if loft bed bc treated differently
+		# loft bed determined by handle bc type still bed, and handle same for all vrnts in fp
+		if re.search('loft-bed', product_handle):
+			print("Product is loft bed, so check if optional items to bundle.")
+			opt_names = []
+			# how do we know if there is an optional bundle in the loft bed product? description says optional queen bed, but what if that is referring to the size of the loft bed? can we assume loft bed is only twin? no bc that is restrictive.
+			# in this case the descrip says optional bed underneath but not reliable. usually we can tell by img so descrip may need to be required here. 
+			# in this case we know the queen is not loft bc loft is not in the raw type but in the raw description it says loft bed
+			# could check if twin and queen, and then add bundle of the 2
+			# most reliable to say if no loft in raw type then not loft but that requires adding parameter
+			# although less reliable, for simplicity check descrip for optional bed underneath to confirm not referring to size of loft bed
+			# if only colors or other options, no bundle
+
+			# most reliable to draw from raw type bc we can bundle the two together whether or not referring to underbed
+			# raw types are loft bed and queen bed
+			# component option vals would be loft bed, queen bed, loft+queen
+
+			# first check if multiple sizes or descrip? if it is in descrip then most likely and easy so check that first
+			if determiner.determine_product_bundle(solo_product):
+
+				product_title = generate_title(solo_product)
+				body_html = product_descrip_dict[product_handle]
+
+				vendor = ''
+				
+				bundle_vrnt = {}
+				bundle_sku = ''
+				for vrnt_idx in range(len(solo_product)):
+					vrnt = solo_product[vrnt_idx]
+					if vrnt_idx == 0:
+						bundle_sku = vrnt[sku_idx] 
+					else:
+						bundle_sku += " + " + vrnt[sku_idx] 
+				bundle_vrnt['sku'] = bundle_sku
+				print("bundle_vrnt: " + str(bundle_vrnt))
+
+				# will need to add options to given vrnts in solo product
+				# eg for loft bed the bundle option is loft+queen, so then for loft opt is loft only and for queen opt is queen only
+
+				#final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+				#all_bundle_vrnts_info.append(final_item_info)
+
+	return all_bundle_vrnts_info
+
+
+
 # helper functions
 def roundup(x):
 	 return int(math.ceil(x / 100.0)) * 100
@@ -2476,6 +3079,12 @@ def rounddown(x):
 
 def round_price(price):
 	rounded_price = roundup(price)
+	rounded_price = float(rounded_price)
+
+	return rounded_price - 0.01
+
+def round_bundle(price):
+	rounded_price = rounddown(price)
 	rounded_price = float(rounded_price)
 
 	return rounded_price - 0.01

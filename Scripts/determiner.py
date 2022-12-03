@@ -109,16 +109,16 @@ def determine_measurement_type(measurement, handle):
 			meas_vars = []
 			meas_value = measurement # from here on use value
 
-			if re.search('\'\d+\"\s*\d+(\'|\")',meas_value):
+			if re.search('\'\\d+\"\\s*\\d+(\'|\")',meas_value):
 				meas_type = 'combined_rect' #already set by default
 				print("Warning for " + handle + ": Width and Depth given in same field, while determining measurement type: \"" + meas_value + "\"!")
-			elif re.search('(\")\s*.+(\")',meas_value) or re.search('(\')\s*.+(\')',meas_value):
+			elif re.search('(\")\\s*.+(\")',meas_value) or re.search('(\')\\s*.+(\')',meas_value):
 				meas_type = 'invalid'
 				print("Warning for " + handle + ": 2 values with the same unit given while determining measurement type: \"" + meas_value + "\"!")
 			# assuming meas value followed by meas type
-			elif re.search('\s+',meas_value):
+			elif re.search('\\s+',meas_value):
 				#print("Measurement contains a space character.")
-				meas_vars = re.split('\s+',meas_value)
+				meas_vars = re.split('\\s+',meas_value)
 				#print("Meas vars: " + str(meas_vars))
 				meas_value = meas_vars[0]
 				meas_type = meas_vars[1]
@@ -226,6 +226,7 @@ def determine_stocked(sheet1_sku, all_inv, locations=[]):
 	print("sheet1_sku: " + sheet1_sku)
 	print("all_inv: " + str(all_inv))
 	stocked = False
+	given_info = False # if we are given an item but no stock info we still want to display it
 	if len(locations) == 0:
 		locations = ['ny', 'nj', 'la', 'sf']
 	for item_inv in all_inv:
@@ -250,7 +251,12 @@ def determine_stocked(sheet1_sku, all_inv, locations=[]):
 				if stocked:
 					break
 
+			if not stocked:
+				print(sheet1_sku + " Not Stocked")
+
 			break
+	
+	
 
 	return stocked
 
@@ -261,3 +267,55 @@ def determine_eta_header(item_inv):
 			eta_header = key
 			break
 	return eta_header
+
+def determine_inv_tracking(sku, all_inv):
+	inv_tracking = False
+	for item_inv in all_inv:
+		item_sku = item_inv['sku']
+		if sku == item_sku:
+			inv_tracking = True
+			break
+
+	return inv_tracking
+
+# solo product is from final item info split by ; delimiter
+# could use catalog instead if we need to access product intro specifically but body html should be good enough
+def determine_product_bundle(solo_product):
+	print("\n===Determine Product Bundle===\n")
+	print("solo_product: " + str(solo_product))
+	bundle = False
+
+	# determine if loft bed bc treated differently
+	# loft bed determined by handle bc type still bed, and handle same for all vrnts in fp
+	product_handle_idx = 0
+	product_handle = solo_product[0][product_handle_idx] # same for all vrnts so use first vrnt
+	if re.search('loft-bed', product_handle):
+		print("Product is loft bed, so check if optional items to bundle.")
+		# how do we know if there is an optional bundle in the loft bed product? description says optional queen bed, but what if that is referring to the size of the loft bed? can we assume loft bed is only twin? no bc that is restrictive.
+		# in this case the descrip says optional bed underneath but not reliable. usually we can tell by img so descrip may need to be required here. 
+		# in this case we know the queen is not loft bc loft is not in the raw type but in the raw description it says loft bed
+		# could check if twin and queen, and then add bundle of the 2
+		# most reliable to say if no loft in raw type then not loft but that requires adding parameter
+		# although less reliable, for simplicity check descrip for optional bed underneath to confirm not referring to size of loft bed
+		# if only colors or other options, no bundle
+
+		# most reliable to draw from raw type bc we can bundle the two together whether or not referring to underbed
+		# raw types are loft bed and queen bed
+		# component option vals would be loft bed, queen bed, loft+queen
+
+		#intro_idx = 3
+		body_html_idx = 2
+		for vrnt in solo_product:
+			#vrnt_intro = vrnt[intro_idx]
+			vrnt_body_html = vrnt[body_html_idx]
+			print("vrnt_body_html: " + vrnt_body_html)
+			if re.search('optional.*bed.*under', vrnt_body_html.lower()):
+				bundle = True
+				print("Bundle Product")
+				break
+
+	# for loft bed, if no descrip stating optional bed, check if options size twin and queen
+	
+	options = []
+
+	return bundle
