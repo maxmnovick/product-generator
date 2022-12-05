@@ -2,6 +2,7 @@
 # determine choices with complicated conditions
 
 import re
+import reader # to read color stds to determine std color
 
 def determine_matching_field(desired_field_name, current_field_name):
     print("desired_field_name: " + desired_field_name)
@@ -75,7 +76,7 @@ def determine_field_name(field, sheet_df):
             keyword_no_space = re.sub('\\s', '', keyword)
             if re.search(keyword_no_space, header_no_space):
                 field_name = header
-                print("field_name: " + field_name)
+                #print("field_name: " + field_name)
                 matching_field = True
                 break
         if matching_field:
@@ -213,7 +214,7 @@ def determine_inv_location_key(location, item_inv):
 	loc_key = ''
 	for key in item_inv.keys():
 		if re.search(location.lower(),key.lower()):
-			print("key: " + key)
+			#print("key: " + key)
 			
 			if re.search('qty', key.lower()):
 				loc_key = key
@@ -222,22 +223,22 @@ def determine_inv_location_key(location, item_inv):
 	return loc_key
 
 def determine_stocked(sheet1_sku, all_inv, locations=[]):
-	print("\n===Determine Stocked===\n")
-	print("sheet1_sku: " + sheet1_sku)
-	print("all_inv: " + str(all_inv))
+	#print("\n===Determine Stocked===\n")
+	#print("sheet1_sku: " + sheet1_sku)
+	#print("all_inv: " + str(all_inv))
 	stocked = False
 	given_info = False # if we are given an item but no stock info we still want to display it
 	if len(locations) == 0:
 		locations = ['ny', 'nj', 'la', 'sf']
 	for item_inv in all_inv:
 		if item_inv['sku'] == sheet1_sku:
-			print("item_inv: " + str(item_inv))
+			#print("item_inv: " + str(item_inv))
 
 			for loc in locations:
-				print("loc: " + loc)
+				#print("loc: " + loc)
 				for key, val in item_inv.items():
 					if re.search("qty",key) and re.search(loc,key):
-						if int(val) > 0:
+						if round(float(val)) > 0: # problem dataframe reading decimal
 							print(sheet1_sku + " is stocked in " + loc)
 							stocked = True
 							break
@@ -282,7 +283,7 @@ def determine_inv_tracking(sku, all_inv):
 # could use catalog instead if we need to access product intro specifically but body html should be good enough
 def determine_product_bundle(solo_product):
 	print("\n===Determine Product Bundle===\n")
-	print("solo_product: " + str(solo_product))
+	#print("solo_product: " + str(solo_product))
 	bundle = False
 
 	# determine if loft bed bc treated differently
@@ -319,3 +320,46 @@ def determine_product_bundle(solo_product):
 	options = []
 
 	return bundle
+
+# if we do not find a standard color, do we still want to use the custom color as a tag?	
+# yes bc need to see color else no color no filter. plus it will show which custom colors could be grouped into a standard color by new keyword
+# problem is we need to minimize filter list to only standard colors so we cannot allow custom colors to make tags.
+# instead pass warning so we can correct it by adding new keyword to colors.json
+def determine_standard_color(color):
+	print("\n===Determine Standard Color===\n")
+	standard_color = ''
+	standard_colors = reader.read_standards('colors')
+	#print("standard_colors: " + str(standard_colors))
+	for std_color, keywords in standard_colors.items():
+		#print("std_color: " + std_color)
+		for keyword in keywords:
+			if re.search(keyword, color.lower()):
+				standard_color = std_color
+				break # found keyword so no need to see more
+		if standard_color != '': # standard color would only be set if we determined color so no need to see more
+			break
+
+	if standard_color == '':
+		print("Warning: could not find standard color for color " + color + "! ")
+
+	return standard_color
+
+# need value type to read standards file by name
+def determine_standard(init_value, value_type):
+	print("\n===Determine Standard for value: " + init_value + "===\n")
+	standard = ''
+	standards = reader.read_standards(value_type)
+	#print("standards: " + str(standards))
+	for std, keywords in standards.items():
+		#print("std: " + std)
+		for keyword in keywords:
+			if re.search(keyword, init_value.lower()):
+				standard = std
+				break # found keyword so no need to see more
+		if standard != '': # standard would only be set if we determined value so no need to see more
+			break
+
+	if standard == '':
+		print("Warning: could not find standard for value " + init_value + "! ")
+
+	return standard

@@ -102,7 +102,7 @@ def capitalize_sentences(intro):
 
 	final_sentences = ''
 
-	intro_sentences = intro.split('.')
+	intro_sentences = re.split("\\.|!",intro) #intro.split('.')
 	#print("intro_sentences: " + str(intro_sentences))
 	for sentence in intro_sentences:
 		#print("sentence: " + sentence)

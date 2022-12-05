@@ -1,0 +1,20 @@
+{
+    "Wood":["wood","composite","poplar","eucalyptus","oak","maho?ga?ny","larch","pine","ply"],
+    "Stainless Steel":["stainless"],
+    "Steel":["steel"],
+    "Aluminum":["alum"],
+    "Glass":["glass"],
+    "Plastic":["plastic","pu","polyurethane","acrylic"],
+    "Leather":["leather"],
+    "Resin":["resin"],
+    "Upholstery":["upholster"],
+    "Fabric":["fabric","trim"],
+    "Velvet":["velvet"],
+    "Foam":["foam"],
+    "Metal":["metal"],
+    "Mirror":["mir+o+r"],
+    "Caster Leg":["caster"],
+    "Leg":["leg"],
+    "Linen":["linen"],
+    "Mechanism":["mechanism"]
+}

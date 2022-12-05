@@ -73,6 +73,7 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 
 		# fields generated specifically for shopify import
 		product_handle = product_handles[item_idx] # added new way to make product handle 8/21/22
+		#print("Display Product " + product_handle)
 		product_title = product_titles[item_idx]
 		product_tag_string = product_tags[item_idx]
 		product_type = product_types[item_idx]
@@ -98,22 +99,22 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 		if determine_inv_tracking(sku, all_inv):
 			# if no stock or eta, then tracker=shopify and qty=0
 			if not determine_stocked(sku, all_inv):
-				print("Not Stocked")
+				print(sku + "Not Stocked")
 				vrnt_inv_tracker = inv_tracker
 				vrnt_inv_qty = '0'
 			else: # we must have stock or eta
 				# if we have stock in ny, tracker=shopify and qty=ny_qty
 				location = 'ny' # only location currently, but could expand
 				vrnt_inv_qty = generator.generate_vrnt_inv_qty(sku, all_inv, location)
-				if int(vrnt_inv_qty) > 0:
+				if round(float(vrnt_inv_qty)) > 0:
 					vrnt_inv_tracker = inv_tracker
 				else:
 					# we know it is stocked or eta, but not in ny bc ny has 0
 					if vrnt_inv_tracker == '' and vrnt_inv_qty == '0': # we do not want to put 0 inventory bc it is stocked outside ny
 						vrnt_inv_qty = ''
 
-		print("vrnt_inv_tracker: " + vrnt_inv_tracker)
-		print("vrnt_inv_qty: " + vrnt_inv_qty)
+		#print("vrnt_inv_tracker: " + vrnt_inv_tracker)
+		#print("vrnt_inv_qty: " + vrnt_inv_qty)
 
 		vrnt_inv_policy = ''
 		if import_tool == 'excelify':
@@ -163,10 +164,10 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 			#print(final_item_info)
 			all_final_item_info.append(final_item_info)
 
-	#print("\n===ALL FINAL ITEM INFO===\n" + str(all_final_item_info))
+	#print("\n===ALL FINAL ITEM INFO before sorting===\n" + str(all_final_item_info))
 
 	#sorted_final_item_info = sort_items_by_size(all_final_item_info, "shopify") # we do not want to remove lines with same handles if they have different images
-	sorted_final_item_info = sorter.sort_items_by_size(all_final_item_info, "shopify", all_details) # we do not want to remove lines with same handles if they have different images
+	all_sorted_final_item_info = sorter.sort_items_by_size(all_final_item_info, "shopify", all_details) # we do not want to remove lines with same handles if they have different images
 	#sorted_final_item_info = all_final_item_info
 
 
@@ -176,7 +177,7 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 	# 	sorted_final_item_info.append(bundle_vrnts_info)
 
 	# need to combine bundle vrnts with solo vrnts in this fcn bc we must modify existing solo product options based on other vrnts
-	all_sorted_final_item_info = generator.generate_all_bundle_vrnts_info(sorted_final_item_info, all_details)
+	all_sorted_final_item_info = generator.generate_all_bundle_vrnts_info(all_sorted_final_item_info, all_details)
 
 
 
@@ -233,7 +234,7 @@ def generate_all_products(vendor):
 	# if dictionary inefficient, consider making list of out of stock items
 	# and then removing out of stock items from all details before proceeding
 	all_details = generator.generate_catalog_from_data(vendor, all_inv) # catalog here corresponds to all_details in original product generator
-	print("catalog: " + str(all_details))
+	#print("catalog: " + str(all_details))
 	
 	
 	
@@ -274,7 +275,7 @@ def generate_all_products(vendor):
 	#writer.display_field_values(product_titles)
 
 	# generate tags
-	product_tags = generator.generate_all_tags(all_details, vendor)
+	product_tags = generator.generate_all_tags(all_details, vendor, all_inv)
 	#writer.display_field_values(product_tags)
 
 	# generate product types

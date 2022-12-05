@@ -12,7 +12,8 @@ def isolate_product_from_details(all_details, start_idx, stop_idx):
 
 	return product_rows
 
-def isolate_products(all_details):
+# deprecated. now called sort_products()
+def isolate_products_0(all_details):
 	print("\n===Isolate Products===\n")
 	products = []
 
@@ -20,7 +21,7 @@ def isolate_products(all_details):
 
 	#handles = np.array(isolate_detail_field(all_details, field_title))
 	handles = np.array(generator.generate_all_handles(all_details))
-	print("\n===Handles Array: " + str(handles))
+	#print("\n===Handles Array: " + str(handles))
 
 	_, idx, cnt = np.unique(handles, return_index=True, return_counts=True)
 
@@ -44,6 +45,41 @@ def isolate_products(all_details):
 
 	#print("Products: " + str(products) + "\n")
 	return products
+
+# deprecated. now called sort_products()
+# before isolating products, they must be sorted by handle
+def isolate_products(unsorted_product_details, sort_feature=''):
+	print("\n===Sort Products===\n")
+	#print("unsorted_product_details: " + str(unsorted_product_details))
+	sorted_products = []
+	if sort_feature == '':
+		# default by handle
+		# for product in unsorted_product_details:
+		# 	handle = generator.generate_handle(product)
+
+		# separate/isolate products by handle
+		# group lists by handle element to get isolated products from final item info
+		# for efficiency, we could assume items already sorted by handle at this point bc we are passed sorted final item info, but we could leave this in case the first sorting fcn fails
+		products = {}
+		product_handle_idx = 0 # change to beginning and then remove before adding to final list
+		for item_data in unsorted_product_details:
+			#print("item_data: " + str(item_data))
+			handle = generator.generate_handle(item_data)
+			
+			#item_data.append(handle)
+			item_data.insert(0,handle)
+			#print("item_data with handle: " + str(item_data))
+			item_handle = item_data[product_handle_idx]
+			# print("item_handle: " + item_handle)
+			item_data.pop(0)
+			products.setdefault(item_handle, []).append(item_data)
+		#print("products: " + str(products))
+
+		sorted_products = list(products.values()) # products separated by handle
+		
+	
+	#print("sorted_products: " + str(sorted_products))
+	return sorted_products
 
 def isolate_detail_field(all_details, field_title):
 
@@ -136,7 +172,7 @@ def isolate_products_from_info(sorted_final_item_info):
 	for item_info in sorted_final_item_info:
 		item_data = item_info.split(';')
 		all_final_items_list.append(item_data)
-	print("all_final_items_list: " + str(all_final_items_list))
+	#print("all_final_items_list: " + str(all_final_items_list))
 
 	# separate/isolate products by handle
 	# group lists by handle element to get isolated products from final item info
@@ -145,10 +181,10 @@ def isolate_products_from_info(sorted_final_item_info):
 	product_handle_idx = 0
 	for item_data in all_final_items_list:
 		item_handle = item_data[product_handle_idx]
-		print("item_handle: " + item_handle)
+		#print("item_handle: " + item_handle)
 		products.setdefault(item_handle, []).append(item_data)
-	print("products: " + str(products))
+	#print("products: " + str(products))
 
 	all_final_items_sorted = list(products.values()) # products separated by handle
-	print("all_final_items_sorted: " + str(all_final_items_sorted))
+	#print("all_final_items_sorted: " + str(all_final_items_sorted))
 	return all_final_items_sorted

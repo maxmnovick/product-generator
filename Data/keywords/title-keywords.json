@@ -8,7 +8,8 @@
 	"bedroom set":["bedroom\\s*set"],
 	"counter-height bench":["counter\\s*bench"],
 	"bench":["bench"],
-	"wall shelf":["wall\\s*shelf","wall\\s*shelves"],
+	"shelf":["shelf"],
+	"shelves":["shelves"],
 	"bookcase":["book\\s*case","book\\s*shelf","book\\s*shelves"],
 	"kitchen cabinet":["kitchen\\s*cabinet"],
 	"wine cabinet":["wine\\s*cabinet"],
@@ -19,6 +20,7 @@
 	"chaise":["chaise"],
 	"chest":["chest"],
 	"china cabinet":[],
+	"tray table":["tray\\s*table"],
 	"cocktail table":["cocktail\\s*table"],
 	"coffee table":["coffee\\s*table"],
 	"console table":["console\\s*table"],
@@ -115,6 +117,12 @@
 	"storage unit":["storage"],
 	"hall tree":["tree"],
 	"pedestal stand":["pedestal"],
+	"plant stand":["plant\\s*stand"],
+	"stand":["stand"],
 	"wall art":["wall\\s*art","wall\\s*decor"],
-	"clock":["clock"]
+	"decor":["decor"],
+	"clock":["clock"],
+	"vanity":["vanity"],
+	"hanger rack":["hanger\\s*rack"],
+	"candleholder":["candle\\s*holder"]
 }

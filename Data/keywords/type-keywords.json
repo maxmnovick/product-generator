@@ -21,6 +21,7 @@
 	"chaises":["chaise"],
 	"chests":["chest"],
 	"china cabinets":["china"],
+	"tray table":["tray\\s*table"],
 	"cocktail tables":["cocktail\\s*table"],
 	"coffee tables":["coffee\\s*table"],
 	"console tables":["console\\s*table"],
@@ -94,7 +95,11 @@
 	"piers":["pier"],
 	"storage units":["storage"],
 	"hall trees":["tree"],
-	"pedestal stands":["pedestal"],
+	"stands":["stand","pedestal"],
 	"wall art":["wall\\s*art","wall\\s*decor"],
-	"clocks":["clock"]
+	"decor":["decor"],
+	"clocks":["clock"],
+	"racks":["rack"],
+	"vanities":["vanit"],
+	"candleholders":["candle\\s*holder"]
 }

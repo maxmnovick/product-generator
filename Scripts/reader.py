@@ -115,6 +115,35 @@ def read_standards(standard_type):
 
 	return keys
 
+# valid for json files
+def read_typos():
+	keys_filename = "../data/keywords/typos.json"
+
+	lines = [] # capture each line in the document
+
+	try:
+		with open(keys_filename, encoding="UTF8") as keys_file:
+			line = ''
+			for key_info in keys_file:
+				line = key_info.strip()
+				lines.append(line)
+
+			keys_file.close()
+	except:
+		print("Warning: No typos file!")
+
+	# combine into 1 line
+	condensed_json = ''
+	for line in lines:
+		condensed_json += line
+
+	#print("Condensed JSON: " + condensed_json)
+
+	# parse condensed_json
+	keys = json.loads(condensed_json)
+
+	return keys
+
 def is_number(s):
     try:
         float(s)
@@ -282,7 +311,7 @@ def read_raw_vendor_product_data(vendor, file_keywords=[]):
 		current_sheet_df = pandas.read_table(filepath).fillna('n/a')
 		current_sheet_df.columns = current_sheet_df.columns.str.strip() # remove excess spaces
 		current_sheet_headers = current_sheet_df.columns.values
-		print("current_sheet_headers: " + str(current_sheet_headers))
+		#print("current_sheet_headers: " + str(current_sheet_headers))
 		# first check if any desired fields
 		# format data. standardize keys. remove extra characters from values.
 		for desired_field_name in desired_field_names:
@@ -301,7 +330,7 @@ def read_raw_vendor_product_data(vendor, file_keywords=[]):
 					all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().str.replace(";","-").tolist()
 				else:
 					all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().tolist()
-				print("all_current_sheet_field_values: " + desired_field_name + " " + str(all_current_sheet_field_values))
+				#print("all_current_sheet_field_values: " + desired_field_name + " " + str(all_current_sheet_field_values))
 				current_sheet_all_field_values[desired_field_name] = all_current_sheet_field_values
 			# for header in current_sheet_headers:
 			# 	if determiner.determine_matching_field(field_name, header):
@@ -332,14 +361,14 @@ def read_raw_vendor_inv_data(vendor):
 
 	current_sheet_df = pandas.read_table(filepath).fillna('n/a')
 	current_sheet_df.columns = current_sheet_df.columns.str.strip() # remove excess spaces
-	print("current_sheet_df: " + str(current_sheet_df))
+	#print("current_sheet_df: " + str(current_sheet_df))
 	current_sheet_headers = current_sheet_df.columns.values
-	print("current_sheet_headers: " + str(current_sheet_headers))
+	#print("current_sheet_headers: " + str(current_sheet_headers))
 	# first check if any desired fields
 	# format data. standardize keys. remove extra characters from values.
 	for field_idx in range(len(current_sheet_headers)):
 		current_sheet_field_name = current_sheet_headers[field_idx] # actual name in raw data sheet
-		print("current_sheet_field_name: " + current_sheet_field_name)
+		#print("current_sheet_field_name: " + current_sheet_field_name)
 		# if the field name has the keyword location then see if we can determine the location name and number by field name
 		# format: location_ny_qty or locations.<location_name>_qty, example: locations.la_qty
 		if re.search("qty", current_sheet_field_name):
@@ -352,7 +381,7 @@ def read_raw_vendor_inv_data(vendor):
 
 		all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().tolist() # []
 
-		print("all_current_sheet_field_values: " + current_sheet_field_name + " " + str(all_current_sheet_field_values))
+		#print("all_current_sheet_field_values: " + current_sheet_field_name + " " + str(all_current_sheet_field_values))
 		current_sheet_all_field_values[current_sheet_field_name] = all_current_sheet_field_values
 				
 				
@@ -554,3 +583,20 @@ def format_field_values(field_name, all_details, init_all_details=[]):
 # 		if vendor != '':
 # 			filename = vendor + "-" + filename
 		
+# fix common typos
+def fix_typos(text):
+	print("\n===Fix Typos===\n")
+
+	typos = read_typos()
+	#print("typos: " + str(typos))
+	for correction, typo_keywords in typos.items():
+		# print("correction: " + str(correction))
+		# print("typo_keywords: " + str(typo_keywords))
+		for typo_keyword in typo_keywords:
+			# print("typo_keyword: " + typo_keyword)
+			# if re.search(typo_keyword, text):
+			# 	print('found typo ' + typo_keyword)
+			text = re.sub(typo_keyword,correction,text)
+			break # found keyword for this typo, so go to next typo
+
+	return text
