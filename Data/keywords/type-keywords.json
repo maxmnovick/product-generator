@@ -70,7 +70,7 @@
 	"swivel chairs":["swivel\\s*chair"],
 	"hanging chairs":["hanging\\s*chair"],
 	"recliners":["recliner","reclining\\s*chair"],
-	"accent chairs":["chair$","matching\\s*chair","big\\s*chair"],
+	"accent chairs":["matching\\s*chair","big\\s*chair"],
 	"table lamps":["table\\s*lamp"],
 	"lamps":["lamp"],
 	"table tops":["table\\s*top"],
@@ -101,5 +101,7 @@
 	"clocks":["clock"],
 	"racks":["rack"],
 	"vanities":["vanit"],
-	"candleholders":["candle\\s*holder"]
+	"candleholders":["candle\\s*holder"],
+	"dining chairs":["dining\\s*chair"],
+	"chairs":["chair"]
 }

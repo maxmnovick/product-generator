@@ -16,7 +16,6 @@
 	"file cabinet":["file\\s*cabinet","filing\\s*cabinet"],
 	"buffet cabinet":["buf+e+t"],
 	"cabinet":["cabinet"],
-	"chair":["matching\\s*chair"],
 	"chaise":["chaise"],
 	"chest":["chest"],
 	"china cabinet":[],
@@ -79,7 +78,7 @@
 	"patio lounge chair":["patio\\s*lounge\\s*chair"],
 	"hanging chair":["hanging\\s*chair"],
 	"lounge chair":["lounge\\s*chair"],
-	"side chair":["side\\s*chair","chair"],
+	"side chair":["side\\s*chair"],
 	"sideboard cabinet":["side\\s*board"],
 	"sofa-chaise-bed":[],
 	"sofa-chaise":[],
@@ -124,5 +123,6 @@
 	"clock":["clock"],
 	"vanity":["vanity"],
 	"hanger rack":["hanger\\s*rack"],
-	"candleholder":["candle\\s*holder"]
+	"candleholder":["candle\\s*holder"],
+	"chair":["matching\\s*chair","chair"]
 }

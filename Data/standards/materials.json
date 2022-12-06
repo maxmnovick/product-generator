@@ -4,11 +4,12 @@
     "Steel":["steel"],
     "Aluminum":["alum"],
     "Glass":["glass"],
-    "Plastic":["plastic","pu","polyurethane","acrylic"],
+    "Plastic":["plastic","acrylic"],
+    "Synthetic":["pu","polyurethane","synthetic"],
     "Leather":["leather"],
     "Resin":["resin"],
     "Upholstery":["upholster"],
-    "Fabric":["fabric","trim"],
+    "Fabric":["fabric","trim","woven"],
     "Velvet":["velvet"],
     "Foam":["foam"],
     "Metal":["metal"],
@@ -16,5 +17,6 @@
     "Caster Leg":["caster"],
     "Leg":["leg"],
     "Linen":["linen"],
-    "Mechanism":["mechanism"]
+    "Mechanism":["mechanism"],
+    "Microfiber":["microfiber"]
 }

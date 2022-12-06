@@ -216,7 +216,7 @@
 		"Plmplm":["plmplm"],
 		"Plumiv":["plumiv"],
 		"Raven":["raven"],
-		"Red & Black":["redblk"],
+		"Red & Black":["red\\s*(and|&)?\\s*bl.*k"],
 		"Red Hot":["redhot"],
 		"Red Ivy":["redivy"],
 		"Rnbeige":["rnbeige"],
@@ -320,8 +320,6 @@
 		"Zinc":["zinc"],
 		"Zinc/spice":["zinc/spice"],
 		"Beige":["beige","champag?ne"],
-		"Black Velvet":["black velvet"],
-		"Black":["bla?c?k", "blkblk"],
 		"Navy Blue":["na?vy\\s*blu"],
 		"Royal Blue":["royal blu"],
 		"Blue":["blue"],
@@ -336,8 +334,9 @@
 		"Sandstone Brown":["sandstone"],
 		"Chocolate Brown":["choco"],
 		"Espresso Brown":["espresso"],
-		"Mahogany Brown":["mahogany"],
+		"Mahogany Brown":["maho?ga?ny"],
 		"Oak Brown":["oak"],
+		"Light Brown":["light\\s*br"],
 		"Dark Brown":["da?r?k\\s*br"],
 		"Brown":["brown"],
 		"Gold":["go?ld"],
@@ -356,13 +355,19 @@
 		"Pearl White":["pearl white","pearl whtie"],
 		"White":["white","whtie"],
 		"Red Brown":["cognac"],
+		"Black & Cherry":["bl.*k.*cherry"],
+		"Black Velvet":["black velvet"],
+		"Black":["bla?c?k", "blkblk"],
 		"Cherry Red":["cherry"],
 		"Dark Red":["dark red","merlot"],
 		"Red":["red"],
 		"Silver":["silver"],
 		"Turqoise":["turq"],
 		"Yellow":["yellow"],
-		"Clear":["clear"]
+		"Clear":["clear"],
+		"Sage":["sage"],
+		"Natural":["natural"],
+		"Rainbow":["rainbow"]
 	},
 	"Bed Side":
 	{
@@ -395,5 +400,27 @@
 		"Ultra Plush":["ultra-*\\s*plush","\\bup$","ul\\s*pl"],
 		"Plush Pillow Top":["plush-*\\s*pt","\\bppt$","\\bppt,","pl\\s*pt"],
 		"Plush":["plush","\\bpl$","\\bpl,"]
+	},
+	"Material":
+	{
+		"Microfiber":["microfiber"],
+		"Woven Fabric":["woven"],
+		"Wood":["wood","composite","poplar","eucalyptus","oak","maho?ga?ny","larch","pine","ply"],
+		"Stainless Steel":["stainless"],
+		"Steel":["steel"],
+		"Aluminum":["alum"],
+		"Glass":["glass"],
+		"Acrylic":["acrylic"],
+		"Synthetic":["pu","polyurethane","synthetic","faux\\s*leather"],
+		"Plastic":["plastic","pu","polyurethane"],
+		"Leather":["leather"],
+		"Resin":["resin"],
+		"Upholstery":["upholster"],
+		"Fabric":["fabric","trim"],
+		"Velvet":["velvet"],
+		"Foam":["foam"],
+		"Metal":["metal"],
+		"Mirror":["mir+o+r"],
+		"Linen":["linen"]
 	}
 }

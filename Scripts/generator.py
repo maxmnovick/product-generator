@@ -129,6 +129,16 @@ def generate_handle(item_details):
 					if final_title_suffix == 'bed':
 						if re.search('loft bed',plain_intro):
 							final_title_suffix = 'loft bed'
+					elif final_title_suffix == 'dining table':
+						if re.search('single pedestal',plain_intro):
+							final_title_suffix = 'single pedestal dining table'
+						elif re.search('double pedestal',plain_intro):
+							final_title_suffix = 'double pedestal dining table'
+						elif re.search('trestle',plain_intro):
+							final_title_suffix = 'trestle dining table'
+					elif final_title_suffix == 'chair':
+						if re.search('dining',plain_intro):
+							final_title_suffix = 'dining chair'
 					break
 
 			if final_title_suffix != '':
@@ -564,12 +574,16 @@ def generate_options(item_details, init_item_details):
 
 		final_opt_string = ''
 
+		# need length/depth to determine if twin or full size bed bc both in type
+		# and rugs
+		depth = item_details[depth_idx].strip()
+
 		type = generate_product_type(item_details)
 		if type == 'rugs':
 			option_name = 'Size' # width-depth combos are options for rugs
 			# see if dims given
 			width = item_details[width_idx].strip()
-			depth = item_details[depth_idx].strip()
+			
 			if width != 'n/a' and depth != 'n/a':
 				dim_string = width + "\" x " + depth + "\""
 				if meas_type == 'round':
@@ -581,10 +595,14 @@ def generate_options(item_details, init_item_details):
 		# see if colors given, one for twin and one for queen
 		# or both twin and queen have multiple colors. if twin and queen have multiple colors, separate color options within same product so they would be Loft Color and Queen Color
 
+		
+
 		# loop for each type of option, b/c need to fill in value for each possible option (eg loop for size and then loop for color in case item has both size and color options)
 		for option_name, option_dict in all_keywords.items():
 			#print("======Check for Option Name: " + option_name)
 			#print("Option Dict: " + str(option_dict))
+
+			# for material option, only look in color or finish field, not materials field, bc if multiple materials found in materials field that does not mean they are options but that they are all materials used together
 
 			final_opt_value = ''
 
@@ -595,26 +613,34 @@ def generate_options(item_details, init_item_details):
 				for keyword in option_keywords:
 					#print("Keyword: " + keyword)
 					#print("Plain SKU: " + dashless_sku)
-					# search sku first
-					if re.search(keyword,dashless_sku):
-						final_opt_value = option_value
-						final_opt_values.append(final_opt_value)
+					if option_name.lower() != 'material': # material indicates option only if found in color field/finish field
+						# search sku first
+						if re.search(keyword,dashless_sku):
+							final_opt_value = option_value
+							final_opt_values.append(final_opt_value)
 
-						final_opt_names.append(option_name)
+							final_opt_names.append(option_name)
 
-						final_opt_string += option_name + "," + final_opt_value + ","
-						break
+							final_opt_string += option_name + "," + final_opt_value + ","
+							break
 
-					# if no codes found in sku, check other fields for this item such as title field
-					if re.search(keyword,title):
-						final_opt_value = option_value
-						final_opt_values.append(final_opt_value)
+						# if no codes found in sku, check other fields for this item such as title field
+						if re.search(keyword,title):
+							if re.search("twin.*full",title):
+								if float(depth) < 80.0: #inches
+									final_opt_value = "Twin"
+								else:
+									final_opt_value = "Full"
+							else:
+								final_opt_value = option_value
 
-						final_opt_names.append(option_name)
+							final_opt_values.append(final_opt_value)
 
-						final_opt_string += option_name + "," + final_opt_value + ","
+							final_opt_names.append(option_name)
 
-						break
+							final_opt_string += option_name + "," + final_opt_value + ","
+
+							break
 
 					# if no codes found in sku, check other fields for this item such as color field
 					if re.search(keyword,color):
@@ -2147,11 +2173,16 @@ def generate_catalog_from_data(vendor='',all_inv={}):
 				#match_in_sheet = False
 				for current_sheet_item_idx in range(len(all_current_sheet_skus)):
 					
-					sheet1_sku = sheet1_all_field_values['sku']
-					current_sheet_sku = all_current_sheet_skus[current_sheet_item_idx]
+					sheet1_sku = sheet1_all_field_values['sku'].lower()
+					current_sheet_sku = all_current_sheet_skus[current_sheet_item_idx].lower()
+					# problem where it duplicates skus ending with 'a'
+					# if vendor == 'acme':
+					# 	sheet1_sku = sheet1_sku.strip('a')
+					# 	current_sheet_sku = current_sheet_sku.strip('a')
+
 					#current_sheet_collection = all_current_sheet_collections[current_sheet_item_idx]
 					
-					if sheet1_sku == current_sheet_sku:
+					if sheet1_sku == current_sheet_sku.strip('a'):
 						#print("sheet1_sku matches current_sheet_sku: " + sheet1_sku + ", " + current_sheet_sku)
 						#match_in_sheet = True
 

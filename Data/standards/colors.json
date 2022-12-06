@@ -2,14 +2,15 @@
 	"Black":["bl.*k","charcoal","onyx","raven"],
 	"White":["wh[it][it]e","ivory","pearl","cream","porcelain"],
 	"Red":["red","rose","ruby","cherry","merlot"],
-	"Green":["gr.*n","jade","teal","thyme"],
+	"Green":["gr.*n","jade","teal","thyme","sage"],
 	"Blue":["blue?","aqua","turq","navy"],
-	"Brown":["br.*n","sand","earth","latte","wood","maho?ga?ny","java","mocha","oatmeal","pecan","rust","terra","wheat","espresso","walnut","wenge","chestnut","truffle","choco","oak","cognac"],
+	"Brown":["br.*n","sand","earth","latte","wood","maho?ga?ny","java","mocha","oatmeal","pecan","rust","terra","wheat","espresso","walnut","wenge","chestnut","truffle","choco","oak","cognac","natural"],
 	"Beige":["beige"],
 	"Silver":["gr[ae]y","silver","graphite","granite","platinum","fog","nickel","pewter","steel","stone","tita?ni?um","zinc"],
 	"Gold":["go?ld","sun"],
 	"Purple":["purple","indigo","lilac","mauve"],
 	"Orange":["orange"],
 	"Pink":["pink"],
-	"Clear":["clear"]
+	"Clear":["clear"],
+	"Rainbow":["rainbow"]
 }
