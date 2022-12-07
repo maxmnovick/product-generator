@@ -61,6 +61,7 @@
 	"mattress foundation":["box\\s*spring", "foundation", "fdn"],
 	"mattress":["mat+res"],
 	"media chest":[],
+	"floor mirror":["flo+r\\s*mir+or"],
 	"mirror":["mir+or"],
 	"nightstand":["night\\s*stand","n/s","night\\s*table", "^night"],
 	"occasional table set":["occasional table set"],
