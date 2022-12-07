@@ -99,7 +99,7 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 		if determine_inv_tracking(sku, all_inv):
 			# if no stock or eta, then tracker=shopify and qty=0
 			if not determine_stocked(sku, all_inv):
-				print(sku + "Not Stocked")
+				print(sku + " Not Stocked")
 				vrnt_inv_tracker = inv_tracker
 				vrnt_inv_qty = '0'
 			else: # we must have stock or eta

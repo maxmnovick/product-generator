@@ -585,7 +585,7 @@ def format_field_values(field_name, all_details, init_all_details=[]):
 		
 # fix common typos
 def fix_typos(text):
-	print("\n===Fix Typos===\n")
+	#print("\n===Fix Typos===\n")
 
 	typos = read_typos()
 	#print("typos: " + str(typos))

@@ -540,18 +540,6 @@ def generate_all_product_options(all_details, init_all_details):
 
 def generate_options(item_details, init_item_details):
 
-	#print("\n=== Generate Options ===\n")
-
-	init_width = init_item_details[width_idx].strip().lower()
-	#print("Init Width: " + init_width)
-	handle = generate_handle(item_details)
-	meas_type = reader.determine_measurement_type(init_width, handle)
-
-	sku = color = title = ''
-
-	output = "option"
-	all_keywords = reader.read_keywords(output)
-
 	final_opt_names = []
 	final_opt_values = []
 
@@ -560,14 +548,32 @@ def generate_options(item_details, init_item_details):
 	# do not rely entirely on sku b/c could be ambiguous codes that may appear as part of other words not meant to indicate options
 	# example: W is code for wenge brown for vendor=Global, but W is likely to mean something else for other vendors
 	if len(item_details) > 0:
+
 		sku = item_details[sku_idx].strip().lower()
 		#print("===Generate Options for SKU: " + sku)
+
+		init_width = init_item_details[width_idx].strip().lower()
+		#print("Init Width: " + init_width)
+		handle = generate_handle(item_details)
+		meas_type = reader.determine_measurement_type(init_width, handle)
+
+		sku = color = title = ''
+
+		output = "option"
+		all_keywords = reader.read_keywords(output)
+
+
+
+		
 		title = item_details[title_idx].strip().lower()
-		color = item_details[color_idx].strip().lower()
+		item_color = item_details[color_idx].strip().lower()
 		#print("Color: " + color)
-		if color == '' or color == 'n/a':
-			color = item_details[finish_idx].strip().lower()
-		#print("Finish Color: " + color)
+		if item_color == '' or item_color == 'n/a':
+			item_color = item_details[finish_idx].strip().lower()
+		#print("item_color: " + item_color)
+
+		colors = re.split("\\s*&\\s*|\\s*,\\s*|\\s*and\\s*",item_color)
+		#print("colors: " + str(colors))
 
 		# option codes must only be considered valid when they are the entire word in the sku, so must remove dashes to separate words and isolate codes
 		dashless_sku = re.sub('-',' ',sku)
@@ -595,17 +601,19 @@ def generate_options(item_details, init_item_details):
 		# see if colors given, one for twin and one for queen
 		# or both twin and queen have multiple colors. if twin and queen have multiple colors, separate color options within same product so they would be Loft Color and Queen Color
 
-		
-
+		color_values = [] # hold standard color option values based on raw colors
 		# loop for each type of option, b/c need to fill in value for each possible option (eg loop for size and then loop for color in case item has both size and color options)
+		final_opt_value = ''
 		for option_name, option_dict in all_keywords.items():
 			#print("======Check for Option Name: " + option_name)
 			#print("Option Dict: " + str(option_dict))
 
 			# for material option, only look in color or finish field, not materials field, bc if multiple materials found in materials field that does not mean they are options but that they are all materials used together
 
-			final_opt_value = ''
+			
 
+			
+			# options with single values like size
 			for option_value, option_keywords in option_dict.items():
 				#print("Option Value: " + option_value)
 				#print("Option Keywords: " + str(option_keywords))
@@ -615,6 +623,7 @@ def generate_options(item_details, init_item_details):
 					#print("Plain SKU: " + dashless_sku)
 					if option_name.lower() != 'material': # material indicates option only if found in color field/finish field
 						# search sku first
+						# need to have different keywords when searching sku bc sku uses abbrevs that will be found in other fields with different meanings
 						if re.search(keyword,dashless_sku):
 							final_opt_value = option_value
 							final_opt_values.append(final_opt_value)
@@ -643,17 +652,39 @@ def generate_options(item_details, init_item_details):
 							break
 
 					# if no codes found in sku, check other fields for this item such as color field
-					if re.search(keyword,color):
-						#print("Found color option: " + keyword + ", " + color)
-						final_opt_value = option_value
-						final_opt_values.append(final_opt_value)
+					# if re.search(keyword,color):
+					# 	#print("Found color option: " + keyword + ", " + color)
+					# 	final_opt_value = option_value # commented out bc we need to go to next color even though we already found 1 color bc there could be multiple colors
+					# 	final_opt_values.append(final_opt_value)
 
-						final_opt_names.append(option_name)
+					# 	final_opt_names.append(option_name)
 
-						final_opt_string += option_name + "," + final_opt_value + ","
+					# 	# final_opt_string += option_name + "," + final_opt_value + ","
 						
-						break
+					# 	break # we break here bc we found matching keyword in color so go to next opt val to see if any more option value keywords in color
+					
+					
+					
+					# for color in colors:
+					# 	if re.search(keyword,color):
+					# 		color_values.append(option_value) # store first match
+							
+					# 		#print("Found color option: " + keyword + ", " + color)
+					# 		#final_opt_value = option_value # commented out bc we need to go to next color even though we already found 1 color bc there could be multiple colors
+					# 		# final_opt_values.append(final_opt_value)
 
+					# 		# final_opt_names.append(option_name)
+
+					# 		# final_opt_string += option_name + "," + final_opt_value + ","
+							
+					# 		break # we break here bc we found matching keyword in color so go to next opt val to see if any more option value keywords in color
+					
+
+
+				# we do not want to break here bc we need to see all matching opt vals
+				# problem is some matches rely on breaking otherwise will find multiples such as finding "red" in "weathered white". 
+				# to avoid this need to break by comma, & or other separator and then eval each item
+				# OR make better regex requiring "r" to be the first letter in the string for "red" and so on but that is case by case whereas separating by delimiter is more reliable. eg we wont see black red as often as black & red unless typo
 				if final_opt_value != '':
 					#print("Final Option Name: " + option_name)
 					#print("Final Option Value: " + final_opt_value)
@@ -662,6 +693,59 @@ def generate_options(item_details, init_item_details):
 
 					# see if valid options, given known loft bed from handle
 					break
+
+		# check color field for materials bc sometimes placed there to differentiate
+		option_name = 'Material'
+		materials_dict = all_keywords[option_name]
+		#print("materials_dict: " + str(materials_dict))
+		opt_val = ''
+		for option_value, option_keywords in materials_dict.items():
+			#print("Option Value: " + option_value)
+			#print("Option Keywords: " + str(option_keywords))
+
+			for keyword in option_keywords:
+				if re.search(keyword,item_color):
+					opt_val = option_value 
+					final_opt_values.append(opt_val)
+
+					final_opt_names.append(option_name)
+					break
+
+			if opt_val != '':
+				break
+
+
+		# options with multiple values like color
+		color_dict = all_keywords['Color']
+		#print("color_dict: " + str(color_dict))
+		for color in colors:
+			opt_val = ''
+			for option_value, option_keywords in color_dict.items():
+				#print("Option Value: " + option_value)
+				#print("Option Keywords: " + str(option_keywords))
+
+				for keyword in option_keywords:
+					if re.search(keyword,color):
+						color_values.append(option_value) # store first key match
+						opt_val = option_value
+						break
+
+				if opt_val != '':
+					break
+
+		# once we see all opt vals we can create string, and data
+		if len(color_values) > 0:
+			#print("color_values: " + str(color_values))
+			opt_val = '' # hold option val string as we build it with multiple vals
+			option_name = "Color"
+			final_opt_names.append(option_name)
+			for c_idx in range(len(color_values)):
+				c = color_values[c_idx] # color val is the standard option value as opposed to the raw value 
+				if c_idx == 0:
+					opt_val += c
+				else:
+					opt_val += " & " + c
+			final_opt_values.append(opt_val)
 
 			#print("======Checked for Option Name: " + option_name + "\n")\
 
@@ -723,7 +807,7 @@ def generate_inv_locations(all_inv):
 # if no vendor given, we can only tell if available immediately
 # bc vendor tells us duration of moving bt warehouses
 def generate_arrival_html(product, init_product, all_inv, vendor=''):
-	print("\n===Generate Arrival HTML===\n")
+	#print("\n===Generate Arrival HTML===\n")
 	#print("product: " + str(product))
 	#print("init_product: " + str(init_product))
 	#print("all_inv: " + str(all_inv))
@@ -1240,12 +1324,12 @@ def determine_unique_variant(question_variant, sorted_product, import_type):
 
 
 def generate_intro(item_details):
-	print("\n===Generate Intro===\n")
+	#print("\n===Generate Intro===\n")
 	intro = ''
 
 	# intro variables based on item details
 	product_type = generate_product_type(item_details)
-	print("product_type: \'" + product_type + "\'")
+	#print("product_type: \'" + product_type + "\'")
 
 	room_type = 'room'
 	product_name = str.capitalize(item_details[collection_idx]) #'this product'
@@ -1267,7 +1351,7 @@ def generate_intro(item_details):
 		product_type = product_type_singular = 'pieces'
 
 	elif product_type[-1] == 's':
-		print("Product type ends with s.")
+		#print("Product type ends with s.")
 		product_type_singular = product_type[:-1]
 
 
@@ -1286,7 +1370,7 @@ def generate_intro(item_details):
 	return intro
 
 def generate_intro_html(product):
-	print("\n===Generate Intro HTML===\n")
+	#print("\n===Generate Intro HTML===\n")
 	intro_html = ''
 
 	for variant in product:
@@ -1326,7 +1410,7 @@ def generate_intro_html(product):
 
 def generate_colors_html(product, init_product):
 
-	print("\n===Generate Colors HTML===\n")
+	#print("\n===Generate Colors HTML===\n")
 
 	final_colors_html = "" # init fmla for this part of the description
 	
@@ -1454,7 +1538,7 @@ def generate_materials_html(product):
 
 def generate_finishes_html(product):
 
-	print("\n===Generate Finishes HTML===\n")
+	#print("\n===Generate Finishes HTML===\n")
 
 	final_finishes_html = "" # init fmla for this part of the description
 	if determiner.determine_given_finishes(product): # if we are NOT given finishes we do not include finishes in the description
@@ -1625,7 +1709,8 @@ def generate_dimensions_html(product, init_product):
 	return dimensions_html
 
 def generate_features(item_details):
-	print("\n===Generate Features===\n")
+	item_sku = item_details[sku_idx]
+	print("\n===Generate Features for " + item_sku + "===\n") # means lack of features which could be error
 	
 	# bullet point indicates new line in features fmla so use bullet point for new line
 	features = '• Perfectly balanced and sturdy. • Lightweight and easy to carry for convenience. • Durable construction, built to last. '
@@ -1636,7 +1721,7 @@ def generate_features(item_details):
 
 
 def generate_features_html(product, vendor=''):
-	print("\n===Generate Features HTML===\n")
+	#print("\n===Generate Features HTML===\n")
 	#features_html = "\"\""
 	features_html = ""
 
