@@ -31,7 +31,8 @@ def display_shopify_variant_headers(import_tool='shopify'):
 	print("\n=== Shopify Variants == \n")
 	product_variable_names = []
 	if import_tool == 'shopify':
-		product_variable_names = ["Handle", "Title", "Body (HTML)", "Vendor", "Standardized Product Type", "Custom Product Type", "Tags", "Published", "Option1 Name", "Option1 Value", "Option2 Name", "Option2 Value", "Option3 Name","Option3 Value", "Variant SKU", "Variant Grams", "Variant Inventory Tracker", "Variant Inventory Qty", "Variant Inventory Policy", "Variant Fulfillment Service", "Variant Price", "Variant Compare At Price", "Variant Requires Shipping", "Variant Taxable", "Variant Barcode", "Image Src", "Image Position", "Image Alt Text", "Variant Image", "Variant Weight Unit", "Variant Tax Code", "Cost per item", "Status"]
+		# product category and type used to be standard product type and custom product type
+		product_variable_names = ["Handle", "Title", "Body (HTML)", "Vendor", "Product Category", "Type", "Tags", "Published", "Option1 Name", "Option1 Value", "Option2 Name", "Option2 Value", "Option3 Name","Option3 Value", "Variant SKU", "Variant Grams", "Variant Inventory Tracker", "Variant Inventory Qty", "Variant Inventory Policy", "Variant Fulfillment Service", "Variant Price", "Variant Compare At Price", "Variant Requires Shipping", "Variant Taxable", "Variant Barcode", "Image Src", "Image Position", "Image Alt Text", "Variant Image", "Variant Weight Unit", "Variant Tax Code", "Cost per item", "Status"]
 	elif import_tool == 'excelify':
 		product_variable_names = ["Variant SKU","Handle","Variant Weight","Variant Cost","Variant Barcode","Body HTML","Option1 Name","Option1 Value","Option2 Name","Option2 Value","Option3 Name","Option3 Value","Tags","Image Src","Type","Title","Published","Published Scope","Variant Inventory Tracker","Variant Inventory Policy","Variant Weight Unit","Command","Vendor","Variant Price","Variant Compare At Price"]
 	

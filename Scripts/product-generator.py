@@ -176,6 +176,11 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 	# for bundle_vrnts_info in all_bundle_vrnts_info:
 	# 	sorted_final_item_info.append(bundle_vrnts_info)
 
+
+	# some items need to see all vrnts in product to get info
+	# such as when only difference is dims we make options large, small, or if multiple we could name option by size value
+	all_sorted_final_item_info = generator.generate_all_product_info(all_sorted_final_item_info)
+
 	# need to combine bundle vrnts with solo vrnts in this fcn bc we must modify existing solo product options based on other vrnts
 	all_sorted_final_item_info = generator.generate_all_bundle_vrnts_info(all_sorted_final_item_info, all_details)
 

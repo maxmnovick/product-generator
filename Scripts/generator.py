@@ -582,8 +582,9 @@ def generate_options(item_details, init_item_details):
 
 		# need length/depth to determine if twin or full size bed bc both in type
 		# and rugs
+		#generate_size_options(item_details)
 		depth = item_details[depth_idx].strip()
-
+		
 		type = generate_product_type(item_details)
 		if type == 'rugs':
 			option_name = 'Size' # width-depth combos are options for rugs
@@ -699,12 +700,13 @@ def generate_options(item_details, init_item_details):
 		materials_dict = all_keywords[option_name]
 		#print("materials_dict: " + str(materials_dict))
 		opt_val = ''
+		duplicate_keywords = ["poplar","eucalyptus","oak","maho?ga?ny","larch","pine","linen"] # keywords that apply to both color and material so are misleading like oak
 		for option_value, option_keywords in materials_dict.items():
 			#print("Option Value: " + option_value)
 			#print("Option Keywords: " + str(option_keywords))
 
 			for keyword in option_keywords:
-				if re.search(keyword,item_color):
+				if re.search(keyword,item_color) and keyword not in duplicate_keywords:
 					opt_val = option_value 
 					final_opt_values.append(opt_val)
 
@@ -2977,7 +2979,7 @@ def generate_all_bundle_vrnts_info(all_item_info, catalog):
 	product_title_idx = 1
 	body_html_idx = 2
 	vendor_idx = 3
-	std_product_type_idx = 4
+	product_category_idx = 4
 	product_type_idx = 5
 	product_tags_idx = 6
 	published_idx = 7
@@ -3037,7 +3039,7 @@ def generate_all_bundle_vrnts_info(all_item_info, catalog):
 		product_title = solo_product[0][product_title_idx]
 		body_html = solo_product[0][body_html_idx]
 		vendor = solo_product[0][vendor_idx]
-		standard_product_type = solo_product[0][std_product_type_idx]
+		standard_product_type = solo_product[0][product_category_idx]
 		product_type = solo_product[0][product_type_idx]
 		product_tag_string = solo_product[0][product_tags_idx]
 		published = solo_product[0][published_idx]
@@ -3176,6 +3178,157 @@ def generate_all_bundle_vrnts_info(all_item_info, catalog):
 
 	return all_final_item_info
 
+# generate info not only for single variant but for all vrnts in product
+# in some cases we need to compare all vrnts to tell info
+# but for efficiency see if possible to tell all info from single vrnt
+def generate_all_product_info(all_item_info):
+	print("\n===Generate All Product Info===\n")
+
+	all_final_item_info = []
+
+	# given field names or idx
+	product_handle_idx = 0
+	product_title_idx = 1
+	body_html_idx = 2
+	vendor_idx = 3
+	product_category_idx = 4
+	product_type_idx = 5
+	product_tags_idx = 6
+	published_idx = 7
+	vrnt_opt1_name_idx = 8
+	vrnt_opt1_val_idx = 9
+	vrnt_opt2_name_idx = 10
+	vrnt_opt2_val_idx = 11
+	vrnt_opt3_name_idx = 12
+	vrnt_opt3_val_idx = 13
+	vrnt_sku_idx = 14
+	vrnt_weight_idx = 15
+	inv_tracker_idx = 16
+	inv_qty_idx = 17
+	inv_policy_idx = 18
+	fulfill_idx = 19
+	vrnt_price_idx = 20
+	vrnt_compare_price_idx = 21
+	req_ship_idx = 22
+	taxable_idx = 23
+	vrnt_barcode_idx = 24
+	product_img_src_idx = 25
+	img_position_idx = 26
+	img_alt_idx = 27
+	vrnt_img_idx = 28
+	weight_unit_idx = 29
+	tax_code_idx = 30
+	vrnt_cost_idx = 31
+	product_status_idx = 32
+
+
+	# we must isolate products by splitting item info into lists and taking handle,
+	# so then we must reassemble the item at the end of this fcn even if nothing changed and no bundle added
+	all_solo_products = isolator.isolate_products_from_info(all_item_info)
+
+
+	for solo_product in all_solo_products:
+		product_handle = solo_product[0][product_handle_idx] # same for all vrnts so use first vrnt
+
+		# same for all vrnts of product
+		product_title = solo_product[0][product_title_idx]
+		body_html = solo_product[0][body_html_idx]
+		vendor = solo_product[0][vendor_idx]
+		standard_product_type = solo_product[0][product_category_idx]
+		product_type = solo_product[0][product_type_idx]
+		product_tag_string = solo_product[0][product_tags_idx]
+		published = solo_product[0][published_idx]
+		inv_policy = solo_product[0][inv_policy_idx] #'deny'
+		vrnt_fulfill_service = solo_product[0][fulfill_idx]
+		vrnt_req_ship = solo_product[0][req_ship_idx]
+		vrnt_taxable = solo_product[0][taxable_idx]
+		vrnt_weight_unit = solo_product[0][weight_unit_idx]
+		vrnt_tax_code = solo_product[0][tax_code_idx]
+		product_status = solo_product[0][product_status_idx]
+
+		# determine if product needs universal/global options, meaning options that depend on other vrnts
+		# look for products with all options same but dimensions different like acme dresden collection
+		# this is not a bundle but it is an instance where we need to compare all vrnts in product to get info such as large or small based on dims
+		vrnt_opt1_name_idx = 8
+		vrnt_opt1_val_idx = 9
+		vrnt_opt2_name_idx = 10
+		vrnt_opt2_val_idx = 11
+		vrnt_opt3_name_idx = 12
+		vrnt_opt3_val_idx = 13
+		option_strings = []
+		for vrnt in solo_product:
+			vrnt_opt_string = vrnt[vrnt_opt1_name_idx] + vrnt[vrnt_opt1_val_idx] + vrnt[vrnt_opt2_name_idx] + vrnt[vrnt_opt2_val_idx] + vrnt[vrnt_opt3_name_idx] + vrnt[vrnt_opt3_val_idx]
+			option_strings.append(vrnt_opt_string)
+
+		# if we find matching options bt 2 vrnts in same product then it will be considered invalid unless we use other info to create more options bc they are 2 vrnts so must have different options but the info in the description is limited
+		global_option = False
+		duplicate_opts = ''
+		for option_string in option_strings:
+			count = option_strings.count(option_string)
+			if count > 1:
+				# found 2 vrnts with same options so not enough info in single vrnt so we must compare with another variant to see what options to add
+				global_option = True
+				print("Bundle Product")
+				duplicate_opts = option_string
+
+
+
+				break
+
+		for vrnt in solo_product:
+
+			# if no change, reconstruct opt string from opt data
+			vrnt_opt1_name = vrnt[vrnt_opt1_name_idx]
+			vrnt_opt1_val = vrnt[vrnt_opt1_val_idx]
+			vrnt_opt2_name = vrnt[vrnt_opt2_name_idx]
+			vrnt_opt2_val = vrnt[vrnt_opt2_val_idx]
+			vrnt_opt3_name = vrnt[vrnt_opt3_name_idx]
+			vrnt_opt3_val = vrnt[vrnt_opt3_val_idx]
+
+			vrnt_opt_names = [vrnt_opt1_name, vrnt_opt2_name, vrnt_opt3_name]
+
+			
+			if global_option:
+				# generate global option, such as size based on weights
+				vrnt_weight = vrnt[vrnt_weight_idx]
+				print("vrnt_weight: " + vrnt_weight)
+
+				# determine if available option
+				# if already 3 options determine how to handle
+				# if more than 3 options add descriptor to title
+				for opt in vrnt_opt_names:
+					if opt == '':
+						# we can use this space for the new opt
+						new_opt = ''
+						idx = option_strings.index(duplicate_opts)
+				
+			
+			product_option_string = vrnt_opt1_name + ";" + vrnt_opt1_val + ";" + vrnt_opt2_name + ";" + vrnt_opt2_val + ";" + vrnt_opt3_name + ";" + vrnt_opt3_val
+
+
+			sku = vrnt[vrnt_sku_idx]
+			item_weight_in_grams = vrnt[vrnt_weight_idx]
+			inv_tracker = vrnt[inv_tracker_idx]
+			inv_qty = vrnt[inv_qty_idx]
+			item_price = vrnt[vrnt_price_idx]
+			item_compare_price = vrnt[vrnt_compare_price_idx]
+			barcode = vrnt[vrnt_barcode_idx]
+			product_img_src = vrnt[product_img_src_idx]
+			img_position = vrnt[img_position_idx]
+			img_alt = vrnt[img_alt_idx]
+			vrnt_img = vrnt[vrnt_img_idx]
+			item_cost = vrnt[vrnt_cost_idx]
+
+			final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + inv_tracker + ";" + inv_qty + ";" + inv_policy + ";" + vrnt_fulfill_service + ";" + item_price + ";" + item_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+			all_final_item_info.append(final_item_info)
+
+
+	return all_item_info
+
+
+
+
+
 
 # generate from sorted final item info for efficiency
 # final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
@@ -3254,6 +3407,7 @@ def generate_all_bundle_vrnts_from_catalog(catalog, product_descrip_dict):
 				#all_bundle_vrnts_info.append(final_item_info)
 
 	return all_bundle_vrnts_info
+
 
 
 

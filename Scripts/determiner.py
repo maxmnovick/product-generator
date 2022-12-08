@@ -316,8 +316,6 @@ def determine_product_bundle(solo_product):
 				break
 
 	# for loft bed, if no descrip stating optional bed, check if options size twin and queen
-	
-	options = []
 
 	return bundle
 
@@ -363,3 +361,11 @@ def determine_standard(init_value, value_type):
 		print("Warning: could not find standard for value " + init_value + "! ")
 
 	return standard
+
+# if we see duplicate opts bt 2 vrnts in same product this will cause error so show warning and handle
+def determine_duplicate_opts(product):
+	print("\n===Determine Duplicate Options===\n")
+
+	duplicate_opts = []
+
+	return duplicate_opts

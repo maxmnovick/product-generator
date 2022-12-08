@@ -412,7 +412,7 @@
 		"Aluminum":["alum"],
 		"Glass":["glass"],
 		"Acrylic":["acrylic"],
-		"Synthetic":["pu","polyurethane","synthetic","faux\\s*leather"],
+		"Synthetic":["pu\\b","polyurethane","synthetic","faux\\s*leather"],
 		"Plastic":["plastic","pu","polyurethane"],
 		"Leather":["leather"],
 		"Resin":["resin"],
