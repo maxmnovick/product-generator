@@ -3061,20 +3061,20 @@ def generate_all_bundle_vrnts_info(all_item_info, catalog):
 			img_position = ''
 			img_alt = '' 
 			vrnt_img = ''
+			barcode = '' # need custom barcodes for bundle products not specified for vendor
 
 
 			# bundle product
 			# get the options so that we can alter existing options as well as add options to new bundle vrnt
 			# to assess bundle vrnt options we need to see if solo products color and other opts have multi vals
+			#vrnt_options = []
 			product_option_string = ';;;;;'
 			if re.search('loft-bed', product_handle):
 				product_option_string = 'Components;Loft Bed + Queen Bed;;;;'
 			
 			
-			#bundle_vrnt = {}
+			# set values accounting for multiple vrnts
 			sku = ''
-			barcode = '' # need custom barcodes for bundle products not specified for vendor
-			#vrnt_options = []
 			item_weight_in_grams = 0.0
 			item_price = 0.0
 			item_cost = 0.0
@@ -3224,6 +3224,7 @@ def generate_all_product_info(all_item_info):
 
 	# we must isolate products by splitting item info into lists and taking handle,
 	# so then we must reassemble the item at the end of this fcn even if nothing changed and no bundle added
+	# all_solo_products = [[[1,2,3,...],[1,2,3,...],...],[[1,2,3,...],[1,2,3,...],...],...]
 	all_solo_products = isolator.isolate_products_from_info(all_item_info)
 
 
@@ -3249,62 +3250,33 @@ def generate_all_product_info(all_item_info):
 		# determine if product needs universal/global options, meaning options that depend on other vrnts
 		# look for products with all options same but dimensions different like acme dresden collection
 		# this is not a bundle but it is an instance where we need to compare all vrnts in product to get info such as large or small based on dims
-		vrnt_opt1_name_idx = 8
-		vrnt_opt1_val_idx = 9
-		vrnt_opt2_name_idx = 10
-		vrnt_opt2_val_idx = 11
-		vrnt_opt3_name_idx = 12
-		vrnt_opt3_val_idx = 13
-		option_strings = []
-		for vrnt in solo_product:
-			vrnt_opt_string = vrnt[vrnt_opt1_name_idx] + vrnt[vrnt_opt1_val_idx] + vrnt[vrnt_opt2_name_idx] + vrnt[vrnt_opt2_val_idx] + vrnt[vrnt_opt3_name_idx] + vrnt[vrnt_opt3_val_idx]
-			option_strings.append(vrnt_opt_string)
+		
+		init_product_opt_data = determiner.determine_duplicate_opts(solo_product) # [[[names],[values]]]
+		final_opt_data = [] # 
+		product_option_strings = []
+		if len(init_product_opt_data) > 0: # we know duplicate opts so create new opt data
+			
+			final_opt_data = generate_global_option_data(init_product_opt_data, weights, widths, depths, heights)
+			product_option_strings = generate_opt_strings_from_data(final_opt_data)
 
-		# if we find matching options bt 2 vrnts in same product then it will be considered invalid unless we use other info to create more options bc they are 2 vrnts so must have different options but the info in the description is limited
-		global_option = False
-		duplicate_opts = ''
-		for option_string in option_strings:
-			count = option_strings.count(option_string)
-			if count > 1:
-				# found 2 vrnts with same options so not enough info in single vrnt so we must compare with another variant to see what options to add
-				global_option = True
-				print("Bundle Product")
-				duplicate_opts = option_string
+		
 
-
-
-				break
-
-		for vrnt in solo_product:
-
-			# if no change, reconstruct opt string from opt data
-			vrnt_opt1_name = vrnt[vrnt_opt1_name_idx]
-			vrnt_opt1_val = vrnt[vrnt_opt1_val_idx]
-			vrnt_opt2_name = vrnt[vrnt_opt2_name_idx]
-			vrnt_opt2_val = vrnt[vrnt_opt2_val_idx]
-			vrnt_opt3_name = vrnt[vrnt_opt3_name_idx]
-			vrnt_opt3_val = vrnt[vrnt_opt3_val_idx]
-
-			vrnt_opt_names = [vrnt_opt1_name, vrnt_opt2_name, vrnt_opt3_name]
+		for vrnt_idx in range(len(solo_product)):
+			vrnt = solo_product[vrnt_idx]
+			if len(product_option_strings) > 0:
+				product_option_string = product_option_strings[vrnt_idx]
+			else:
+				# if no change, reconstruct opt string from opt data
+				vrnt_opt1_name = vrnt[vrnt_opt1_name_idx]
+				vrnt_opt1_val = vrnt[vrnt_opt1_val_idx]
+				vrnt_opt2_name = vrnt[vrnt_opt2_name_idx]
+				vrnt_opt2_val = vrnt[vrnt_opt2_val_idx]
+				vrnt_opt3_name = vrnt[vrnt_opt3_name_idx]
+				vrnt_opt3_val = vrnt[vrnt_opt3_val_idx]
+				#vrnt_opt_names = [vrnt_opt1_name, vrnt_opt2_name, vrnt_opt3_name]
+				product_option_string = vrnt_opt1_name + ";" + vrnt_opt1_val + ";" + vrnt_opt2_name + ";" + vrnt_opt2_val + ";" + vrnt_opt3_name + ";" + vrnt_opt3_val
 
 			
-			if global_option:
-				# generate global option, such as size based on weights
-				vrnt_weight = vrnt[vrnt_weight_idx]
-				print("vrnt_weight: " + vrnt_weight)
-
-				# determine if available option
-				# if already 3 options determine how to handle
-				# if more than 3 options add descriptor to title
-				for opt in vrnt_opt_names:
-					if opt == '':
-						# we can use this space for the new opt
-						new_opt = ''
-						idx = option_strings.index(duplicate_opts)
-				
-			
-			product_option_string = vrnt_opt1_name + ";" + vrnt_opt1_val + ";" + vrnt_opt2_name + ";" + vrnt_opt2_val + ";" + vrnt_opt3_name + ";" + vrnt_opt3_val
-
 
 			sku = vrnt[vrnt_sku_idx]
 			item_weight_in_grams = vrnt[vrnt_weight_idx]
@@ -3323,7 +3295,7 @@ def generate_all_product_info(all_item_info):
 			all_final_item_info.append(final_item_info)
 
 
-	return all_item_info
+	return all_final_item_info
 
 
 
@@ -3408,7 +3380,71 @@ def generate_all_bundle_vrnts_from_catalog(catalog, product_descrip_dict):
 
 	return all_bundle_vrnts_info
 
+def generate_global_option_data(init_product_opt_data, weights, widths, depths, heights):
 
+	global_option_data = []
+	
+	# or use differing dim in option val
+	dims = [widths, depths, heights]
+	differ_dim_idx = 0
+	all_differ = True
+	for dim_idx in range(len(dims)):
+		dim = dims[dim_idx]
+		# if all dim vals same, cant use to differ
+		# if any 2 dim vals are same we cannot use to differ
+		
+		for val in dim:
+			if dim.count(val) > 1:
+				all_differ = False
+				break
+
+		# if it did not find 2 same in dim then use this dim to differ
+		if all_differ:
+			differ_dim_idx = dim_idx
+			break
+
+	# if all dims same, see if all weights differ
+	# if weight is greatest add opt size large
+	# get idx of max element in weights
+
+	# if no differing factors, then mark for exclusion and warn user
+	# by returning empty list could imply no differing factors
+	if all_differ:
+		for vrnt_idx in range(len(init_product_opt_data)):
+			vrnt_opt_data = init_product_opt_data[vrnt_idx]
+			print("vrnt_opt_data: " + str(vrnt_opt_data)) # [[names],[vals]]
+			differ_dim = dims[differ_dim_idx]
+			dim_types = ['width','depth','height']
+			differ_dim_type = dim_types[differ_dim_idx]
+			final_vrnt_opt_data = []
+			opt_names = vrnt_opt_data[0]
+			opt_vals = vrnt_opt_data[1]
+			for opt_idx in range(len(opt_names)):
+				opt_name = opt_names[opt_idx]
+				opt_val = opt_vals[opt_idx]
+				if opt_name == '':
+					opt_name = differ_dim_type.title()
+					opt_val = differ_dim[vrnt_idx]
+
+
+			# if global_option:
+			# 	# generate global option, such as size based on weights
+			# 	vrnt_weight = vrnt[vrnt_weight_idx]
+			# 	print("vrnt_weight: " + vrnt_weight)
+
+			# 	# determine if available option
+			# 	# if already 3 options determine how to handle
+			# 	# if more than 3 options add descriptor to title
+			# 	for opt in vrnt_opt_names:
+			# 		if opt == '':
+			# 			# we can use this space for the new opt
+			# 			new_opt = ''
+			# 			idx = option_strings.index(duplicate_opts)
+
+			global_option_data.append(vrnt_opt_data)
+
+
+	return global_option_data
 
 
 # helper functions

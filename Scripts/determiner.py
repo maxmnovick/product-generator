@@ -365,7 +365,40 @@ def determine_standard(init_value, value_type):
 # if we see duplicate opts bt 2 vrnts in same product this will cause error so show warning and handle
 def determine_duplicate_opts(product):
 	print("\n===Determine Duplicate Options===\n")
+	# product = [[1,2,3...],[1,2,3...],...]
+	print("product: " + str(product))
+
+	
 
 	duplicate_opts = []
+
+
+	vrnt_opt1_name_idx = 8
+	vrnt_opt1_val_idx = 9
+	vrnt_opt2_name_idx = 10
+	vrnt_opt2_val_idx = 11
+	vrnt_opt3_name_idx = 12
+	vrnt_opt3_val_idx = 13
+	
+	
+	option_strings = []
+	option_data = []
+	for vrnt in product:
+
+		vrnt_opt_string = vrnt[vrnt_opt1_name_idx] + vrnt[vrnt_opt1_val_idx] + vrnt[vrnt_opt2_name_idx] + vrnt[vrnt_opt2_val_idx] + vrnt[vrnt_opt3_name_idx] + vrnt[vrnt_opt3_val_idx]
+		option_strings.append(vrnt_opt_string)
+
+		opt_names = [vrnt[vrnt_opt1_name_idx], vrnt[vrnt_opt2_name_idx], vrnt[vrnt_opt3_name_idx]]
+		opt_vals = [vrnt[vrnt_opt1_val_idx], vrnt[vrnt_opt2_val_idx], vrnt[vrnt_opt3_val_idx]]
+		option_data.append([opt_names,opt_vals])
+
+	# if we find matching options bt 2 vrnts in same product then it will be considered invalid unless we use other info to create more options bc they are 2 vrnts so must have different options but the info in the description is limited
+	for option_string in option_strings:
+		count = option_strings.count(option_string)
+		if count > 1:
+			# found 2 vrnts with same options so not enough info in single vrnt so we must compare with another variant to see what options to add
+			print("Duplicate Opts")
+			duplicate_opts = option_data
+			break
 
 	return duplicate_opts

@@ -161,7 +161,6 @@
 		"Lgtgrn":["lgtgrn"],
 		"Light blue / brown":["light blue / brown"],
 		"Lilac":["lilac"],
-		"Linen":["linen"],
 		"Lt.cml":["lt.cml"],
 		"Lt.gld":["lt.gld"],
 		"Lt.gre":["lt.gre"],
@@ -368,7 +367,8 @@
 		"Yellow":["yel+ow"],
 		"Clear":["clear"],
 		"Natural":["natural"],
-		"Rainbow":["rainbow"]
+		"Rainbow":["rainbow"],
+		"Linen":["linen"]
 	},
 	"Bed Side":
 	{
