@@ -52,7 +52,7 @@ vendor = "acme"
 
 
 # print as single string that can then be separated by semicolon delimiter
-def display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool = 'shopify', inv_tracker='', all_inv={}): # set import tool when calling to display the variants to be imported with the given import tool, bc they have different import orders although some do not care about order but use the title to determine field value match
+def display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool = 'shopify', inv_tracker='', all_inv={}, product_options_dict={}): # set import tool when calling to display the variants to be imported with the given import tool, bc they have different import orders although some do not care about order but use the title to determine field value match
 
 	print("\n === Display Shopify Variants === \n")
 
@@ -79,8 +79,8 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 		product_type = product_types[item_idx]
 		product_img_src = product_img_srcs[item_idx]
 
-		product_option_string = writer.format_option_string(product_options[item_idx])
-		#product_option_string = product_options_dict[sku]
+		#product_option_string = writer.format_option_string(product_options[item_idx])
+		product_option_string = writer.format_option_string_from_data(product_options_dict[sku])
 
 		#body_html = product_descriptions[item_idx]
 		body_html = product_descrip_dict[product_handle]
@@ -179,7 +179,7 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 
 	# some items need to see all vrnts in product to get info
 	# such as when only difference is dims we make options large, small, or if multiple we could name option by size value
-	all_sorted_final_item_info = generator.generate_all_product_info(all_sorted_final_item_info)
+	#all_sorted_final_item_info = generator.generate_all_product_info(all_sorted_final_item_info, all_details) # we need all details to get dims
 
 	# need to combine bundle vrnts with solo vrnts in this fcn bc we must modify existing solo product options based on other vrnts
 	all_sorted_final_item_info = generator.generate_all_bundle_vrnts_info(all_sorted_final_item_info, all_details)
@@ -296,6 +296,7 @@ def generate_all_products(vendor):
 	#product_options_dict = generator.generate_options_dict(all_details, init_all_details) # we need init details to detect measurement type
 	#writer.display_field_values(product_options_dict)
 	#writer.display_all_item_details(init_all_details)
+	product_options_dict = generator.generate_all_product_options(all_details, init_all_details)
 
 	
 
@@ -316,7 +317,7 @@ def generate_all_products(vendor):
 
 	# if inv 0, set inv tracker to shopify and inv qty to 0
 	#all_products = ['handle;title;variant_sku;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33']
-	all_products = display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool, inv_tracker, all_inv)
+	all_products = display_shopify_variants(seller, vendor, all_details, product_titles, all_costs, all_barcodes, product_handles, product_tags, product_types, product_img_srcs, product_options, product_descrip_dict, all_skus, all_weights, all_weights_in_grams, import_tool, inv_tracker, all_inv, product_options_dict)
 	#print("all_products: " + str(all_products))
 
 

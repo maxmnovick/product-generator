@@ -366,7 +366,7 @@ def determine_standard(init_value, value_type):
 def determine_duplicate_opts(product):
 	print("\n===Determine Duplicate Options===\n")
 	# product = [[1,2,3...],[1,2,3...],...]
-	print("product: " + str(product))
+	#print("product: " + str(product))
 
 	
 
@@ -401,4 +401,38 @@ def determine_duplicate_opts(product):
 			duplicate_opts = option_data
 			break
 
+	print("duplicate_opts: " + str(duplicate_opts))
+	return duplicate_opts
+
+def determine_duplicate_product_opts(product_opt_data): # [[[names],[values]]]
+	print("\n===Determine Duplicate Options===\n")
+	# product_opt_data = [[names],[vals]]
+	#print("product_opt_data: " + str(product_opt_data))
+
+	duplicate_opts = []
+	
+	
+	option_strings = []
+	option_data = []
+	for vrnt_opt_data in product_opt_data:
+
+		opt_names = vrnt_opt_data[0] #[vrnt[vrnt_opt1_name_idx], vrnt[vrnt_opt2_name_idx], vrnt[vrnt_opt3_name_idx]]
+		opt_vals = vrnt_opt_data[1] #[vrnt[vrnt_opt1_val_idx], vrnt[vrnt_opt2_val_idx], vrnt[vrnt_opt3_val_idx]]
+		vrnt_opt_string = ''
+		for opt_idx in range(len(opt_names)):
+			vrnt_opt_string += opt_names[opt_idx] + opt_vals[opt_idx]
+		option_strings.append(vrnt_opt_string)
+		
+		option_data.append([opt_names,opt_vals])
+
+	# if we find matching options bt 2 vrnts in same product then it will be considered invalid unless we use other info to create more options bc they are 2 vrnts so must have different options but the info in the description is limited
+	for option_string in option_strings:
+		count = option_strings.count(option_string)
+		if count > 1:
+			# found 2 vrnts with same options so not enough info in single vrnt so we must compare with another variant to see what options to add
+			print("Duplicate Opts")
+			duplicate_opts = option_data
+			break
+
+	print("duplicate_opts: " + str(duplicate_opts))
 	return duplicate_opts

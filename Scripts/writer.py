@@ -88,6 +88,39 @@ def format_option_string(init_option_string):
 
 	return option_string
 
+# separate data with semicolons for shopify import and add commas if needed to allow space for 3 options
+def format_option_string_from_data(option_data): # [[names],[vals]]
+	print("\n===Format Option String from Data===\n")
+	print("option_data: " + str(option_data))
+	option_string = ''
+	opt_names = option_data[0]
+	opt_vals = option_data[1]
+
+	#init_opt_string = ''
+	for opt_idx in range(len(opt_names)):
+		if opt_idx == 0:
+			option_string += opt_names[opt_idx] + ";" + opt_vals[opt_idx]
+		else:
+			option_string += ";" + opt_names[opt_idx] + ";" + opt_vals[opt_idx]
+
+	option_string = format_option_string(option_string)
+
+	# max_opts = 3 # limited by shopify
+	# num_blank_opts = max_opts - len(opt_names)
+	# for opt_idx in range(len(opt_names)):
+	# 	if opt_idx == 0:
+	# 		option_string += opt_names[opt_idx] + ";" + opt_vals[opt_idx]
+	# 	else:
+	# 		option_string += ";" + opt_names[opt_idx] + ";" + opt_vals[opt_idx]
+	# for opt_idx in range(num_blank_opts):
+	# 	if opt_idx == 0:
+	# 		option_string += ";;"
+	# 	else:
+	# 		option_string += ";;"
+
+	print("option_string: " + option_string)
+	return option_string
+
 def display_all_item_details(all_dtls):
 	print("\n=== Item Details ===\n")
 	for item_details in all_dtls:
@@ -171,3 +204,21 @@ def display_zoho_items(item_names, item_collection_types, all_widths, all_depths
 	display_zoho_item_headers()
 	for item_info in sorted_final_item_info:
 		print(item_info)
+
+# fill in blank options bc always need same number limited by product import tool or ecom platform
+# opt_data = [[names],[vals]]
+def format_option_data(opt_data):
+	print("\n===Format Option Data===\n")
+	final_opt_data = []
+	opt_names = opt_data[0]
+	opt_vals = opt_data[1]
+	num_options = 3
+	for opt_idx in range(num_options):
+		if len(opt_names) <= opt_idx:
+			opt_names.append('')
+			opt_vals.append('')
+
+	final_opt_data = [opt_names, opt_vals]
+
+	print("final_opt_data: " + str(final_opt_data))
+	return final_opt_data

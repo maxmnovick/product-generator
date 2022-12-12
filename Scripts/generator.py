@@ -462,7 +462,7 @@ def generate_options_dict(all_details, init_all_details):
 		# handle = generate_handle(item_details)
 		# print("handle: " + handle)
 		init_product = init_products[product_idx]
-		options = generate_product_options(product, init_product)
+		options = generate_product_options_dict(product, init_product)
 
 		# we need the whole product created to set bundle sku
 		# but at this point we need to set options to determine bundle sku
@@ -473,71 +473,94 @@ def generate_options_dict(all_details, init_all_details):
 	#print("options_dict: " + str(options_dict))
 	return options_dict
 
-def generate_vrnt_options(vrnt, init_vrnt):
+# all_products = [[]] from catalog all details
+# input catalog with some formatting but also init to detect types before formatting
+def generate_product_options_dict(product, init_product):
+	print("\n===Generate Product Options Dict===\n")
+	product_options = {}
+
+	product_options = generate_product_options(product, init_product)
+	for vrnt_idx in range(len(product)):
+		vrnt = product[vrnt_idx]
+		sku = vrnt[sku_idx]
+		vrnt_options = product_options[vrnt_idx]
+		product_options[sku] = vrnt_options
+
+	print("product_options: " + str(product_options))
+	return product_options
+
+def generate_vrnt_options(product, init_product, sku):
 	vrnt_options = []
+
+	product_options = generate_product_options_dict(product, init_product)
+
+	vrnt_options = product_options[sku]
+
 	return vrnt_options
 	
 
-def generate_product_options(product, init_product):
-	print("\n=== Generate Product Options ===\n")
-	product_options = []
+# def generate_product_options_dict(product, init_product):
+# 	print("\n=== Generate Product Options ===\n")
+# 	product_options = []
 
-	for vrnt_idx in product:
-		vrnt = product[vrnt_idx]
-		init_vrnt = init_product[vrnt_idx]
+# 	for vrnt_idx in product:
+# 		vrnt = product[vrnt_idx]
+# 		init_vrnt = init_product[vrnt_idx]
 
-		vrnt_handle = generate_handle(vrnt)
-		if re.search("loft-bed",vrnt_handle):
-			# if twin loft bed, option will be loft bed only
-			# if optional queen for loft, option will be loft + queen
-			vrnt_type = vrnt[title_idx]
-			opt_name = 'Components'
-			if re.search('twin\\sloft\\sbed',vrnt_type.lower()):
-				opt_value = 'Loft Bed Only'
-			elif re.search('queen\\sbed', vrnt_type.lower()):
-				opt_value = 'Loft Bed + Queen Bed'
-
-
-		vrnt_options = generate_vrnt_options(vrnt, init_vrnt)
-		product_options.append(vrnt_options)
-	return product_options
-
-def generate_all_product_options(all_details, init_all_details):
-	print("\n=== Generate All Product Options ===\n")
-	# if loft bed with optional queen bed, only consider component options, nothing else
-	# later we can incorporate other options but for now only components needed bc only 1 color, size, etc
-	all_products = isolator.isolate_products(all_details)
-	init_all_products = isolator.isolate_products(init_all_details)
-
-	all_product_options = []
-	for product_idx in range(len(all_products)):
-		product = all_products[product_idx]
-		init_product = init_all_products[product_idx]
-
-		vrnt_options = []
-		for vrnt_idx in range(len(product)):
-			vrnt = product[vrnt_idx]
-			init_vrnt = init_product[vrnt_idx]
-
-			options = generate_options(vrnt, init_vrnt) # we need init details to detect measurement type
-			option_names = options[0]
-			option_values = options[1]
-			#print("Options: " + str(options))
-			option_string = ''
-			for opt_idx in range(len(option_names)):
-				option_name = option_names[opt_idx]
-				option_value = option_values[opt_idx]
-				if opt_idx == 0:
-					option_string += option_name + "," + option_value
-				else:
-					option_string += "," + option_name + "," + option_value
-			vrnt_options.append(option_string)
-
-		all_product_options.append(vrnt_options)
+# 		vrnt_handle = generate_handle(vrnt)
+# 		if re.search("loft-bed",vrnt_handle):
+# 			# if twin loft bed, option will be loft bed only
+# 			# if optional queen for loft, option will be loft + queen
+# 			vrnt_type = vrnt[title_idx]
+# 			opt_name = 'Components'
+# 			if re.search('twin\\sloft\\sbed',vrnt_type.lower()):
+# 				opt_value = 'Loft Bed Only'
+# 			elif re.search('queen\\sbed', vrnt_type.lower()):
+# 				opt_value = 'Loft Bed + Queen Bed'
 
 
-	return all_product_options
+# 		vrnt_options = generate_vrnt_options(vrnt, init_vrnt)
+# 		product_options.append(vrnt_options)
+# 	return product_options
 
+# if coffee table where one says no storage and other says storage, make options no storage and storage
+# def generate_all_product_options(all_details, init_all_details):
+# 	print("\n=== Generate All Product Options ===\n")
+# 	# if loft bed with optional queen bed, only consider component options, nothing else
+# 	# later we can incorporate other options but for now only components needed bc only 1 color, size, etc
+# 	all_products = isolator.isolate_products(all_details)
+# 	init_all_products = isolator.isolate_products(init_all_details)
+
+# 	all_product_options = []
+# 	for product_idx in range(len(all_products)):
+# 		product = all_products[product_idx]
+# 		init_product = init_all_products[product_idx]
+
+# 		vrnt_options = []
+# 		for vrnt_idx in range(len(product)):
+# 			vrnt = product[vrnt_idx]
+# 			init_vrnt = init_product[vrnt_idx]
+
+# 			options = generate_options(vrnt, init_vrnt) # we need init details to detect measurement type
+# 			option_names = options[0]
+# 			option_values = options[1]
+# 			#print("Options: " + str(options))
+# 			option_string = ''
+# 			for opt_idx in range(len(option_names)):
+# 				option_name = option_names[opt_idx]
+# 				option_value = option_values[opt_idx]
+# 				if opt_idx == 0:
+# 					option_string += option_name + "," + option_value
+# 				else:
+# 					option_string += "," + option_name + "," + option_value
+# 			vrnt_options.append(option_string)
+
+# 		all_product_options.append(vrnt_options)
+
+
+# 	return all_product_options
+
+# this fcn should return a complete list of options but should those only be options that have multiple different values or all features that could potentially be an option? both
 def generate_options(item_details, init_item_details):
 
 	final_opt_names = []
@@ -759,6 +782,9 @@ def generate_options(item_details, init_item_details):
 
 	final_opt_data = [ final_opt_names, final_opt_values ]
 
+	# fill in blank options bc always need same number limited by product import tool or ecom platform
+	final_opt_data = writer.format_option_data(final_opt_data)
+
 	#print("=== Generated Options ===\n")
 
 	return final_opt_data
@@ -785,6 +811,120 @@ def generate_all_options(all_details, init_all_details):
 		all_options.append(option_string)
 
 	return all_options
+
+# we need this fcn to generate opts for all vrnts in product
+# need all vrnts opts to generate description, arrival, intro, features, etc
+# product = [] from catalog all details
+# do we need init product bc values get altered while formatting measurements?
+def generate_product_options(product, init_product):
+	handle = generate_handle(product[0])
+	print("\n===Generate Product Options for " + handle + "===\n")
+	product_options = [] # post process
+	init_product_opt_data = [] # pre process
+	product_opt_data = [] # for processing
+
+	# init options only accounting for single vrnt
+	# may change to account for whole product initially
+	for vrnt_idx in range(len(product)):
+		vrnt = product[vrnt_idx]
+		init_vrnt = init_product[vrnt_idx]
+
+		vrnt_opts = generate_options(vrnt, init_vrnt) # [[names],[vals]]
+		init_product_opt_data.append(vrnt_opts)
+
+	product_opt_data = determiner.determine_duplicate_product_opts(init_product_opt_data) # [[[names],[values]]]
+	if len(product_opt_data) > 0: # we know duplicate opts so create new opt data
+		weights =[]
+		widths = []
+		depths = []
+		heights = []
+		for vrnt in product:
+			weights.append(vrnt[weight_idx])
+			widths.append(vrnt[width_idx])
+			depths.append(vrnt[depth_idx])
+			heights.append(vrnt[height_idx])
+		print("weights: " + str(weights))
+		print("widths: " + str(widths))
+		print("depths: " + str(depths))
+		print("heights: " + str(heights))
+
+		# or use differing dim in option val
+		dims = [widths, depths, heights]
+		differ_dim_idx = 0
+		all_differ = True
+		for dim_idx in range(len(dims)):
+			dim = dims[dim_idx]
+			# if all dim vals same, cant use to differ
+			# if any 2 dim vals are same we cannot use to differ
+			
+			for val in dim:
+				if dim.count(val) > 1: # if the multiple that are the same also have the same options
+					all_differ = False
+					break
+
+			# if it did not find 2 same in dim then use this dim to differ
+			if all_differ:
+				differ_dim_idx = dim_idx
+				break
+
+		# if all dims same, see if all weights differ
+		# if weight is greatest add opt size large
+		# get idx of max element in weights
+
+		# if no differing factors, then mark for exclusion and warn user
+		# by returning empty list could imply no differing factors
+		if all_differ:
+			for vrnt_idx in range(len(product_opt_data)):
+				vrnt_opt_data = product_opt_data[vrnt_idx]
+				print("init vrnt_opt_data: " + str(vrnt_opt_data)) # [[names],[vals]]
+				differ_dim = dims[differ_dim_idx]
+				dim_types = ['width','depth','height']
+				differ_dim_type = dim_types[differ_dim_idx]
+				opt_names = vrnt_opt_data[0]
+				opt_vals = vrnt_opt_data[1]
+				for opt_idx in range(len(opt_names)):
+					# opt_name = opt_names[opt_idx]
+					# opt_val = opt_vals[opt_idx]
+					if opt_names[opt_idx] == '':
+						opt_names[opt_idx] = differ_dim_type.title()
+						opt_vals[opt_idx] = differ_dim[vrnt_idx]
+						break
+
+				print("final vrnt_opt_data: " + str(vrnt_opt_data)) # [[names],[vals]]
+				product_options.append(vrnt_opt_data)
+
+
+		if len(product_options) == 0:
+			print("Warning: invalid options for " + handle)
+
+	else:
+		product_options = init_product_opt_data
+
+	#print("product_options: " + str(product_options)) [[[names],[vals]]]
+	return product_options
+
+# all_products = [[]] from catalog all details
+# input catalog with some formatting but also init to detect types before formatting
+def generate_all_product_options(catalog, init_catalog):
+	print("\n===Generate All Product Options===\n")
+	all_product_options = {}
+
+	all_products = isolator.isolate_products(catalog)
+	all_init_products = isolator.isolate_products(init_catalog)
+
+	for product_idx in range(len(all_products)):
+		product = all_products[product_idx]
+		init_product = all_init_products[product_idx]
+
+		product_options = generate_product_options(product, init_product)
+		for vrnt_idx in range(len(product)):
+			vrnt = product[vrnt_idx]
+			sku = vrnt[sku_idx]
+			vrnt_options = product_options[vrnt_idx]
+			all_product_options[sku] = vrnt_options
+
+	print("all_product_options: " + str(all_product_options))
+	return all_product_options
 
 def generate_inv_locations(all_inv):
 	print("\n===Generate Inventory Locations===\n")
@@ -865,7 +1005,7 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 				location_title_html += '</h3>'
 				
 				location_inv_html = ''
-				all_options = generate_all_options(product, init_product)
+				all_options = generate_all_product_options(product, init_product) # {}, formerly generate_all_options(product, init_product)
 				#print("options: " + str(all_options))
 				arrival_time_string = 'NA' # when item will arrive, based on given transfer times and inv qty
 				arrival_times = [] # collect arrival times and choose min
@@ -873,26 +1013,31 @@ def generate_arrival_html(product, init_product, all_inv, vendor=''):
 				if len(all_options) > 0:
 					location_inv_html = '<table>'
 					for vrnt_idx in range(len(product)):
+						vrnt = product[vrnt_idx]
 						# convert option string to list of option name-value pairs
-						option_string = all_options[vrnt_idx]
-						#print("option_string: " + str(option_string))
-						option_list = option_string.split(',')
-						option_names = []
-						option_values = []
-						for option_item_idx in range(len(option_list)):
-							if option_item_idx % 2:
-								option_value = option_list[option_item_idx]
-								option_values.append(option_value)
-							else:
-								option_name = option_list[option_item_idx]
-								option_names.append(option_name)
+						# option_string = all_options[vrnt_idx]
+						# #print("option_string: " + str(option_string))
+						# option_list = option_string.split(',')
+						# option_names = []
+						# option_values = []
+						# for option_item_idx in range(len(option_list)):
+						# 	if option_item_idx % 2:
+						# 		option_value = option_list[option_item_idx]
+						# 		option_values.append(option_value)
+						# 	else:
+						# 		option_name = option_list[option_item_idx]
+						# 		option_names.append(option_name)
+
+						vrnt_sku = vrnt[sku_idx]
+						option_names = all_options[vrnt_sku][0]
+						option_values = all_options[vrnt_sku][1]
 
 
 						#print("option_names: " + str(option_names))
 						#print("option_values: " + str(option_values))
-						vrnt = product[vrnt_idx]
+						#vrnt = product[vrnt_idx]
 						#print("vrnt: " + str(vrnt))
-						vrnt_sku = vrnt[sku_idx]
+						#vrnt_sku = vrnt[sku_idx]
 						#print("vrnt_sku: " + str(vrnt_sku))
 
 						limited_stock = 0
@@ -1371,10 +1516,13 @@ def generate_intro(item_details):
 
 	return intro
 
+#product = [] from catalog details
 def generate_intro_html(product):
 	#print("\n===Generate Intro HTML===\n")
 	intro_html = ''
 
+	opt_num = 1
+	unique_intros = []
 	for variant in product:
 
 		intro = collection = ''
@@ -1382,9 +1530,10 @@ def generate_intro_html(product):
 		if len(variant) > 3: # if variant contains intro data. todo: make it check for intro keyord instead of index.
 			handle = generate_handle(variant) #variant[1].strip().lower()
 			#print("Handle: " + handle)
-			#print("Handle: " + handle)
 			collection = variant[collection_idx].strip().lower()
 			intro = variant[intro_idx].strip().lower()
+			
+
 			#print("Initial Intro: " + intro)
 			# if no intro given then generate one
 			# if only word given, assume error bc intro cannot be one word
@@ -1401,12 +1550,24 @@ def generate_intro_html(product):
 			# capitalize title of collection, before capitalizing sentences, in case collection starts sentence and has multiple names
 			intro = re.sub(collection,collection.title(),intro)
 			intro = writer.capitalize_sentences(intro)
-			
 
-			#intro = re.sub('\"','\",CHAR(34),\"', intro) # if quotes found in intro, such as for dimensions, then fmla will incorrectly interpret that as closing string
-			intro_html = "<p>" + intro + "</p>"
-			break # once we make an intro for the product we dont need to loop thru any more variants because they all get the same intro
+			if intro not in unique_intros:
+				unique_intros.append(intro)
+			
+				#vrnt_opts = variant
+				#intro = re.sub('\"','\",CHAR(34),\"', intro) # if quotes found in intro, such as for dimensions, then fmla will incorrectly interpret that as closing string
+				# intro_html += "<h3>Option " + str(opt_num) + "</h3><p>" + intro + "</p>"
+				# opt_num += 1
+				#break # once we make an intro for the product we dont need to loop thru any more variants because they all get the same intro
 		#print("Intro HTML: " + intro_html)
+
+	if len(unique_intros) == 1:
+		intro_html = "<p>" + unique_intros[0] + "</p>"
+	else:
+		for unique_intro_idx in range(len(unique_intros)):
+			unique_intro = unique_intros[unique_intro_idx]
+			intro_html += "<h3>Option " + str(unique_intro_idx+1) + "</h3><p>" + unique_intro + "</p>"
+
 
 	return intro_html
 
@@ -1439,9 +1600,9 @@ def generate_colors_html(product, init_product):
 			colors = ''
 
 			if len(variant) > 4:
-				handle = variant[1].strip().lower()
+				#handle = generate_handle(variant)
 				#print("Handle: " + handle)
-				colors = variant[4].strip().lower()
+				colors = variant[color_idx].strip().lower()
 				#print("Colors: " + colors)
 
 			colors_html = '' # init option fmla so if no value given it is empty quotes
@@ -1576,6 +1737,7 @@ def generate_finishes_html(product):
 
 
 def generate_dimensions_html(product, init_product):
+	print("\n===Generate Dimensions HTML===\n")
 
 	dimensions_html = "" # init fmla for this part of the description
 	if determiner.determine_given_dimensions(product): # if we are NOT given dimensions we do not include dimensions in the description
@@ -1583,6 +1745,7 @@ def generate_dimensions_html(product, init_product):
 
 		#sizes = set_option_values(product, 'Size')
 		opt_name = 'Size' # choose what option we want to show
+		#opt_names = ['Size','Width','Depth','Height','Features'] # instead of this could only include unique dims but user wants to know dims for all options even if same
 		standard_type = opt_name.lower() + "s" # standards are defined in the data/standards folder
 		options = reader.read_standards(standard_type) # get dict of options
 		size_options = options[opt_name]
@@ -1650,7 +1813,7 @@ def generate_dimensions_html(product, init_product):
 			#dim_html += ". </td></tr>"
 
 			option_data = generate_options(variant, init_variant)
-			#print("Option Data: " + str(option_data))
+			print("Option Data: " + str(option_data))
 			option_names = []
 			option_values = []
 			if len(option_data) > 0:
@@ -1662,6 +1825,7 @@ def generate_dimensions_html(product, init_product):
 			# get the value of the size option, if there is one
 			opt_idx = 0
 			for current_opt_name in option_names:
+				# some options like color are implied same size but even material could benefit from clarifying same size although could also be implied
 				if current_opt_name == opt_name:
 					valid_opt = True
 					break
@@ -1710,6 +1874,20 @@ def generate_dimensions_html(product, init_product):
 
 	return dimensions_html
 
+def generate_product_dims_html(product, init_product):
+	print("\n===Generate Product Dimensions HTML===\n")
+	dimensions_html = ''
+
+	if determiner.determine_given_dimensions(product): # if we are NOT given dimensions we do not include dimensions in the description
+		dimensions_html += '<h2>Dimensions (in.)</h2><table>'
+
+		# new row for each option
+		# if only 1 size then do not include options in size bc just 1
+		# if more than 1 need to put size for all options
+
+	print("Dimensions HTML: " + dimensions_html + "\n")
+	return dimensions_html
+
 def generate_features(item_details):
 	item_sku = item_details[sku_idx]
 	print("\n===Generate Features for " + item_sku + "===\n") # means lack of features which could be error
@@ -1727,6 +1905,7 @@ def generate_features_html(product, vendor=''):
 	#features_html = "\"\""
 	features_html = ""
 
+	unique_features = []
 	for variant in product:
 
 		features = ''
@@ -1791,10 +1970,31 @@ def generate_features_html(product, vendor=''):
 			#features = re.sub('\"','\",CHAR(34),\"', features) # if quotes found in features, such as for dimensions, then fmla will incorrectly interpret that as closing string
 			
 			
+			if features not in unique_features:
+				unique_features.append(features)
 
+	if len(unique_features) == 1:
+		features = unique_features[0]
+		if re.search('•|    |ï|Ï',features): # or re.search('    ',features) or re.search('ï|Ï',features):
+			features_list_html = "<ul class=\'product_features_list\'>"
+			#print("\nFEATURES: " + features)
 
-			if re.search('•',features) or re.search('    ',features) or re.search('ï|Ï',features):
-				features_list_html = "<ul class=\'product_features_list\'>"
+			features_list_html += re.sub(r'•([^\.]+)\.',r'<li>\1. </li>', features) # bullet point indicates new line
+			features_list_html = re.sub(r'    ([^\.]+)\.',r'<li>\1. </li>', features_list_html) # 4 spaces indicates new line
+			features_list_html = re.sub(r'ï|Ï([^\.]+)\.',r'<li>\1. </li>', features_list_html) # ï character indicates new line (for Coaster)
+			
+			features_list_html += "</ul>"
+
+			features_html = features_list_html
+		else:
+			features_html = '<p class=\'product_features\'>' + features + '</p>'
+
+			#break # for now, once we make features list for variant skip the rest of the variants for now bc it is more complex to organize all variant features in descrip
+	else:
+		for unique_features_idx in range(len(unique_features)):
+			features = unique_features[unique_features_idx]
+			if re.search('•|    |ï|Ï',features): # or re.search('    ',features) or re.search('ï|Ï',features):
+				features_list_html = "<h3>Option " + str(unique_features_idx+1) + "</h3><ul class=\'product_features_list\'>"
 				#print("\nFEATURES: " + features)
 
 				features_list_html += re.sub(r'•([^\.]+)\.',r'<li>\1. </li>', features) # bullet point indicates new line
@@ -1803,11 +2003,10 @@ def generate_features_html(product, vendor=''):
 				
 				features_list_html += "</ul>"
 
-				features_html = features_list_html
+				features_html += features_list_html
 			else:
-				features_html = '<p class=\'product_features\'>' + features + '</p>'
+				features_html += '<h3>Option ' + str(unique_features_idx+1) + '</h3><p class=\'product_features\'>' + features + '</p>'
 
-			break # for now, once we make features list for variant skip the rest of the variants for now bc it is more complex to organize all variant features in descrip
 
 		#print("Features HTML: " + features_html)
 
@@ -2970,7 +3169,7 @@ def generate_all_bundle_vrnts(all_details):
 # final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + vrnt_inv_tracker + ";" + vrnt_inv_qty + ";" + vrnt_inv_policy + ";" + vrnt_fulfill_service + ";" + vrnt_price + ";" + vrnt_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
 def generate_all_bundle_vrnts_info(all_item_info, catalog):
 	print("\n===Generate All Bundle Variants Info===\n")
-	#print("all_item_info: " + str(all_item_info))
+	print("all_item_info: " + str(all_item_info))
 
 	all_final_item_info = []
 
@@ -3034,6 +3233,7 @@ def generate_all_bundle_vrnts_info(all_item_info, catalog):
 
 	for solo_product in all_solo_products:
 		product_handle = solo_product[0][product_handle_idx] # same for all vrnts so use first vrnt
+		print("product_handle: " + product_handle)
 
 		# same for all vrnts of product
 		product_title = solo_product[0][product_title_idx]
@@ -3267,7 +3467,8 @@ def generate_all_bundle_vrnts_from_catalog(catalog, product_descrip_dict):
 # generate info not only for single variant but for all vrnts in product
 # in some cases we need to compare all vrnts to tell info
 # but for efficiency see if possible to tell all info from single vrnt
-def generate_all_product_info(all_item_info):
+# we need all details to get dims
+def generate_all_product_info(all_item_info, all_details):
 	print("\n===Generate All Product Info===\n")
 
 	all_final_item_info = []
@@ -3353,7 +3554,8 @@ def generate_all_product_info(all_item_info):
 		# 	final_opt_data = generate_global_option_data(init_product_opt_data, weights, widths, depths, heights) # final opt data blank it means insufficient data bc duplicate opts and cannot differ so invalid so exlude from import
 		# 	product_option_strings = generate_opt_strings_from_data(final_opt_data)
 
-		final_opt_data = generate_global_option_data(solo_product)
+		
+		final_opt_data = generate_global_option_data(solo_product, all_details) # evaluates if duplicate opts internally
 		product_option_strings = generate_opt_strings_from_data(final_opt_data)
 
 		for vrnt_idx in range(len(solo_product)):
@@ -3393,11 +3595,21 @@ def generate_all_product_info(all_item_info):
 	return all_final_item_info
 
 # product = [[1,2,3,...],[1,2,3,...],...]
-def generate_global_option_data(product):
+def generate_global_option_data(product, all_details):
 	handle = product[0][handle_idx]
 	print("\n===Generate Global Option Data for " + handle + "===\n")
 
 	global_option_data = []
+
+	vrnt_opt1_name_idx = 8
+	vrnt_opt1_val_idx = 9
+	vrnt_opt2_name_idx = 10
+	vrnt_opt2_val_idx = 11
+	vrnt_opt3_name_idx = 12
+	vrnt_opt3_val_idx = 13
+	vrnt_sku_idx = 14
+
+	
 
 	init_product_opt_data = determiner.determine_duplicate_opts(product) # [[[names],[values]]]
 	if len(init_product_opt_data) > 0: # we know duplicate opts so create new opt data
@@ -3406,11 +3618,17 @@ def generate_global_option_data(product):
 		depths = []
 		heights = []
 		for vrnt in product:
-			weights.append(vrnt[weight_idx])
-			widths.append(vrnt[width_idx])
-			depths.append(vrnt[depth_idx])
-			heights.append(vrnt[height_idx])
+			sku = vrnt[vrnt_sku_idx]
+			item_details = generate_item_details(all_details, sku)
 
+			weights.append(item_details[weight_idx])
+			widths.append(item_details[width_idx])
+			depths.append(item_details[depth_idx])
+			heights.append(item_details[height_idx])
+		print("weights: " + str(weights))
+		print("widths: " + str(widths))
+		print("depths: " + str(depths))
+		print("heights: " + str(heights))
 	
 	
 		# or use differing dim in option val
@@ -3423,7 +3641,7 @@ def generate_global_option_data(product):
 			# if any 2 dim vals are same we cannot use to differ
 			
 			for val in dim:
-				if dim.count(val) > 1:
+				if dim.count(val) > 1: # if the multiple that are the same also have the same options
 					all_differ = False
 					break
 
@@ -3454,6 +3672,7 @@ def generate_global_option_data(product):
 					if opt_names[opt_idx] == '':
 						opt_names[opt_idx] = differ_dim_type.title()
 						opt_vals[opt_idx] = differ_dim[vrnt_idx]
+						break
 
 
 				# if global_option:
@@ -3496,6 +3715,19 @@ def generate_opt_strings_from_data(product_opt_data):
 
 
 	return opt_strings
+
+def generate_item_details(all_details, sku):
+	print("\n===Generate Item Details for " + sku + "===\n")
+	item_details = []
+	for item in all_details:
+		print("item: " + str(item))
+		item_sku = item[sku_idx]
+		if item_sku == sku:
+			item_details = item
+			break
+
+	print("item_details: " + str(item_details))
+	return item_details
 
 
 # helper functions
