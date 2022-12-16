@@ -422,7 +422,7 @@ def determine_duplicate_product_opts(product_opt_data): # [[[names],[values]]]
 		for opt_idx in range(len(opt_names)):
 			vrnt_opt_string += opt_names[opt_idx] + opt_vals[opt_idx]
 		option_strings.append(vrnt_opt_string)
-		
+
 		option_data.append([opt_names,opt_vals])
 
 	# if we find matching options bt 2 vrnts in same product then it will be considered invalid unless we use other info to create more options bc they are 2 vrnts so must have different options but the info in the description is limited
@@ -436,3 +436,37 @@ def determine_duplicate_product_opts(product_opt_data): # [[[names],[values]]]
 
 	print("duplicate_opts: " + str(duplicate_opts))
 	return duplicate_opts
+
+# determine no. sizes by given different dims
+def determine_single_size(product):
+	single_size = True
+	
+	width_idx = 7
+	depth_idx = 8
+	height_idx = 9
+	widths = []
+	depths = []
+	heights = []
+	for vrnt in product:
+		width = vrnt[width_idx]
+		depth = vrnt[depth_idx]
+		height = vrnt[height_idx]
+
+		widths.append(width)
+		depths.append(depth)
+		heights.append(height)
+
+	# if any dims are different then we have multiple sizes so not single size
+	dims = [widths, depths, heights]
+	for dim in dims:
+		# if all same check next dims for differ
+		# if all dims same then single size = true
+		for val in dim:
+			if dim.count(val) != len(dim): # if any dims different then single size = false
+				single_size = False
+				break
+
+		if single_size == False:
+			break
+
+	return single_size

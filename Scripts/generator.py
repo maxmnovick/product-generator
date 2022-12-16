@@ -1879,11 +1879,58 @@ def generate_product_dims_html(product, init_product):
 	dimensions_html = ''
 
 	if determiner.determine_given_dimensions(product): # if we are NOT given dimensions we do not include dimensions in the description
-		dimensions_html += '<h2>Dimensions (in.)</h2><table>'
+		dimensions_html += '<h2>Dimensions (in.)</h2>'
 
 		# new row for each option
 		# if only 1 size then do not include options in size bc just 1
-		# if more than 1 need to put size for all options
+		# if more than 1 need to put size for all options/vrnts
+		if determiner.determine_single_size(product):
+			dimensions = generate_dimensions_string(product[0])
+			dimensions_html += '<p>' + dimensions + '</p>'
+		else:
+			dimensions_html += '<table>'
+			product_options = generate_product_options(product, init_product)
+			dimensionless_opts = ['Color'] # determine dimensionless opts by seeing which opts do not affect dims. test when opt changes does dim change
+			# make list of all vrnts dims
+			product_dims = [] # [[]], 1 entry for each vrnt
+			for vrnt_idx in range(len(product)):
+				dimensions = generate_dimensions_string(product[vrnt_idx])
+				product_dims.append([dimensions,product_options[vrnt_idx]]) # group by dimensions and need to keep options related to that dim
+
+			# then group vrnts with same dims so only unique dims showing once
+			vrnts_by_dim = isolator.isolate_vrnts_by_dim(product_dims) # [[[1,2],[1,2],[1,2],...],[[3,4],[3,4],[3,4],...],...]
+
+			# exclude dimensionless dims to avoid confusing labels
+			#dimensionful_opts = determiner.determine_dimensionful_opts(product)#[] # only display opts related to dim
+
+			# display unique dims with correct vrnts
+			# vrnts = [[1,2],[1,2],[1,2],...]
+			for vrnts in vrnts_by_dim:
+				# only need first vrnt dims in group bc grouped by same dim
+				dimensions_idx = 0
+				options_idx = 1
+				dimensions = vrnts[0][dimensions_idx]
+				sorted_options = vrnts[0][options_idx] # the common denominator options will be displayed once
+				
+				option_names = sorted_options[0] # needed to see if option related to dimension bc if not exlcude from table
+				option_values = sorted_options[1]
+				dimensions_html += '<tr>'
+				for opt_idx in range(len(option_values)):
+					option_name = option_names[opt_idx]
+					option_value = option_values[opt_idx]
+					# check if any vrnts have the same dims and see if they have diff dims but same opts to see the dim does not change proportional to that opt
+					if option_name not in dimensionless_opts:
+						dimensions_html += '<td>' + option_value + '</td>'
+				dimensions_html += '<td>' + dimensions + '</td></tr>'
+
+				
+
+				
+				
+				# if only 1 opt val but different dims then error warning cannot include. in general 2 vrnts with the same option sets is invalid
+				# at this point if it encounters invalid opts it will create the dims display but later be excluded by validation fcn
+				# bc generate options allows duplicate opts. could make feature in generate product options where duplicate excluded from final
+				# as long as that fits
 
 	print("Dimensions HTML: " + dimensions_html + "\n")
 	return dimensions_html

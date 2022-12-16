@@ -188,3 +188,18 @@ def isolate_products_from_info(sorted_final_item_info):
 	all_final_items_sorted = list(products.values()) # products separated by handle
 	#print("all_final_items_sorted: " + str(all_final_items_sorted))
 	return all_final_items_sorted
+
+
+
+# product_dims = [dimensions,product_options[vrnt_idx]]
+def isolate_vrnts_by_dim(product_dims):
+
+	vrnts = {}
+	dim_idx = 0
+	for vrnt_dims in product_dims:
+		dim = vrnt_dims[dim_idx]
+		vrnts.setdefault(dim, []).append(vrnt_dims)
+
+	vrnts_by_dim = list(vrnts.values())
+
+	return vrnts_by_dim

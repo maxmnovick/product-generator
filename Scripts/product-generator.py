@@ -184,7 +184,7 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 	# need to combine bundle vrnts with solo vrnts in this fcn bc we must modify existing solo product options based on other vrnts
 	all_sorted_final_item_info = generator.generate_all_bundle_vrnts_info(all_sorted_final_item_info, all_details)
 
-
+	valid_item_info = generator.generate_valid_item_info(all_sorted_final_item_info) # remove duplicate options and other invalidities
 
 	# shopify import tool needs imgs on different lines
 	if import_tool == 'shopify':
