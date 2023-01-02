@@ -200,7 +200,7 @@ def determine_measurement_type(measurement, handle):
 # input could already be in standard format, which is plain number with default unit of inches
 # if input in format a'b" need to convert to standard format and keep original format for use later or make a function to convert it back
 def format_dimension(measurement, handle):
-	#print("=== Format Dimension === ")
+	#print("=== Format Dimension for " + measurement + "=== ")
 
 	# define local variables
 	total_meas = '1' # return output, result of this function. default=1 for zoho inventory
@@ -281,6 +281,7 @@ def format_dimension(measurement, handle):
 			total_meas = str(int(round(meas_ft_value * 12.0 + meas_in_value)))
 
 		else:
+			print("Default Measurement")
 			total_meas = measurement
 
 	else:
@@ -290,6 +291,7 @@ def format_dimension(measurement, handle):
 	return total_meas
 
 def read_raw_vendor_product_data(vendor, file_keywords=[]):
+	print("\n===Read Raw Vendor Product Data===\n")
 	if len(file_keywords) == 0:
 		file_keywords = ["price","spec","image"] # equivalent to files selected on web format
 	print("file_keywords: " + str(file_keywords))
@@ -320,6 +322,7 @@ def read_raw_vendor_product_data(vendor, file_keywords=[]):
 			if current_sheet_field_name != '':
 				all_current_sheet_field_values = []
 				text_fields = ['type','features','intro','finish','material'] # plain text is interpreted specifically
+				dim_fields = ['width','depth','height','weight'] # consider special formatting or rounding for dims
 				if desired_field_name == 'sku':
 					all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().str.lstrip("0").tolist()
 				elif desired_field_name == 'cost':
@@ -328,6 +331,14 @@ def read_raw_vendor_product_data(vendor, file_keywords=[]):
 					all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().str.lstrip("[").str.rstrip("]").tolist()
 				elif desired_field_name in text_fields:
 					all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().str.replace(";","-").tolist()
+				elif desired_field_name in dim_fields:
+					#print("dim field")
+					all_current_sheet_field_dims = current_sheet_df[current_sheet_field_name].astype('string').str.strip().tolist()
+					for field_val in all_current_sheet_field_dims:
+						if field_val != 'n/a' and field_val != '':
+							field_val = str(round(float(field_val)))
+						all_current_sheet_field_values.append(field_val)
+					#print("all_current_sheet_field_values: " + str(all_current_sheet_field_values))
 				else:
 					all_current_sheet_field_values = current_sheet_df[current_sheet_field_name].astype('string').str.strip().tolist()
 				#print("all_current_sheet_field_values: " + desired_field_name + " " + str(all_current_sheet_field_values))
@@ -337,8 +348,10 @@ def read_raw_vendor_product_data(vendor, file_keywords=[]):
 			# 		print("field_name matches header: " + field_name + ", " + header)
 
 		#all_current_sheet_field_values = current_sheet_df[current_sheet_field_name]
+		#print("current_sheet_all_field_values: " + str(current_sheet_all_field_values))
 		all_sheet_all_field_values.append(current_sheet_all_field_values)
 
+	#print("all_sheet_all_field_values: " + str(all_sheet_all_field_values))
 	return all_sheet_all_field_values
 
 def read_raw_vendor_inv_data(vendor):
@@ -569,6 +582,7 @@ def format_field_values(field_name, all_details, init_all_details=[]):
 					vrnt_img = img_src
 			field_values.append(vrnt_img)
 
+	print("field_values: " + str(field_values))
 	return field_values
 
 

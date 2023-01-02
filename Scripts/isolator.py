@@ -3,6 +3,7 @@
 
 import generator
 import numpy as np
+import re # needed to split
 
 def isolate_product_from_details(all_details, start_idx, stop_idx):
 	product_rows = []
@@ -203,3 +204,20 @@ def isolate_vrnts_by_dim(product_dims):
 	vrnts_by_dim = list(vrnts.values())
 
 	return vrnts_by_dim
+
+# item_info = 1;2;3;...
+def isolate_options_from_info(item_info):
+	print("item_info: " + str(item_info))
+
+	options_info = '' # 1;2;3;...
+
+	vrnt_opt1_name_idx = 8
+	vrnt_opt1_val_idx = 9
+	vrnt_opt2_name_idx = 10
+	vrnt_opt2_val_idx = 11
+	vrnt_opt3_name_idx = 12
+	vrnt_opt3_val_idx = 13
+
+	options_info = item_info[vrnt_opt1_name_idx] + ";" + item_info[vrnt_opt1_val_idx] + ";" + item_info[vrnt_opt2_name_idx] + ";" + item_info[vrnt_opt2_val_idx] + ";" + item_info[vrnt_opt3_name_idx] + ";" + item_info[vrnt_opt3_val_idx]
+
+	return options_info

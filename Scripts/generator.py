@@ -819,6 +819,7 @@ def generate_all_options(all_details, init_all_details):
 def generate_product_options(product, init_product):
 	handle = generate_handle(product[0])
 	print("\n===Generate Product Options for " + handle + "===\n")
+	print("product: " + str(product))
 	product_options = [] # post process
 	init_product_opt_data = [] # pre process
 	product_opt_data = [] # for processing
@@ -907,6 +908,7 @@ def generate_product_options(product, init_product):
 # input catalog with some formatting but also init to detect types before formatting
 def generate_all_product_options(catalog, init_catalog):
 	print("\n===Generate All Product Options===\n")
+	#print("catalog: " + str(catalog))
 	all_product_options = {}
 
 	all_products = isolator.isolate_products(catalog)
@@ -1191,12 +1193,13 @@ def generate_description(product, init_product, all_inv={}, vendor=''):
 		finishes_html = generate_finishes_html(product)
 
 		dimensions_html = generate_dimensions_html(product, init_product)
+		product_dims_html = generate_product_dims_html(product, init_product)
 
 		features_html = generate_features_html(product, vendor)
 
 		
 
-		descrip_html = notice_html + arrival_html + intro_html + colors_html + materials_html + finishes_html + dimensions_html + features_html
+		descrip_html = notice_html + arrival_html + intro_html + colors_html + materials_html + finishes_html + dimensions_html + product_dims_html + features_html
 		body_html = descrip_html
 
 	
@@ -1874,9 +1877,24 @@ def generate_dimensions_html(product, init_product):
 
 	return dimensions_html
 
+# the variant has width, depth, height so make a string out of it to w"xd"xh"
+def generate_dimensions_string(vrnt):
+	print("\n===Generate Dimensions String===\n")
+	dim_string = ''
+
+	width = vrnt[width_idx]
+	depth = vrnt[depth_idx]
+	height = vrnt[height_idx]
+
+	dim_string = width + "\" x " + depth + "\" x " + height + "\""
+
+	return dim_string
+
 def generate_product_dims_html(product, init_product):
 	print("\n===Generate Product Dimensions HTML===\n")
 	dimensions_html = ''
+
+	product_handle = product[0][0]
 
 	if determiner.determine_given_dimensions(product): # if we are NOT given dimensions we do not include dimensions in the description
 		dimensions_html += '<h2>Dimensions (in.)</h2>'
@@ -1885,7 +1903,7 @@ def generate_product_dims_html(product, init_product):
 		# if only 1 size then do not include options in size bc just 1
 		# if more than 1 need to put size for all options/vrnts
 		if determiner.determine_single_size(product):
-			dimensions = generate_dimensions_string(product[0])
+			dimensions = generate_dimensions_string(product[0]) # the product has width, depth, height so make a string out of it to w"xd"xh"
 			dimensions_html += '<p>' + dimensions + '</p>'
 		else:
 			dimensions_html += '<table>'
@@ -1917,10 +1935,11 @@ def generate_product_dims_html(product, init_product):
 				dimensions_html += '<tr>'
 				for opt_idx in range(len(option_values)):
 					option_name = option_names[opt_idx]
-					option_value = option_values[opt_idx]
-					# check if any vrnts have the same dims and see if they have diff dims but same opts to see the dim does not change proportional to that opt
-					if option_name not in dimensionless_opts:
-						dimensions_html += '<td>' + option_value + '</td>'
+					if option_name != '':
+						option_value = option_values[opt_idx]
+						# check if any vrnts have the same dims and see if they have diff dims but same opts to see the dim does not change proportional to that opt
+						if option_name not in dimensionless_opts:
+							dimensions_html += '<td>' + option_value + '</td>'
 				dimensions_html += '<td>' + dimensions + '</td></tr>'
 
 				
@@ -1931,6 +1950,8 @@ def generate_product_dims_html(product, init_product):
 				# at this point if it encounters invalid opts it will create the dims display but later be excluded by validation fcn
 				# bc generate options allows duplicate opts. could make feature in generate product options where duplicate excluded from final
 				# as long as that fits
+	else:
+		print("Warning: No dimensions given for product " + product_handle + "! ")
 
 	print("Dimensions HTML: " + dimensions_html + "\n")
 	return dimensions_html
@@ -2595,7 +2616,7 @@ def generate_catalog_from_data(vendor='',all_inv={}):
 
 					break # we can break whether or not loft bed bc we found another vrnt of same product (by handle)
 
-
+	print("catalog from data: " + str(catalog))
 	return catalog
 
 
@@ -3775,6 +3796,40 @@ def generate_item_details(all_details, sku):
 
 	print("item_details: " + str(item_details))
 	return item_details
+
+# remove duplicates and other invalidities that shopify cannot import
+# all_sorted_final_item_info = [[1,2,3,...],[1,2,3,...],...]
+def generate_valid_item_info(all_sorted_final_item_info):
+	print("\n===Generate Valid Item Info===\n")
+
+	valid_item_info = []
+	
+	
+	all_product_info = isolator.isolate_products_from_info(all_sorted_final_item_info) # isolate products info by handle
+	for product_info in all_product_info:
+		product_handle = product_info[0][0]
+		all_vrnt_options = []
+		valid_product = True
+		for vrnt_info in product_info:
+			# check for duplicate options
+			# get current item options
+			#print("vrnt_info: " + str(vrnt_info))
+
+			vrnt_options = isolator.isolate_options_from_info(vrnt_info)
+			if vrnt_options in all_vrnt_options:
+				print("Warning: Duplicate options found in product " + product_handle + "! ")
+				valid_product = False
+				break
+			else:
+				all_vrnt_options.append(vrnt_options)
+
+		if valid_product:
+			for vrnt_info in product_info:
+				valid_item_info.append(vrnt_info)
+
+
+
+	return valid_item_info
 
 
 # helper functions

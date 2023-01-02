@@ -239,7 +239,7 @@ def generate_all_products(vendor):
 	# if dictionary inefficient, consider making list of out of stock items
 	# and then removing out of stock items from all details before proceeding
 	all_details = generator.generate_catalog_from_data(vendor, all_inv) # catalog here corresponds to all_details in original product generator
-	#print("catalog: " + str(all_details))
+	print("catalog: " + str(all_details))
 	
 	
 	
@@ -254,7 +254,9 @@ def generate_all_products(vendor):
 
 	# General Info from Details table
 	all_skus = reader.format_field_values('sku', all_details) # todo: need to check for bundle skus. eg loft bed + queen bed
+	print("all_details: " + str(all_details))
 	all_widths = reader.format_field_values('width', all_details, init_all_details)
+	print("all_widths: " + str(all_widths))
 	all_depths = reader.format_field_values('depth', all_details, init_all_details)
 	all_heights = reader.format_field_values('height', all_details, init_all_details)
 	all_weights = reader.format_field_values('weight', all_details, init_all_details) # todo: need to check for bundle weights. eg loft bed + queen bed
