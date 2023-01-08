@@ -208,7 +208,7 @@ def display_zoho_items(item_names, item_collection_types, all_widths, all_depths
 # fill in blank options bc always need same number limited by product import tool or ecom platform
 # opt_data = [[names],[vals]]
 def format_option_data(opt_data):
-	print("\n===Format Option Data===\n")
+	#print("\n===Format Option Data===\n")
 	final_opt_data = []
 	opt_names = opt_data[0]
 	opt_vals = opt_data[1]
@@ -220,5 +220,5 @@ def format_option_data(opt_data):
 
 	final_opt_data = [opt_names, opt_vals]
 
-	print("final_opt_data: " + str(final_opt_data))
+	#print("final_opt_data: " + str(final_opt_data))
 	return final_opt_data

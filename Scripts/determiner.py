@@ -9,7 +9,7 @@ def determine_matching_field(desired_field_name, current_field_name):
     print("current_field_name: " + current_field_name)
 
 def determine_standard_key(raw_key):
-    print("\n===Determine Standard Key for " + raw_key + "===\n")
+    #print("\n===Determine Standard Key for " + raw_key + "===\n")
 
     standard_key = ''
 
@@ -32,18 +32,18 @@ def determine_standard_key(raw_key):
     }
 
     for field_key, field_keywords in all_field_keywords.items():
-        print("field_key, field_keywords: " + field_key + ", " + str(field_keywords))
+        #print("field_key, field_keywords: " + field_key + ", " + str(field_keywords))
         for keyword in field_keywords:
             raw_key_no_space = re.sub('(\\s+|_)','',raw_key.lower()) # unpredictable typos OR format in headers given by vendor such as 'D E S C R I P T I O N'
             keyword_no_space = re.sub('\\s', '', keyword)
             if re.search(keyword_no_space, raw_key_no_space):
-                print("keyword " + keyword + " in raw_key " + raw_key)
+                #print("keyword " + keyword + " in raw_key " + raw_key)
                 standard_key = field_key
                 break
         if standard_key != '':
             break
 
-    print("standard_key: " + standard_key)
+    #print("standard_key: " + standard_key)
     return standard_key
 
 def determine_field_name(field, sheet_df):
@@ -230,6 +230,7 @@ def determine_stocked(sheet1_sku, all_inv, locations=[]):
 	given_info = False # if we are given an item but no stock info we still want to display it
 	if len(locations) == 0:
 		locations = ['ny', 'nj', 'la', 'sf']
+	
 	for item_inv in all_inv:
 		if item_inv['sku'] == sheet1_sku:
 			#print("item_inv: " + str(item_inv))
@@ -239,21 +240,21 @@ def determine_stocked(sheet1_sku, all_inv, locations=[]):
 				for key, val in item_inv.items():
 					if re.search("qty",key) and re.search(loc,key):
 						if round(float(val)) > 0: # problem dataframe reading decimal
-							print(sheet1_sku + " is stocked in " + loc)
+							#print(sheet1_sku + " is stocked in " + loc)
 							stocked = True
 							break
 					elif re.search('eta',key): # if there is an eta then it will be stocked
 						if val != '' and val.lower() != 'none':
 							location = re.sub('locations\\.|_warehouse_eta','',key)
-							print(sheet1_sku + " will be stocked in " + location)
+							#print(sheet1_sku + " will be stocked in " + location)
 							stocked = True
 							break
 
 				if stocked:
 					break
 
-			if not stocked:
-				print(sheet1_sku + " Not Stocked")
+			# if not stocked:
+			# 	print(sheet1_sku + " Not Stocked")
 
 			break
 	
@@ -324,7 +325,7 @@ def determine_product_bundle(solo_product):
 # problem is we need to minimize filter list to only standard colors so we cannot allow custom colors to make tags.
 # instead pass warning so we can correct it by adding new keyword to colors.json
 def determine_standard_color(color):
-	print("\n===Determine Standard Color===\n")
+	#print("\n===Determine Standard Color===\n")
 	standard_color = ''
 	standard_colors = reader.read_standards('colors')
 	#print("standard_colors: " + str(standard_colors))
@@ -344,7 +345,7 @@ def determine_standard_color(color):
 
 # need value type to read standards file by name
 def determine_standard(init_value, value_type):
-	print("\n===Determine Standard for value: " + init_value + "===\n")
+	#print("\n===Determine Standard for value: " + init_value + "===\n")
 	standard = ''
 	standards = reader.read_standards(value_type)
 	#print("standards: " + str(standards))
@@ -405,7 +406,7 @@ def determine_duplicate_opts(product):
 	return duplicate_opts
 
 def determine_duplicate_product_opts(product_opt_data): # [[[names],[values]]]
-	print("\n===Determine Duplicate Options===\n")
+	print("\n===Determine Duplicate Product Options===\n")
 	# product_opt_data = [[names],[vals]]
 	#print("product_opt_data: " + str(product_opt_data))
 
@@ -426,11 +427,16 @@ def determine_duplicate_product_opts(product_opt_data): # [[[names],[values]]]
 		option_data.append([opt_names,opt_vals])
 
 	# if we find matching options bt 2 vrnts in same product then it will be considered invalid unless we use other info to create more options bc they are 2 vrnts so must have different options but the info in the description is limited
+	print("All Option Strings")
 	for option_string in option_strings:
+		print(option_string)
+	print("Search for Duplicate Option Strings")
+	for option_string in option_strings:
+		print(option_string)
 		count = option_strings.count(option_string)
 		if count > 1:
 			# found 2 vrnts with same options so not enough info in single vrnt so we must compare with another variant to see what options to add
-			print("Duplicate Opts")
+			print("Duplicate Opts for " + option_string)
 			duplicate_opts = option_data
 			break
 

@@ -80,7 +80,9 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 		product_img_src = product_img_srcs[item_idx]
 
 		#product_option_string = writer.format_option_string(product_options[item_idx])
-		product_option_string = writer.format_option_string_from_data(product_options_dict[sku])
+		product_option_string = ''
+		if sku in product_options_dict:
+			product_option_string = writer.format_option_string_from_data(product_options_dict[sku])
 
 		#body_html = product_descriptions[item_idx]
 		body_html = product_descrip_dict[product_handle]
@@ -185,16 +187,18 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 	all_sorted_final_item_info = generator.generate_all_bundle_vrnts_info(all_sorted_final_item_info, all_details)
 
 	valid_item_info = generator.generate_valid_item_info(all_sorted_final_item_info) # remove duplicate options and other invalidities
+	#print("all_sorted_final_item_info: " + str(all_sorted_final_item_info))
+	#print("valid_item_info: " + str(valid_item_info))
 
 	# shopify import tool needs imgs on different lines
 	if import_tool == 'shopify':
-		all_sorted_final_item_info = sorter.split_variants_by_img(all_sorted_final_item_info)
+		valid_item_info = sorter.split_variants_by_img(valid_item_info)
 
 	writer.display_shopify_variant_headers()
-	for item_info in all_sorted_final_item_info:
+	for item_info in valid_item_info:
 		print(item_info)
 
-	return all_sorted_final_item_info
+	return valid_item_info
 
 
 

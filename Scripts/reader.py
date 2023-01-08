@@ -281,7 +281,7 @@ def format_dimension(measurement, handle):
 			total_meas = str(int(round(meas_ft_value * 12.0 + meas_in_value)))
 
 		else:
-			print("Default Measurement")
+			#print("Default Measurement")
 			total_meas = measurement
 
 	else:
