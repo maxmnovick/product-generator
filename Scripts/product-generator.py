@@ -258,9 +258,9 @@ def generate_all_products(vendor):
 
 	# General Info from Details table
 	all_skus = reader.format_field_values('sku', all_details) # todo: need to check for bundle skus. eg loft bed + queen bed
-	print("all_details: " + str(all_details))
+	#print("all_details: " + str(all_details))
 	all_widths = reader.format_field_values('width', all_details, init_all_details)
-	print("all_widths: " + str(all_widths))
+	#print("all_widths: " + str(all_widths))
 	all_depths = reader.format_field_values('depth', all_details, init_all_details)
 	all_heights = reader.format_field_values('height', all_details, init_all_details)
 	all_weights = reader.format_field_values('weight', all_details, init_all_details) # todo: need to check for bundle weights. eg loft bed + queen bed

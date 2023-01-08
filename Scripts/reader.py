@@ -582,7 +582,7 @@ def format_field_values(field_name, all_details, init_all_details=[]):
 					vrnt_img = img_src
 			field_values.append(vrnt_img)
 
-	print("field_values: " + str(field_values))
+	#print("field_values: " + str(field_values))
 	return field_values
 
 

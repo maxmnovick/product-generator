@@ -231,7 +231,8 @@ def generate_all_titles(all_details, all_handles=[]):
 
 # tags based on vendor, publication year, color, material, and finish
 def generate_tags(item_details, vendor, item_inv={}):
-	#print("\n===Generate Item Tags===\n")
+	sku = item_details[0].strip().lower()
+	print("\n===Generate Item Tags for " + sku + "===\n")
 	now = datetime.now()
 	publication_year = str(now.year) # get current year
 
@@ -244,7 +245,7 @@ def generate_tags(item_details, vendor, item_inv={}):
 	tags = color_tags = material_tags = finish_tags = ''
 
 	if len(item_details) > 0:
-		sku = item_details[0].strip().lower()
+		
 		handle = item_details[1].strip().lower()
 		colors = item_details[color_idx].strip().lower()
 		#print("Colors: " + colors)
@@ -1124,8 +1125,11 @@ def generate_arrival_date_string(arrival_time_string):
 		arrival_date_string = 'Today'
 	elif arrival_time_string != 'NA':
 		arrival_weeks = re.sub('\\s|[a-z]','',arrival_time_string)
-		arrival_days = roundup(float(arrival_weeks) / 7.0)
+		print("arrival_weeks: " + str(arrival_weeks))
+		arrival_days = roundup(float(arrival_weeks) * 7)
+		print("arrival_days: " + str(arrival_days))
 		date_delta = timedelta(arrival_days)
+		print("date_delta: " + str(date_delta))
 
 		current_date = datetime.today()
 		arrival_date = current_date + date_delta
@@ -1134,7 +1138,7 @@ def generate_arrival_date_string(arrival_time_string):
 
 		arrival_date_string = arrival_date.strftime("%d-%b-%Y") # %d-%m-%y
 
-	#print("arrival_date_string: " + arrival_date_string)
+	print("arrival_date_string: " + arrival_date_string)
 	return arrival_date_string
 
 
@@ -2820,7 +2824,7 @@ def generate_catalog_from_data(vendor='',all_inv={}):
 
 					break # we can break whether or not loft bed bc we found another vrnt of same product (by handle)
 
-	print("catalog from data: " + str(catalog))
+	#print("catalog from data: " + str(catalog))
 	return catalog
 
 
