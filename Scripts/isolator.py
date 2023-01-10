@@ -194,6 +194,7 @@ def isolate_products_from_info(sorted_final_item_info):
 
 # product_dims = [dimensions,product_options[vrnt_idx]]
 def isolate_vrnts_by_dim(product_dims):
+	print("\n===Isolate Variants by Dimensions===\n")
 
 	vrnts = {}
 	dim_idx = 0
@@ -203,6 +204,7 @@ def isolate_vrnts_by_dim(product_dims):
 
 	vrnts_by_dim = list(vrnts.values())
 
+	print("vrnts_by_dim: " + str(vrnts_by_dim))
 	return vrnts_by_dim
 
 # item_info = 1;2;3;...

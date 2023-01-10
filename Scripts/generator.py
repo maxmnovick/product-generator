@@ -3,7 +3,9 @@
 
 import reader, writer, determiner
 import isolator # for isolating products in list of all products
-import re, math, random, pandas # random number for random sale item to set compare price
+import re
+import math # ceil arrival days from weeks to upper nearest day
+import random, pandas # random number for random sale item to set compare price
 import numpy as np
 import sorter # sort variants by size
 import converter # convert list of items to fields (like transpose matrix), for generating catalog from info
@@ -1125,11 +1127,11 @@ def generate_arrival_date_string(arrival_time_string):
 		arrival_date_string = 'Today'
 	elif arrival_time_string != 'NA':
 		arrival_weeks = re.sub('\\s|[a-z]','',arrival_time_string)
-		print("arrival_weeks: " + str(arrival_weeks))
-		arrival_days = roundup(float(arrival_weeks) * 7)
-		print("arrival_days: " + str(arrival_days))
+		#print("arrival_weeks: " + str(arrival_weeks))
+		arrival_days = math.ceil(float(arrival_weeks) * 7)
+		#print("arrival_days: " + str(arrival_days))
 		date_delta = timedelta(arrival_days)
-		print("date_delta: " + str(date_delta))
+		#print("date_delta: " + str(date_delta))
 
 		current_date = datetime.today()
 		arrival_date = current_date + date_delta
@@ -1138,7 +1140,7 @@ def generate_arrival_date_string(arrival_time_string):
 
 		arrival_date_string = arrival_date.strftime("%d-%b-%Y") # %d-%m-%y
 
-	print("arrival_date_string: " + arrival_date_string)
+	#print("arrival_date_string: " + arrival_date_string)
 	return arrival_date_string
 
 
@@ -2095,6 +2097,8 @@ def generate_dimensions_string(vrnt):
 
 	return dim_string
 
+
+
 def generate_product_dims_html(product, init_product):
 	print("\n===Generate Product Dimensions HTML===\n")
 	dimensions_html = ''
@@ -2113,55 +2117,74 @@ def generate_product_dims_html(product, init_product):
 		else:
 			
 			product_options = generate_product_options(product, init_product)
+
+			# if multiple sizes but the only different option is color (dimensionless), and the sizes are within 2" of eachother,
+			# then display as single size
 			
 			if len(product_options) > 0: # invalid options so product will be processed further
-				dimensions_html += '<table>'
-				dimensionless_opts = ['Color'] # determine dimensionless opts by seeing which opts do not affect dims. test when opt changes does dim change
-				# make list of all vrnts dims
-				product_dims = [] # [[]], 1 entry for each vrnt
-				for vrnt_idx in range(len(product)):
-					dimensions = generate_dimensions_string(product[vrnt_idx])
-					product_dims.append([dimensions,product_options[vrnt_idx]]) # group by dimensions and need to keep options related to that dim
+				
+				# if no valid opt vals but different dims, then show only largest dim
+				if determiner.determine_dimensionful_opts(product_options): # if different sizes but no opts to tell them apart, must be typo so choose larger dims for all. or if multiple samples and majority are 1 size but 1 anomaly is a different size then using the majority size. 
 
-				# then group vrnts with same dims so only unique dims showing once
-				vrnts_by_dim = isolator.isolate_vrnts_by_dim(product_dims) # [[[1,2],[1,2],[1,2],...],[[3,4],[3,4],[3,4],...],...]
-
-				# exclude dimensionless dims to avoid confusing labels
-				#dimensionful_opts = determiner.determine_dimensionful_opts(product)#[] # only display opts related to dim
-
-				# display unique dims with correct vrnts
-				# vrnts = [[1,2],[1,2],[1,2],...]
-				for vrnts in vrnts_by_dim:
-					# only need first vrnt dims in group bc grouped by same dim
-					dimensions_idx = 0
-					options_idx = 1
-					dimensions = vrnts[0][dimensions_idx]
-					sorted_options = vrnts[0][options_idx] # the common denominator options will be displayed once
-					
-					option_names = sorted_options[0] # needed to see if option related to dimension bc if not exlcude from table
-					option_values = sorted_options[1]
-					dimensions_html += '<tr>'
-					for opt_idx in range(len(option_values)):
-						option_name = option_names[opt_idx]
-						if option_name != '':
-							option_value = option_values[opt_idx]
-							# check if any vrnts have the same dims and see if they have diff dims but same opts to see the dim does not change proportional to that opt
-							if option_name not in dimensionless_opts:
-								dimensions_html += '<td>' + option_value + '</td>'
-					dimensions_html += '<td>' + dimensions + '</td></tr>'
+					dimensionless_opts = ['Color'] # determine dimensionless opts by seeing which opts do not affect dims. test when opt changes does dim change
 
 					
-				dimensions_html += '</table>'
+					#corrected_product = reader.correct_product_dims(product, product_options) # correct typos determined by other vrnts in same product
+
+					dimensions_html += '<table>'
+					# make list of all vrnts dims
+					product_dims = [] # [[]], 1 entry for each vrnt
+					for vrnt_idx in range(len(product)):
+						dimensions = generate_dimensions_string(product[vrnt_idx])
+						product_dims.append([dimensions,product_options[vrnt_idx]]) # group by dimensions and need to keep options related to that dim
+
+					# then group vrnts with same dims so only unique dims showing once
+					vrnts_by_dim = isolator.isolate_vrnts_by_dim(product_dims) # [[[1,2],[1,2],[1,2],...],[[3,4],[3,4],[3,4],...],...]
+
+					# exclude dimensionless dims to avoid confusing labels
+					#dimensionful_opts = determiner.determine_dimensionful_opts(product)#[] # only display opts related to dim
+
+					# if dimensionful opts are same but dims are diff,
+					# then show all vrnts, not just 1 for each size
+					# and show normally dimensionsless opt color bc only differentiating factor so in this case it is dimensionful
+
+					
+
+					# display unique dims with correct vrnts
+					# vrnts = [[1,2],[1,2],[1,2],...]
 				
-				
-				# if only 1 opt val but different dims then error warning cannot include. in general 2 vrnts with the same option sets is invalid
-				# at this point if it encounters invalid opts it will create the dims display but later be excluded by validation fcn
-				# bc generate options allows duplicate opts. could make feature in generate product options where duplicate excluded from final
-				# as long as that fits
+					for vrnts in vrnts_by_dim:
+						# only need first vrnt dims in group bc grouped by same dim
+						dimensions_idx = 0
+						options_idx = 1
+						dimensions = vrnts[0][dimensions_idx]
+						sorted_options = vrnts[0][options_idx] # the common denominator options will be displayed once
+						
+						option_names = sorted_options[0] # needed to see if option related to dimension bc if not exlcude from table
+						option_values = sorted_options[1]
+						dimensions_html += '<tr>'
+						for opt_idx in range(len(option_values)):
+							option_name = option_names[opt_idx]
+							if option_name != '':
+								option_value = option_values[opt_idx]
+								# check if any vrnts have the same dims and see if they have diff dims but same opts to see the dim does not change proportional to that opt
+								if option_name not in dimensionless_opts:
+									dimensions_html += '<td>' + option_value + '</td>'
+						dimensions_html += '<td>' + dimensions + '</td></tr>'
+
+						
+					dimensions_html += '</table>'
+					
+					
+					# if only 1 opt val but different dims then error warning cannot include. in general 2 vrnts with the same option sets is invalid
+					# at this point if it encounters invalid opts it will create the dims display but later be excluded by validation fcn
+					# bc generate options allows duplicate opts. could make feature in generate product options where duplicate excluded from final
+					# as long as that fits
+					dimensions_html = writer.remove_duplicate_dims(dimensions_html)
 	else:
 		print("Warning: No dimensions given for product " + product_handle + "! ")
 
-	print("Dimensions HTML: " + dimensions_html + "\n")
+	#print("Dimensions HTML: " + dimensions_html + "\n")
 	return dimensions_html
 
 def generate_features(item_details):
@@ -2169,7 +2192,7 @@ def generate_features(item_details):
 	print("\n===Generate Features for " + item_sku + "===\n") # means lack of features which could be error
 	
 	# bullet point indicates new line in features fmla so use bullet point for new line
-	features = '• Perfectly balanced and sturdy. • Lightweight and easy to carry for convenience. • Durable construction, built to last. '
+	features = '• Expert design with manufacture. • The highest quality materials. • Perfectly balanced and sturdy. • Durable construction—built to last. '
 
 	#print("Features: " + features)
 	return features
@@ -2192,8 +2215,10 @@ def generate_features_html(product, vendor=''):
 			features = variant[features_idx].strip()
 			#print("Raw Features: " + features)
 			# if no intro given then generate one
-			if features == '' or str.lower(features) == 'features':
+			if features == '' or str.lower(features) == 'features' or str.lower(features) == 'n/a':
 				features = generate_features(variant)
+			else:
+				features = reader.fix_typos(features) # fix common typos
 
 		if features != '' and features != 'n/a':
 			# need better way to check if there are no proper nouns that should stay capitalized, b/c too blunt to lowercase everything
@@ -2245,6 +2270,8 @@ def generate_features_html(product, vendor=''):
 
 			#features = re.sub('\"','\",CHAR(34),\"', features) # if quotes found in features, such as for dimensions, then fmla will incorrectly interpret that as closing string
 			
+			# remove stray parentheses
+			features = re.sub(r"\(\)","",features)
 			
 			if features not in unique_features:
 				unique_features.append(features)
@@ -2261,9 +2288,9 @@ def generate_features_html(product, vendor=''):
 			
 			features_list_html += "</ul>"
 
-			features_html = features_list_html
+			features_html += features_list_html
 		else:
-			features_html = '<p class=\'product_features\'>' + features + '</p>'
+			features_html += '<p class=\'product_features\'>' + features + '</p>'
 
 			#break # for now, once we make features list for variant skip the rest of the variants for now bc it is more complex to organize all variant features in descrip
 	else:
@@ -3333,8 +3360,8 @@ def generate_vrnt_compare_price(price):
 	#print("Price: " + price)
 	compare_price_string = ''
 
-	# only set compare price ~1/3 of the time at random to show that sales are genuine and do not apply to all items only select few, which may increase purchases for perception of sale and time limit
-	random_sale_item = random.randrange(1,3)
+	# only set compare price ~1/4 of the time at random to show that sales are genuine and do not apply to all items only select few, which may increase purchases for perception of sale and time limit
+	random_sale_item = random.randrange(1,4)
 	if random_sale_item == 1:
 
 		if price != '':

@@ -475,4 +475,21 @@ def determine_single_size(product):
 		if single_size == False:
 			break
 
+	
+
 	return single_size
+
+def determine_dimensionful_opts(product_options):
+	# if no valid opt vals but different dims, then show only largest dim
+	#print("\n===Determine Dimensionful Options===\n")
+	opt_string = ''
+	dimensionful_opts = True # false
+	# for vrnt_opts in product_options:
+	# 	print("vrnt_opts: " + str(vrnt_opts))
+		#opt_string += opt_val
+		# check the first vrnt to see if dimensionful opts
+		# print("vrnt1: " + str(vrnts[0]))
+		# vrnt1_opts = vrnts[0][1]
+		# print("vrnt1_opts: " + str(vrnt1_opts))
+
+	return dimensionful_opts

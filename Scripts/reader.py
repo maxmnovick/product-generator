@@ -614,3 +614,50 @@ def fix_typos(text):
 			break # found keyword for this typo, so go to next typo
 
 	return text
+
+def correct_product_dims(product, product_options):
+	print("\n===Correct Product Dims===\n")
+
+	final_product_dims = []
+
+	width_idx = 7
+	depth_idx = 8
+	height_idx = 9
+
+	# for specific case with arcadia recliner 9/10 are one size and 1/10 is slightly diff size which may be typo
+	# init product dims = [[1,1,1],[1,2,1]]
+	# product opts = [[['Color','Material'], ['Black','Fabric']],[['Color','Material'], ['White','Fabric']]]
+	# corrected product dims = [[1,2,1],[1,2,1]]
+	opt_strings = [] # compare to see if same opt strings but dif dims
+	for vrnt_idx in range(len(product)):
+		vrnt = product[vrnt_idx]
+		vrnt_opts = product_options[vrnt_idx]
+		opt_names = vrnt_opts[0]
+		opt_vals = vrnt_opts[1]
+		opt_string = '' # need to compare to see if same opt string but dif dims
+		for opt_idx in range(len(opt_names)):
+			opt_name = opt_names[opt_idx]
+			opt_val = opt_vals[opt_idx]
+			if opt_name != 'Color': # normally dimensionless but vendor may give typo so we check if we need to correct typo
+				opt_string += opt_val
+
+		# see if same opts have dif dims in other vrnt
+		# it gets complicated bc if the current vrnt has larger dims then must change the dims of the compare vrnt
+		# so must know idx or key
+		# so for now, simply extract dims from already generated dim string after making initial dim table
+		for compare_idx in range(len(product)):
+			if compare_idx != vrnt_idx:
+				opt_string = opt_strings[compare_idx]
+
+			# init vrnt dims
+			vrnt_width = vrnt[width_idx]
+			vrnt_depth = vrnt[depth_idx]
+			vrnt_height = vrnt[height_idx]
+			init_vrnt_dims = [vrnt_width, vrnt_depth, vrnt_height]
+
+		opt_strings.append(opt_string)
+
+		# list all opt strings excluding color and 
+		# if same opts but dif dims then correct dims to larger dims, if within 2
+
+	return final_product_dims

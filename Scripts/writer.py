@@ -222,3 +222,12 @@ def format_option_data(opt_data):
 
 	#print("final_opt_data: " + str(final_opt_data))
 	return final_opt_data
+
+def remove_duplicate_dims(dimensions_html):
+	#print("\n===Remove Duplicate Dimensions===\n")
+	init_dim_html = dimensions_html
+	#print("init_dim_html: " + init_dim_html)
+
+
+	final_dim_html = init_dim_html
+	return final_dim_html

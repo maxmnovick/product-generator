@@ -1,19 +1,19 @@
 {
 	"Black":["bl.*k","charcoal","onyx","raven"],
-	"White":["wh[it][it]e","ivory","pearl","cream","porcelain","bone","marbl","fabric","buttermilk"],
-	"Brown":["br.*n","sand","earth","latte","wood","maho?ga?ny","java","mocha","oatmeal","pecan","rust","terra","wheat","espresso","walnut","wenge","chestnut","truffle","choco","oak","cognac","natural","maple","cappuccino","cof+e+","cop+er","taupe","but+erscotch","leather","pu\\b","tobac+o","tof+e","wicker"],
-	"Red":["red","rose","ruby","cherry","merlot","velvet","burgundy"],
-	"Green":["gr.*n","jade","teal","thyme","sage"],
+	"Brown":["br.*n","sand","earth","latte","wood","maho?ga?ny","java","mocha","oatmeal","pecan","rust","terra","wheat","espres+o","walnut","wenge","chestnut","truf+le","choco","oak","cognac","natural","maple","cappuc+ino","cof+e+","cop+er","taupe","but+erscotch","leather","pu\\b","tobac+o","tof+e","wicker"],
+	"Green":["gre*n","jade","teal","thyme","sage"],
 	"Blue":["blue?","aqua","turq","navy","sky"],
-	"Beige":["beige","linen","khaki","champag?ne","tan","rat+an"],
-	"Silver":["gr[ae]y","s[il][il]ver","graphite","granite","platinum","fog","nickel","pewter","steel","stone","tita?ni?um","zinc","chrome","alum","metal","slate","iron"],
 	"Gold":["go?ld","sun","yel+o","bras"],
-	"Purple":["purple","indigo","lilac","mauve","lavender","berr[yi]"],
+	"Purple":["purple","indigo","lilac","mauve","lavender","ber+[yi]"],
+	"Red":["\\bred","rose","ruby","cher+y","merlot","burgundy"],
 	"Orange":["orange"],
 	"Pink":["pink"],
-	"Clear":["clear","glas","c[rt]ystal","diamond","gem"],
 	"Rainbow":["rainbow"],
 	"Floral":["floral"],
 	"Pattern":["pattern"],
-	"Agate":["agate"]
+	"Agate":["agate"],
+	"Silver":["gr[ae]y","s[il][il]ver","graphite","granite","platinum","fog","nickel","pewter","steel","stone","tita?ni?um","zinc","chrome","alum","metal","slate","iron"],
+	"White":["wh[it][it]e","ivory","p[ea][ea]rl","cream","porcelain","bone","marbl","fabric","but+ermilk"],
+	"Beige":["beige","linen","khaki","champag?ne","tan","rat+an"],
+	"Clear":["clear","glas","c[rt]ystal","diamond","gem"]
 }
