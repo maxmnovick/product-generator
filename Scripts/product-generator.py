@@ -76,6 +76,7 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 		#print("Display Product " + product_handle)
 		product_title = product_titles[item_idx]
 		product_tag_string = product_tags[item_idx]
+		print("product_tag_string: " + product_tag_string)
 		product_type = product_types[item_idx]
 		product_img_src = product_img_srcs[item_idx]
 
@@ -171,6 +172,7 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 	#sorted_final_item_info = sort_items_by_size(all_final_item_info, "shopify") # we do not want to remove lines with same handles if they have different images
 	all_sorted_final_item_info = sorter.sort_items_by_size(all_final_item_info, "shopify", all_details) # we do not want to remove lines with same handles if they have different images
 	#sorted_final_item_info = all_final_item_info
+	#print("all info sorted by size before bundle: " + str(all_sorted_final_item_info))
 
 
 	# generate all bundle vrnts info, and append to sorted final item info
@@ -183,8 +185,10 @@ def display_shopify_variants(seller, vendor, all_details, product_titles, all_co
 	# such as when only difference is dims we make options large, small, or if multiple we could name option by size value
 	#all_sorted_final_item_info = generator.generate_all_product_info(all_sorted_final_item_info, all_details) # we need all details to get dims
 
+
 	# need to combine bundle vrnts with solo vrnts in this fcn bc we must modify existing solo product options based on other vrnts
 	all_sorted_final_item_info = generator.generate_all_bundle_vrnts_info(all_sorted_final_item_info, all_details)
+	#print("all bundled info: " + str(all_sorted_final_item_info))
 
 	valid_item_info = generator.generate_valid_item_info(all_sorted_final_item_info) # remove duplicate options and other invalidities
 	#print("all_sorted_final_item_info: " + str(all_sorted_final_item_info))
@@ -287,7 +291,7 @@ def generate_all_products(vendor):
 
 	# generate tags
 	product_tags = generator.generate_all_tags(all_details, vendor, all_inv)
-	#writer.display_field_values(product_tags)
+	writer.display_field_values(product_tags)
 
 	# generate product types
 	product_types = generator.generate_all_product_types(all_details)

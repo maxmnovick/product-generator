@@ -1,6 +1,6 @@
 {
 	"Black":["bl.*k","charcoal","onyx","raven"],
-	"Brown":["br.*n","sand","earth","latte","wood","maho?ga?ny","java","mocha","oatmeal","pecan","rust","terra","wheat","espres+o","walnut","wenge","chestnut","truf+le","choco","oak","cognac","natural","maple","cappuc+ino","cof+e+","cop+er","taupe","but+erscotch","leather","pu\\b","tobac+o","tof+e","wicker"],
+	"Brown":["bro?w?n","sand","earth","latte","wood","maho?ga?ny","java","mocha","oatmeal","pecan","rust","terra","wheat","espres+o","walnut","wenge","chestnut","truf+le","choco","oak","cognac","natural","maple","cappuc+ino","cof+e+","cop+er","taupe","but+erscotch","leather","pu\\b","tobac+o","tof+e","wicker"],
 	"Green":["gre*n","jade","teal","thyme","sage"],
 	"Blue":["blue?","aqua","turq","navy","sky"],
 	"Gold":["go?ld","sun","yel+o","bras"],

@@ -283,7 +283,7 @@ def generate_tags(item_details, vendor, item_inv={}):
 				standard_colors.append(standard_color)
 				color_tags += "Color: " + standard_color.title() + ", "
 	color_tags = color_tags.rstrip(', ')
-	#print("Color Tags: " + color_tags)
+	print("Color Tags: " + color_tags)
 
 	standard_materials = [] # need to avoid duplicates
 	for material in material_data:
@@ -314,7 +314,7 @@ def generate_tags(item_details, vendor, item_inv={}):
 				standard_colors.append(standard_finish)
 				finish_tags += "Color: " + standard_finish.title() + ", " # use color tag although finish type bc then combines where other instances use color
 	finish_tags = finish_tags.rstrip(', ')
-	#print("Finish Tags: " + finish_tags)
+	print("Finish Tags: " + finish_tags)
 
 	
 	tags = "Catalog " + publication_year # desired space bt vendor and pub yr in case vendor name has multiple parts
@@ -2126,7 +2126,6 @@ def generate_product_dims_html(product, init_product):
 				# if no valid opt vals but different dims, then show only largest dim
 				if determiner.determine_dimensionful_opts(product_options): # if different sizes but no opts to tell them apart, must be typo so choose larger dims for all. or if multiple samples and majority are 1 size but 1 anomaly is a different size then using the majority size. 
 
-					dimensionless_opts = ['Color'] # determine dimensionless opts by seeing which opts do not affect dims. test when opt changes does dim change
 
 					
 					#corrected_product = reader.correct_product_dims(product, product_options) # correct typos determined by other vrnts in same product
@@ -2147,7 +2146,47 @@ def generate_product_dims_html(product, init_product):
 					# if dimensionful opts are same but dims are diff,
 					# then show all vrnts, not just 1 for each size
 					# and show normally dimensionsless opt color bc only differentiating factor so in this case it is dimensionful
+					# determine dimensionless opts
+					# at this point we have already determined not single size
+					dimensionless_opts = ['Color'] # determine dimensionless opts by seeing which opts do not affect dims. test when opt changes does dim change
+					
+					dimensionful_opt_vals = [] # for comparison to see if same opt vals but diff dims
+					for vrnts in vrnts_by_dim:
+						# only need first vrnt dims in group bc grouped by same dim
+						dimensions_idx = 0
+						options_idx = 1
+						dimensions = vrnts[0][dimensions_idx]
+						sorted_options = vrnts[0][options_idx] # the common denominator options will be displayed once
+						
+						option_names = sorted_options[0] # needed to see if option related to dimension bc if not exlcude from table
+						print("option_names: " + str(option_names))
+						option_values = sorted_options[1]
+						print("option_values: " + str(option_values))
 
+
+
+						only_color = True
+						for opt_name in option_names:
+							if opt_name != 'Color' and opt_name != '':
+								only_color = False
+								break
+
+
+						if only_color:
+							dimensionless_opts = []
+							break
+						
+						# go thru 1st opt in dim group for now
+						# but then check if any opts in dim group are same as any opts in another dim group
+						dimensionful_opt_val_string = '' # for comparison to see if same opt vals but diff dims
+						for opt_idx in range(len(option_names)):
+							opt_name = option_names[opt_idx]
+							if opt_name != 'Color':
+								opt_val = option_values[opt_idx]
+								dimensionful_opt_val_string += opt_val
+						print("dimensionful_opt_val_string: " + dimensionful_opt_val_string)
+						dimensionful_opt_vals.append(dimensionful_opt_val_string)
+						
 					
 
 					# display unique dims with correct vrnts
@@ -2161,7 +2200,11 @@ def generate_product_dims_html(product, init_product):
 						sorted_options = vrnts[0][options_idx] # the common denominator options will be displayed once
 						
 						option_names = sorted_options[0] # needed to see if option related to dimension bc if not exlcude from table
+						print("option_names: " + str(option_names))
 						option_values = sorted_options[1]
+						print("option_values: " + str(option_values))
+
+
 						dimensions_html += '<tr>'
 						for opt_idx in range(len(option_values)):
 							option_name = option_names[opt_idx]
@@ -3483,7 +3526,7 @@ def generate_all_bundle_vrnts_info(all_item_info, catalog):
 	vendor_idx = 3
 	product_category_idx = 4
 	product_type_idx = 5
-	product_tags_idx = 6
+	vrnt_tags_idx = 6
 	published_idx = 7
 	vrnt_opt1_name_idx = 8
 	vrnt_opt1_val_idx = 9
@@ -3544,7 +3587,7 @@ def generate_all_bundle_vrnts_info(all_item_info, catalog):
 		vendor = solo_product[0][vendor_idx]
 		standard_product_type = solo_product[0][product_category_idx]
 		product_type = solo_product[0][product_type_idx]
-		product_tag_string = solo_product[0][product_tags_idx]
+		
 		published = solo_product[0][published_idx]
 		inv_policy = solo_product[0][inv_policy_idx] #'deny'
 		vrnt_fulfill_service = solo_product[0][fulfill_idx]
@@ -3622,7 +3665,8 @@ def generate_all_bundle_vrnts_info(all_item_info, catalog):
 					inv_qty = vrnt[inv_qty_idx]
 					break
 
-			final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + str(item_weight_in_grams) + ";" + inv_tracker + ";" + inv_qty + ";" + inv_policy + ";" + vrnt_fulfill_service + ";" + str(item_price) + ";" + item_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + str(item_cost) + ";" + product_status
+			vrt_tag_string = '' # bundle tags could be blank bc components will have all tags
+			final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + vrt_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + str(item_weight_in_grams) + ";" + inv_tracker + ";" + inv_qty + ";" + inv_policy + ";" + vrnt_fulfill_service + ";" + str(item_price) + ";" + item_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + str(item_cost) + ";" + product_status
 			all_final_item_info.append(final_item_info)
 
 			# will need to add options to given vrnts in solo product
@@ -3651,7 +3695,9 @@ def generate_all_bundle_vrnts_info(all_item_info, catalog):
 				vrnt_img = vrnt[vrnt_img_idx]
 				item_cost = vrnt[vrnt_cost_idx]
 
-				final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + inv_tracker + ";" + inv_qty + ";" + inv_policy + ";" + vrnt_fulfill_service + ";" + item_price + ";" + item_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+				vrnt_tag_string = vrnt[vrnt_tags_idx] # different colors get added but those tags that are same bt vrnts merge
+
+				final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + vrnt_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + inv_tracker + ";" + inv_qty + ";" + inv_policy + ";" + vrnt_fulfill_service + ";" + item_price + ";" + item_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
 				all_final_item_info.append(final_item_info)
 
 		else: # no bundle so transfer vrnts directly with no addition
@@ -3673,9 +3719,11 @@ def generate_all_bundle_vrnts_info(all_item_info, catalog):
 				img_alt = vrnt[img_alt_idx]
 				vrnt_img = vrnt[vrnt_img_idx]
 				item_cost = vrnt[vrnt_cost_idx]
+
+				vrnt_tag_string = vrnt[vrnt_tags_idx] # different colors get added but those tags that are same bt vrnts merge
 				
 
-				final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + product_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + inv_tracker + ";" + inv_qty + ";" + inv_policy + ";" + vrnt_fulfill_service + ";" + item_price + ";" + item_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
+				final_item_info = product_handle + ";" + product_title + ";" + body_html + ";" + vendor.title() + ";" + standard_product_type + ";" + product_type + ";" + vrnt_tag_string + ";" + published + ";" + product_option_string + ";" + sku + ";" + item_weight_in_grams + ";" + inv_tracker + ";" + inv_qty + ";" + inv_policy + ";" + vrnt_fulfill_service + ";" + item_price + ";" + item_compare_price + ";" + vrnt_req_ship + ";" + vrnt_taxable + ";" + barcode + ";" + product_img_src + ";" + img_position + ";" + img_alt + ";" + vrnt_img + ";" + vrnt_weight_unit + ";" + vrnt_tax_code + ";" + item_cost + ";" + product_status
 				all_final_item_info.append(final_item_info)
 
 

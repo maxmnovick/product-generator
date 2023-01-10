@@ -21,8 +21,11 @@
     "Microfiber":["microfiber"],
     "Ceramic":["ceramic"],
     "Rhinestone":["rhinestone"],
-    "Stone":["stone","granit","marbl","diamond","concrete","tile"],
-    "LED":["\\bled\\b"],
+    "Marble":["marbl"],
+    "Tile":["tile"],
+    "Diamond":["diamond"],
+    "Stone":["stone","granit","concrete"],
+    "Light":["\\bled\\b"],
     "High Gloss":["glos"],
     "Pearl":["p[ea][ea]rl"]
 }
